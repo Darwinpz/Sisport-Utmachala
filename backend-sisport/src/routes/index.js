@@ -1,12 +1,43 @@
 const app = require("../app");
 
+const universidad = require("../controllers/universidad");
+
+
 module.exports = (app) => {
 
 
-    app.get('/',(req,res)=>{
+    //UNIVERSIDADES
+    app.get('/api/universidad', universidad.all);
+    app.post('/api/universidad/add', universidad.add);
+    app.put('/api/universidad/put', universidad.put);
+    app.delete('/api/universidad/delete', universidad.delete);
 
-        res.status(200).json("HOLA MUNDO");
+    //FACULTADES
 
-    });
+    //CARERRAS
+
+    //SEMESTRES
+
+    //PERIODOS
+
+    //HORARIOS
+
+    //PERSONAS
+
+    //FAMILIARES
+
+    //PERSONAS_ASIGNATURAS
+
+    //ASIGNATURAS
+
+
+    //ERRORES
+    app.use(function (err, req, res, next) {
+
+        res.status(err.status).json({ "message": err.message });
+
+    })
+
+
 
 }
