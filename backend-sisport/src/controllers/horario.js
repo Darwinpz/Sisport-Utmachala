@@ -24,6 +24,29 @@ HorarioCtrl.all = async (req, res, next) => {
 
 }
 
+HorarioCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const hor_codigo = req.params.id;
+
+        const horario = await pool.query("SELECT *FROM horario WHERE hor_codigo=$1", [hor_codigo]);
+
+        const resultado = horario.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 HorarioCtrl.add = async (req, res, next) => {
 
@@ -34,7 +57,7 @@ HorarioCtrl.add = async (req, res, next) => {
         const { hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia } = req.body;
 
         await pool.query("INSERT INTO horario (hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia)"
-            + "values($1,$2,$3,$4,$5,$6,$7)", [hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia );
+            + "values($1,$2,$3,$4,$5,$6,$7)", [hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia]);
 
         res.status(200).json({ "message": "Horario Agregado" });
 

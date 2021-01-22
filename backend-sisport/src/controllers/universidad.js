@@ -31,12 +31,13 @@ UniversidadCtrl.find = async (req, res, next) => {
 
     try {
 
-        const { uni_codigo } = req.body;
+        const uni_codigo = req.params.id;
 
-        const universidades = await pool.query("SELECT *FROM universidad WHERE uni_codigo=$1", [uni_codigo]);
+        const universidad = await pool.query("SELECT *FROM universidad WHERE uni_codigo=$1", [uni_codigo]);
 
-        res.status(200).json({ "message": universidades.rows });
+        const resultado = universidad.rows[0];
 
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
 
     } catch (e) {
 
@@ -57,10 +58,10 @@ UniversidadCtrl.add = async (req, res, next) => {
 
         const { uni_nombre, uni_mision, uni_vision, uni_abreviatura } = req.body;
 
-        await pool.query("INSERT INTO universidad (uni_nombre, uni_mision, uni_vision, uni_abreviatura)"+
-                        " values($1,$2,$3,$4)", [uni_nombre, uni_mision, uni_vision, uni_abreviatura]);
+        await pool.query("INSERT INTO universidad (uni_nombre, uni_mision, uni_vision, uni_abreviatura)"
+            + " values($1,$2,$3,$4)", [uni_nombre, uni_mision, uni_vision, uni_abreviatura]);
 
-        res.status(200).json({ "message": "Universidad agregada" });
+        res.status(200).json({ "message": "Universidad Agregada" });
 
 
     } catch (e) {

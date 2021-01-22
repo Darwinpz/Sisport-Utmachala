@@ -24,6 +24,29 @@ PeriodoCtrl.all = async (req, res, next) => {
 
 }
 
+PeriodoCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const peri_codigo = req.params.id;
+
+        const periodo = await pool.query("SELECT *FROM periodo WHERE peri_codigo=$1", [peri_codigo]);
+
+        const resultado = periodo.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 PeriodoCtrl.add = async (req, res, next) => {
 
