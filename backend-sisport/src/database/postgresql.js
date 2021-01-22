@@ -13,15 +13,7 @@ const pool = new Pool({
 
 pool.connect((err, client, done) => {
 
-    if (err) {
-
-        console.error("BD POSTGRESQL: ", err.message);
-
-    } else {
-
-        console.log("BD POSTGRESQL: CONECTADO");
-
-    }
+    err ? console.error("BD POSTGRESQL: ", err.message) : console.log("BD POSTGRESQL: CONECTADO");
 
 });
 

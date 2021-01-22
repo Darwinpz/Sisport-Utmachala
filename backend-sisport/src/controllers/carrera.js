@@ -22,6 +22,32 @@ CarreraCtrl.all = async (req, res, next) => {
     }
 }
 
+
+CarreraCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const car_codigo = req.params.id;
+
+        const carrera = await pool.query("SELECT *FROM carrera WHERE car_codigo=$1", [car_codigo]);
+
+        const resultado = carrera.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 CarreraCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -30,10 +56,10 @@ CarreraCtrl.add = async (req, res, next) => {
 
         const { car_nombre, car_mision, car_vision, car_abreviatura, fac_codigo } = req.body;
 
-        await pool.query("INSERT INTO carrera (car_nombre, car_mision, car_vision, car_abreviatura, fac_codigo)"+
-                        " values($1,$2,$3,$4,$5)", [car_nombre, car_mision, car_vision, car_abreviatura, fac_codigo ]);
+        await pool.query("INSERT INTO carrera (car_nombre, car_mision, car_vision, car_abreviatura, fac_codigo)" +
+            " values($1,$2,$3,$4,$5)", [car_nombre, car_mision, car_vision, car_abreviatura, fac_codigo]);
 
-        res.status(200).json({ "message": "Carrera agregada" });
+        res.status(200).json({ "message": "Carrera Agregada" });
 
 
     } catch (e) {

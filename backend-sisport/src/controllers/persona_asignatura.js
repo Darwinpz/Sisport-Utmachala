@@ -24,6 +24,29 @@ PerAsigCtrl.all = async (req, res, next) => {
 
 }
 
+PerAsigCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const perasig_codigo = req.params.id;
+
+        const persona_asignatura = await pool.query("SELECT *FROM persona_asignatura WHERE perasig_codigo=$1", [perasig_codigo]);
+
+        const resultado = persona_asignatura.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 PerAsigCtrl.add = async (req, res, next) => {
 

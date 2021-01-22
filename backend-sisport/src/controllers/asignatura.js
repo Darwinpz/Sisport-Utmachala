@@ -24,6 +24,29 @@ AsignaturaCtrl.all = async (req, res, next) => {
 
 }
 
+AsignaturaCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const asig_codigo = req.params.id;
+
+        const asignatura = await pool.query("SELECT *FROM asignatura WHERE asig_codigo=$1", [asig_codigo]);
+
+        const resultado = asignatura.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 AsignaturaCtrl.add = async (req, res, next) => {
 

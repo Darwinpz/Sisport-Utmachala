@@ -22,6 +22,30 @@ SemestreCtrl.all = async (req, res, next) => {
     }
 }
 
+SemestreCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const sem_codigo = req.params.id;
+
+        const semestre = await pool.query("SELECT *FROM semestre WHERE sem_codigo=$1", [sem_codigo]);
+
+        const resultado = semestre.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 SemestreCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -30,8 +54,8 @@ SemestreCtrl.add = async (req, res, next) => {
 
         const { sem_nombre, sem_paralelo, car_codigo } = req.body;
 
-        await pool.query("INSERT INTO semestre (sem_nombre, sem_paralelo, car_codigo)"+
-                        " values($1,$2,$3)", [sem_nombre, sem_paralelo, car_codigo ]);
+        await pool.query("INSERT INTO semestre (sem_nombre, sem_paralelo, car_codigo)" +
+            " values($1,$2,$3)", [sem_nombre, sem_paralelo, car_codigo]);
 
         res.status(200).json({ "message": "Semestre agregada" });
 

@@ -24,6 +24,29 @@ FamiliarCtrl.all = async (req, res, next) => {
 
 }
 
+FamiliarCtrl.find = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const fam_codigo = req.params.id;
+
+        const familiar = await pool.query("SELECT *FROM familiares WHERE fam_codigo=$1", [fam_codigo]);
+
+        const resultado = familiar.rows[0];
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 FamiliarCtrl.add = async (req, res, next) => {
 
