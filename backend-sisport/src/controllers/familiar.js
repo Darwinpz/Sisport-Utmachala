@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const FamiliarCtrl = {};
 
-
+/*
+    * Retorna todos los registros de los Familiares
+*/
 FamiliarCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ FamiliarCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de los Familiares
+*/
 FamiliarCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ FamiliarCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD un Familiar
+*/
 FamiliarCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -73,7 +81,9 @@ FamiliarCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita un Familiar de la BD
+*/
 FamiliarCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -99,7 +109,9 @@ FamiliarCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra un Familiar de la BD
+*/
 FamiliarCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

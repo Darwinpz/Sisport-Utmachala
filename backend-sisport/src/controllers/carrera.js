@@ -2,8 +2,11 @@ const pool = require("../database/postgresql")
 
 const CarreraCtrl = {};
 
-
+/*
+    * Retorna todos los registros de la Carrera
+*/
 CarreraCtrl.all = async (req, res, next) => {
+
     var err = new Error();
 
     try {
@@ -22,7 +25,9 @@ CarreraCtrl.all = async (req, res, next) => {
     }
 }
 
-
+/*
+    * Retorna un solo resultado de los registros de la Carrera
+*/
 CarreraCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ CarreraCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD una Carrera
+*/
 CarreraCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -73,6 +81,9 @@ CarreraCtrl.add = async (req, res, next) => {
 
 }
 
+/*
+    * Edita una Carrera de la BD
+*/
 CarreraCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -98,6 +109,9 @@ CarreraCtrl.put = async (req, res, next) => {
 
 }
 
+/*
+    * Borra una Carrera de la BD
+*/
 CarreraCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

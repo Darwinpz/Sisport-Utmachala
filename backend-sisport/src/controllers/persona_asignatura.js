@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const PerAsigCtrl = {};
 
-
+/*
+    * Retorna todos los registros de las Personas_Asignaturas
+*/
 PerAsigCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ PerAsigCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de las Personas_Asignaturas
+*/
 PerAsigCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ PerAsigCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD las Personas_Asignaturas
+*/
 PerAsigCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -72,7 +80,9 @@ PerAsigCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita las Personas_Asignaturas de la BD
+*/
 PerAsigCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -98,7 +108,9 @@ PerAsigCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra las Personas_Asignaturas de la BD
+*/
 PerAsigCtrl.delete = async (req, res, next) => {
 
     var err = new Error();
