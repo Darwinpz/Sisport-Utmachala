@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const AsignaturaCtrl = {};
 
-
+/*
+    * Retorna todos los registros de la Asignatura
+*/
 AsignaturaCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ AsignaturaCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de la Asignatura
+*/
 AsignaturaCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ AsignaturaCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD una Asignatura
+*/
 AsignaturaCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -72,7 +80,9 @@ AsignaturaCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita una Asignatura de la BD
+*/
 AsignaturaCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -97,7 +107,9 @@ AsignaturaCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra una Asignatura de la BD
+*/
 AsignaturaCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

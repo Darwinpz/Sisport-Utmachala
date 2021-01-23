@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const PeriodoCtrl = {};
 
-
+/*
+    * Retorna todos los registros de los Periodos
+*/
 PeriodoCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ PeriodoCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de los Periodos
+*/
 PeriodoCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ PeriodoCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD un Periodo
+*/
 PeriodoCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -73,7 +81,9 @@ PeriodoCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita un Periodo de la BD
+*/
 PeriodoCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -99,7 +109,9 @@ PeriodoCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra un Periodo de la BD
+*/
 PeriodoCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

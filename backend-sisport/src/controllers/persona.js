@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const PersonaCtrl = {};
 
-
+/*
+    * Retorna todos los registros de las Personas o Usuarios
+*/
 PersonaCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ PersonaCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de las Personas o Usuarios
+*/
 PersonaCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ PersonaCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD una Persona o Usuario
+*/
 PersonaCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -79,7 +87,9 @@ PersonaCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita una Persona o Usuario de la BD
+*/
 PersonaCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -111,7 +121,9 @@ PersonaCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra una Persona o Usuario de la BD
+*/
 PersonaCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

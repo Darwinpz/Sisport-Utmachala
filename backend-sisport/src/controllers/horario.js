@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const HorarioCtrl = {};
 
-
+/*
+    * Retorna todos los registros de los Horarios
+*/
 HorarioCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -24,6 +26,9 @@ HorarioCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de los Horarios
+*/
 HorarioCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -48,6 +53,9 @@ HorarioCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD un Horario
+*/
 HorarioCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -73,7 +81,9 @@ HorarioCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita un Horario de la BD
+*/
 HorarioCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -99,7 +109,9 @@ HorarioCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra un Horario de la BD
+*/
 HorarioCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

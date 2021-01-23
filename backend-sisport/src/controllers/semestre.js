@@ -2,7 +2,9 @@ const pool = require("../database/postgresql")
 
 const SemestreCtrl = {};
 
-
+/*
+    * Retorna todos los registros de los Semestres
+*/
 SemestreCtrl.all = async (req, res, next) => {
     var err = new Error();
 
@@ -22,6 +24,9 @@ SemestreCtrl.all = async (req, res, next) => {
     }
 }
 
+/*
+    * Retorna un solo resultado de los registros de los Semestres
+*/
 SemestreCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -46,6 +51,9 @@ SemestreCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD un Semestre
+*/
 SemestreCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -71,6 +79,9 @@ SemestreCtrl.add = async (req, res, next) => {
 
 }
 
+/*
+    * Edita un Semestre de la BD
+*/
 SemestreCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -96,6 +107,9 @@ SemestreCtrl.put = async (req, res, next) => {
 
 }
 
+/*
+    * Borra un Semestre de la BD
+*/
 SemestreCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

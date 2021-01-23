@@ -2,8 +2,11 @@ const pool = require("../database/postgresql")
 
 const FacultadCtrl = {};
 
-
+/*
+    * Retorna todos los registros de la Facultad
+*/
 FacultadCtrl.all = async (req, res, next) => {
+
     var err = new Error();
 
     try {
@@ -22,6 +25,9 @@ FacultadCtrl.all = async (req, res, next) => {
     }
 }
 
+/*
+    * Retorna un solo resultado de los registros de la Facultad
+*/
 FacultadCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -47,6 +53,9 @@ FacultadCtrl.find = async (req, res, next) => {
 
 }
 
+/*
+    * Inserta a la BD una Facultad
+*/
 FacultadCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -72,6 +81,9 @@ FacultadCtrl.add = async (req, res, next) => {
 
 }
 
+/*
+    * Edita una Facultad de la BD
+*/
 FacultadCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -97,6 +109,9 @@ FacultadCtrl.put = async (req, res, next) => {
 
 }
 
+/*
+    * Borra una Facultad de la BD
+*/
 FacultadCtrl.delete = async (req, res, next) => {
 
     var err = new Error();

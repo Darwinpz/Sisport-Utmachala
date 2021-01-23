@@ -3,7 +3,9 @@ const pool = require("../database/postgresql")
 
 const UniversidadCtrl = {};
 
-
+/*
+    * Retorna todos los registros de las Universidades
+*/
 UniversidadCtrl.all = async (req, res, next) => {
 
     var err = new Error();
@@ -25,6 +27,9 @@ UniversidadCtrl.all = async (req, res, next) => {
 
 }
 
+/*
+    * Retorna un solo resultado de los registros de las Universidades
+*/
 UniversidadCtrl.find = async (req, res, next) => {
 
     var err = new Error();
@@ -49,7 +54,9 @@ UniversidadCtrl.find = async (req, res, next) => {
 
 }
 
-
+/*
+    * Inserta a la BD una Universidad
+*/
 UniversidadCtrl.add = async (req, res, next) => {
 
     var err = new Error();
@@ -75,7 +82,9 @@ UniversidadCtrl.add = async (req, res, next) => {
 
 }
 
-
+/*
+    * Edita una Universidad de la BD
+*/
 UniversidadCtrl.put = async (req, res, next) => {
 
     var err = new Error();
@@ -101,7 +110,9 @@ UniversidadCtrl.put = async (req, res, next) => {
 
 }
 
-
+/*
+    * Borra una Universidad de la BD
+*/
 UniversidadCtrl.delete = async (req, res, next) => {
 
     var err = new Error();
