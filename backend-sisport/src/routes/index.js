@@ -97,7 +97,7 @@ module.exports = (app) => {
     app.post('/api/esquemas/add', esquema.add)
 
     //RUTAS DE ESTRUCTURA DE LA ASIGNATURA (NOSQL)
-    app.get('/api/estructura/add', estructura.add)
+    app.post('/api/estructura/add', estructura.add)
 
     //RUTAS DEL PORTAFOLIO
     app.get('/api/portafolio/add', portafolio.add)

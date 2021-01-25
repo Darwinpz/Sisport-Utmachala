@@ -21,9 +21,9 @@ EsquemaCtrl.add = async (req, res, next) => {
         } else {
 
             const esquemaModel = new esquema();
-
             await esquemaModel.save();
-
+            await esquema.deleteMany();
+            
             res.status(200).json({ "message": "Esquema Creado" });
 
         }
