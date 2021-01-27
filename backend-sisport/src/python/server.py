@@ -1,9 +1,10 @@
 
 from flask import Flask, request, jsonify
 #from flask_cors import CORS, cross_origin
-from controlador import uploadPersona, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
+from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
 uploadAutonomo, uploadRefuerzo
+from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
 
 app = Flask(__name__,static_folder='./resources')
 #CORS(app, resources={r"/*": {"origins": "*"}})
@@ -15,9 +16,9 @@ app.config['EXTENSIONS_EVALUACIONES']= [".pdf", ".doc", ".docx", ".xls", ".xlsx"
 app.config['EXTENSIONS_OTROS'] = [".pdf", ".doc", ".docx", ".zip", ".rar"]; 
 app.config['EXTENSIONS_INTRA_EXTRA']= [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".zip", ".rar"]; 
 
-@app.route('/upload/persona', methods=['POST'])
-def persona():
-    return uploadPersona(request, app.config['EXTENSIONS_PERSONA'])
+@app.route('/upload/estudiante', methods=['POST'])
+def estudiante():
+    return uploadEstudiante(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/syllabus', methods=['POST'])
 def syllabus():
@@ -67,9 +68,26 @@ def autonomo():
 def refuerzo():
     return uploadRefuerzo(request, app.config['EXTENSIONS_INTRA_EXTRA'])
 
+@app.route('/create/facultad', methods=['POST'])
+def facultad():
+    return crearFacultad(request)
+
+@app.route('/create/carrera', methods=['POST'])
+def carrera():
+    return crearCarrera(request)
+
+@app.route('/create/asignatura', methods=['POST'])
+def asignatura():
+    return crearAsignatura(request)
+
+@app.route('/create/portafolio', methods=['POST'])
+def portafolio():
+    return crearPortafolio(request)
+
 @app.errorhandler(413)
 def archivo_pesado(e):
     return jsonify({"message":"peso de archivo sobrepasado. Maximo 3MB"}), 413
+
 
 if __name__ == '__main__':
     app.run(port=4555, debug=True)
