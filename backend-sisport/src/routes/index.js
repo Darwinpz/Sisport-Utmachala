@@ -67,11 +67,11 @@ module.exports = (app) => {
 
     //RUTAS DE LAS PERSONAS
     app.get('/api/persona', persona.all);
-    app.get('/api/persona/:id', persona.find);
-    app.get('/api/persona/login', persona.login);
+    app.post('/api/persona/login', persona.login);
     app.post('/api/persona/add', persona.add);
     app.put('/api/persona/put', persona.put);
     app.delete('/api/persona/delete', persona.delete);
+    app.get('/api/persona/:id', persona.find);
 
     //RUTAS DE LOS FAMILIARES
     app.get('/api/familiar', familiar.all);
