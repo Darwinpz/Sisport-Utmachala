@@ -37,9 +37,9 @@ PersonaCtrl.login = async (req, res, next) => {
 
         const { per_cedula, per_clave } = req.body;
 
-        const personas = await pool.query("SELECT *FROM persona where per_cedula=$1 and per_clave=$2",[per_cedula,per_clave]);
+        const persona = await pool.query("SELECT *FROM persona where per_cedula=$1 and per_clave=$2",[per_cedula,per_clave]);
 
-        res.status(200).json({ "message": personas.rows[0] });
+        res.status(200).json({ "message": persona.rows[0] });
 
 
     } catch (e) {
