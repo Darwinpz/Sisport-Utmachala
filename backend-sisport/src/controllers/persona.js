@@ -27,6 +27,32 @@ PersonaCtrl.all = async (req, res, next) => {
 }
 
 /*
+    * Retorna El usuario actual
+*/
+PersonaCtrl.login = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const { per_cedula, per_clave } = req.body;
+
+        const personas = await pool.query("SELECT *FROM persona where per_cedula=$1 and per_clave=$2",[per_cedula,per_clave]);
+
+        res.status(200).json({ "message": personas.rows[0] });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+/*
     * Retorna un solo resultado de los registros de las Personas o Usuarios
 */
 PersonaCtrl.find = async (req, res, next) => {
