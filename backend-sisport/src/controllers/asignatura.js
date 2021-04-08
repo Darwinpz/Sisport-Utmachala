@@ -35,7 +35,7 @@ AsignaturaCtrl.find = async (req, res, next) => {
 
     try {
 
-        const asig_codigo = req.params.id;
+        const asig_codigo = req.params;
 
         const asignatura = await pool.query("SELECT *FROM asignatura WHERE asig_codigo=$1", [asig_codigo]);
 
@@ -52,6 +52,34 @@ AsignaturaCtrl.find = async (req, res, next) => {
     }
 
 }
+
+/*
+    * Retorna resultados de las Asignaturas
+*/
+AsignaturaCtrl.buscar = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const { car_nombre } = req.body;
+
+        const asignaturas = await pool.query("SELECT *FROM asignatura as asig,semestre as sem,carrera as car WHERE asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$1", [car_nombre]);
+
+        const resultado = asignaturas.rows;
+
+        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 
 /*
     * Inserta a la BD una Asignatura
