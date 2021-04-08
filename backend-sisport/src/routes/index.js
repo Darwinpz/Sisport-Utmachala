@@ -87,12 +87,14 @@ module.exports = (app) => {
     app.put('/api/persona_asignatura/put', persona_asignatura.put);
     app.delete('/api/persona_asignatura/delete', persona_asignatura.delete);
 
+
     //RUTAS DE LAS ASIGNATURAS
     app.get('/api/asignatura', asignatura.all);
-    app.get('/api/asignatura/:id', asignatura.find);
+    app.post('/api/asignatura/buscar', asignatura.buscar);
     app.post('/api/asignatura/add', asignatura.add);
     app.put('/api/asignatura/put', asignatura.put);
     app.delete('/api/asignatura/delete', asignatura.delete);
+    app.get('/api/asignatura/:id', asignatura.find);
 
     //RUTAS ESQUEMAS 
     app.post('/api/esquemas/add', esquema.add)

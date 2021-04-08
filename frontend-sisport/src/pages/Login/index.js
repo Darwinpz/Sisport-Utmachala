@@ -14,7 +14,7 @@ export default function LoginPage() {
 
                     </div>
 
-                    <div className="card mt-5">
+                    <div className="card mt-5 border-danger">
 
                         <div className="card-body">
                             <h5 className="card-title">Inicio de Sesión</h5>

@@ -1,14 +1,62 @@
 import React from 'react'
 import { Link } from 'wouter'
 
+import useUser from 'hooks/useUser'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSignInAlt, faSignOutAlt, faBook, faUser, faHome } from '@fortawesome/free-solid-svg-icons'
+
+
 export default function Navbar() {
+
+
+    const { isLogged, logout } = useUser()
+
+    const cerrarSesion = (e) => {
+
+        e.preventDefault()
+        logout()
+        window.location.href = "/"
+    };
+
+    const renderLoginButtons = ({ isLogged }) => {
+
+        return isLogged
+            ?
+            <>
+
+                <li className="nav-item active">
+                    <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
+                </li>
+
+                <li className="nav-item active">
+                    <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
+                </li>
+                
+                <li className="nav-item dropdown active">
+
+                    <Link className="nav-link dropdown-toggle" to="" role="button" data-toggle="dropdown">@gmail</Link>
+
+                    <div className="dropdown-menu">
+                        <Link className="dropdown-item" to="/perfil/@{{sesion.per_correo}}"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
+                        <a onClick={cerrarSesion} to="" className="dropdown-item" type="button" ><FontAwesomeIcon icon={faSignOutAlt} /> Cerrar Sesión</a>
+                    </div>
+                </li>
+            </>
+            :
+            <li className="nav-item active">
+                <Link to="/login" className="nav-link"><FontAwesomeIcon icon={faSignInAlt} /> Ingresar</Link>
+            </li>
+
+    }
+
+    const content =  renderLoginButtons({ isLogged })
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-1 navbar-static-top">
 
             <div className="container">
 
-                <a className="navbar-brand" href="/">Sistema de Gestión de Portafolios</a>
+                <Link className="navbar-brand" to="/">Sistema de Gestión de Portafolios</Link>
 
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,29 +67,7 @@ export default function Navbar() {
 
                     <ul className="navbar-nav ml-auto flex-row flex justify-content-around">
 
-                        <li className="nav-item active">
-
-                            <a type="button" href="/notificaciones" className="nav-link px-sm-5 px-lg-1"><strong
-                                className="notificacion">0</strong><i className="fas fa-bell fa-lg px-2"></i></a>
-                        </li>
-
-                        <li className="nav-item active">
-                            <Link to="/portafolios" className="nav-link"><i className="fas fa-book"></i>Portafolios</Link>
-                        </li>
-
-                        <li className="nav-item dropdown active">
-
-                            <a className="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">@gmail</a>
-
-                            <div className="dropdown-menu">
-                                <a className="dropdown-item" href="/perfil/@{{sesion.per_correo}}">Perfil</a>
-                                <Link to="/salir" className="dropdown-item">Salir</Link>
-                            </div>
-                        </li>
-
-                        <li className="nav-item active">
-                            <Link to="/login" className="nav-link"><i className="fas fa-sign-in-alt"></i>Ingresar</Link>
-                        </li>
+                        {content}
 
                     </ul>
                 </div>

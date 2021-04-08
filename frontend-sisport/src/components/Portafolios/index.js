@@ -1,0 +1,50 @@
+
+import React from "react";
+
+export default function Portafolios() {
+
+
+    return (
+
+        <>
+            <div class="row mb-3 border border-primary">
+
+                <div class="col text-center m-2">
+
+                    <h3>* PERIODO 2020-E1 *</h3>
+
+                </div>
+
+            </div>
+
+            <div className="row">
+
+                <div className="col-md-6 col-lg-4 mb-3">
+
+                    <div className="card border-primary">
+
+                        <div className="card-header">
+                            <span><strong>SISTEMAS DE INFORMACIÓN GERENCIAL</strong></span>
+                        </div>
+                        <div className="card-body">
+                            <p class="card-text mb-1">NOVENO SEMESTRE "A"</p>
+                            <p class="card-text mb-1"><small class="text-muted">-IS.1A-QWASD-</small></p>
+                            <p class="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
+                            <a class="btn btn-success float-right " href="/asignaturas/id=1">Ver Portafolio</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
+            </div>
+
+            
+
+        </>
+
+    )
+
+}

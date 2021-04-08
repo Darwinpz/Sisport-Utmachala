@@ -39,9 +39,17 @@ PersonaCtrl.login = async (req, res, next) => {
 
         const persona = await pool.query("SELECT *FROM persona where per_cedula=$1 and per_clave=$2",[per_cedula,per_clave]);
 
-        res.status(200).json({ "message": persona.rows[0] });
+        if (persona.rowCount > 0){
 
+            res.status(200).json({ "message": persona.rows[0] });
 
+        }else{
+
+            res.status(403).json({ "message": 'Error al iniciar sesión' });
+
+        }
+
+        
     } catch (e) {
 
         err.message = e.message;
@@ -50,6 +58,7 @@ PersonaCtrl.login = async (req, res, next) => {
 
     }
 
+   
 }
 
 /*
