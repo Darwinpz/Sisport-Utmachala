@@ -29,12 +29,12 @@ export default function Navbar() {
                 </li>
 
                 <li className="nav-item active">
-                    <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
+                    <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Mis Portafolios</Link>
                 </li>
                 
                 <li className="nav-item dropdown active">
 
-                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">@gmail</Link>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">dpilaloa1@utmachala</Link>
 
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
