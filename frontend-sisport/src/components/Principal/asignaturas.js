@@ -16,10 +16,10 @@ export default function Asignaturas() {
 
                         <div className="card-body">
 
-                            <span class="card-title"><strong>Programación VII</strong></span>
-                            <p class="card-text mb-1"><small class="text-muted">NOVENO SEMESTRE "A"</small></p>
-                            <p class="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
-                            <a class="btn btn-primary float-right " href="/asignaturas/id=1">Matricularme</a>
+                            <span className="card-title"><strong>Programación VII</strong></span>
+                            <p className="card-text mb-1"><small className="text-muted">NOVENO SEMESTRE "A"</small></p>
+                            <p className="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
+                            <a className="btn btn-primary float-right " href="/asignaturas/id=1">Matricularme</a>
 
                         </div>
                     </div>
