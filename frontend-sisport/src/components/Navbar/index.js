@@ -34,11 +34,11 @@ export default function Navbar() {
                 
                 <li className="nav-item dropdown active">
 
-                    <Link className="nav-link dropdown-toggle" to="" role="button" data-toggle="dropdown">@gmail</Link>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">@gmail</Link>
 
                     <div className="dropdown-menu">
-                        <Link className="dropdown-item" to="/perfil/@{{sesion.per_correo}}"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
-                        <a onClick={cerrarSesion} to="" className="dropdown-item" type="button" ><FontAwesomeIcon icon={faSignOutAlt} /> Cerrar Sesión</a>
+                        <Link className="dropdown-item" to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
+                        <Link onClick={cerrarSesion} to="#" className="dropdown-item" type="button" ><FontAwesomeIcon icon={faSignOutAlt} /> Cerrar Sesión</Link>
                     </div>
                 </li>
             </>

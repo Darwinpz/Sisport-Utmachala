@@ -28,7 +28,7 @@ export default function PrincipalPage() {
 
                 </div>
 
-                <div class="col col-sm-12 col-md-12 col-lg-9 mb-2 col-12">
+                <div className="col col-sm-12 col-md-12 col-lg-9 mb-2 col-12">
 
 
                     <div className="card  border-secondary">

@@ -1,6 +1,8 @@
 
 import React from "react";
 
+import { Link } from 'wouter'
+
 export default function Acordion() {
 
 
@@ -8,21 +10,21 @@ export default function Acordion() {
 
         <>
 
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-block text-left " type="button" data-toggle="collapse" data-target="#collapseOne" >
+            <div className="accordion" id="accordionExample">
+                <div className="card">
+                    <div className="card-header" id="headingOne">
+                        <h2 className="mb-0">
+                            <button className="btn btn-block text-left " type="button" data-toggle="collapse" data-target="#collapseOne" >
                                 <strong>Facultad de Ingeniería Civil</strong>
                             </button>
                         </h2>
                     </div>
 
-                    <div id="collapseOne" class="collapse">
-                        <ul class="list-group list-group-flush">
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería Civil</a>
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería de Sistemas</a>
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería Ambiental</a>
+                    <div id="collapseOne" className="collapse">
+                        <ul className="list-group list-group-flush">
+                            <Link to ="#"  type="button" className="list-group-item border-secondary">Carrera de Ingeniería Civil</Link>
+                            <Link to ="#"  type="button" className="list-group-item border-secondary">Carrera de Ingeniería de Sistemas</Link>
+                            <Link to ="#"   type="button" className="list-group-item border-secondary">Carrera de Ingeniería Ambiental</Link>
                         </ul>
                     </div>
                 </div>
