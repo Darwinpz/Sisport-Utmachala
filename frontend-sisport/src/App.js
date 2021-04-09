@@ -1,25 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import Login from "pages/Login";
+import Home from "pages/Home";
+import Portafolio from "pages/Portafolios/index";
+import VerPortafolio from "pages/Portafolios/ver";
+import Principal from "pages/Principal";
 
-function App() {
+import { Route, Switch } from "wouter";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'popper.js';
+import Navbar from 'components/Navbar'
+import { UserContextProvider } from "context/UserContext";
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <>
+
+      <UserContextProvider>
+        
+        <Navbar />
+      
+        <div className=" mt-5 p-5">
+          <Switch>
+
+            <Route component={Home} path="/" />
+            <Route component={Login} path="/login" />
+            <Route component={Portafolio} path="/portafolios" />
+            <Route component={VerPortafolio} path="/portafolios/:id" />
+            <Route component={Principal} path="/principal" />
+
+          </Switch>
+        </div>
+      </UserContextProvider>
+    </>
+
   );
 }
 
-export default App;

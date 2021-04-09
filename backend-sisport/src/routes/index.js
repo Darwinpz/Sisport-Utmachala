@@ -67,10 +67,11 @@ module.exports = (app) => {
 
     //RUTAS DE LAS PERSONAS
     app.get('/api/persona', persona.all);
-    app.get('/api/persona/:id', persona.find);
+    app.post('/api/persona/login', persona.login);
     app.post('/api/persona/add', persona.add);
     app.put('/api/persona/put', persona.put);
     app.delete('/api/persona/delete', persona.delete);
+    app.get('/api/persona/:id', persona.find);
 
     //RUTAS DE LOS FAMILIARES
     app.get('/api/familiar', familiar.all);
@@ -86,12 +87,14 @@ module.exports = (app) => {
     app.put('/api/persona_asignatura/put', persona_asignatura.put);
     app.delete('/api/persona_asignatura/delete', persona_asignatura.delete);
 
+
     //RUTAS DE LAS ASIGNATURAS
     app.get('/api/asignatura', asignatura.all);
-    app.get('/api/asignatura/:id', asignatura.find);
+    app.post('/api/asignatura/buscar', asignatura.buscar);
     app.post('/api/asignatura/add', asignatura.add);
     app.put('/api/asignatura/put', asignatura.put);
     app.delete('/api/asignatura/delete', asignatura.delete);
+    app.get('/api/asignatura/:id', asignatura.find);
 
     //RUTAS ESQUEMAS 
     app.post('/api/esquemas/add', esquema.add)
