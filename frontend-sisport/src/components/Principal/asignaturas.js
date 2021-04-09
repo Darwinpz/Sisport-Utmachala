@@ -19,7 +19,12 @@ export default function Asignaturas() {
                             <span className="card-title"><strong>Programación VII</strong></span>
                             <p className="card-text mb-1"><small className="text-muted">NOVENO SEMESTRE "A"</small></p>
                             <p className="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
-                            <a className="btn btn-primary float-right " href="/asignaturas/id=1">Matricularme</a>
+
+                            <div className="d-flex justify-content-between align-items-center">
+                                
+                                <input type="text" className="form-control mr-2" placeholder="Clave" required/>
+                                <button className="btn btn-primary" type="button">Matricularme</button>
+                            </div>
 
                         </div>
                     </div>

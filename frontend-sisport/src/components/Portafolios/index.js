@@ -30,7 +30,7 @@ export default function Portafolios() {
                             <p className="card-text mb-1">NOVENO SEMESTRE "A"</p>
                             <p className="card-text mb-1"><small className="text-muted">-IS.1A-QWASD-</small></p>
                             <p className="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
-                            <a className="btn btn-success float-right " href="/asignaturas/id=1">Ver Portafolio</a>
+                            <a className="btn btn-success float-right " href="/portafolios/1">Ver Portafolio</a>
 
                         </div>
                     </div>
