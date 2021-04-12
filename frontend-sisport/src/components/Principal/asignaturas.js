@@ -1,37 +1,39 @@
 
 import React from "react";
 
-export default function Asignaturas() {
+export default function Asignaturas({ asignaturas }) {
 
 
     return (
 
         <>
 
-            <div className="row">
+            <div className="row align-items-center">
+                {
+                    asignaturas.map(({ asig_codigo,asig_nombre, sem_nombre, sem_paralelo }) =>
+                        <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
-                <div className="col-md-6 col-lg-4 mb-3">
+                            <div className="card border-primary">
 
-                    <div className="card border-primary">
+                                <div className="card-body">
 
-                        <div className="card-body">
+                                    <span className="card-title"><strong>{asig_nombre}</strong></span>
+                                    <p className="card-text mb-1"><small className="text-muted">{sem_nombre}-{sem_paralelo}</small></p>
+                                    <p className="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
 
-                            <span className="card-title"><strong>Programación VII</strong></span>
-                            <p className="card-text mb-1"><small className="text-muted">NOVENO SEMESTRE "A"</small></p>
-                            <p className="card-text mb-3">Ing. Joofre Antonio Honores Tapia</p>
+                                    <div className="d-flex justify-content-between align-items-center">
 
-                            <div className="d-flex justify-content-between align-items-center">
-                                
-                                <input type="text" className="form-control mr-2" placeholder="Clave" required/>
-                                <button className="btn btn-primary" type="button">Matricularme</button>
+                                        <input type="text" className="form-control mr-2" placeholder="Clave" required />
+                                        <button className="btn btn-primary" type="button">Matricularme</button>
+                                    </div>
+
+                                </div>
                             </div>
 
                         </div>
-                    </div>
+                    )
 
-                </div>
-            
-
+                }
             </div>
 
         </>

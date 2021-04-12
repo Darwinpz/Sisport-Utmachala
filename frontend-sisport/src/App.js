@@ -12,6 +12,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import 'popper.js';
 import Navbar from 'components/Navbar'
 import { UserContextProvider } from "context/UserContext";
+import { CarrerasContextProvider } from "context/CarrerasContext";
+import { AsignaturasContextProvider } from "context/AsignaturasContext";
 
 export default function App() {
   return (
@@ -19,18 +21,26 @@ export default function App() {
     <>
 
       <UserContextProvider>
-        
+
         <Navbar />
-      
+
         <div className=" mt-5 p-5">
           <Switch>
 
             <Route component={Home} path="/" />
             <Route component={Login} path="/login" />
-            <Route component={Principal} path="/principal" />
+            
             <Route component={Perfil} path="/perfil" />
-            <Route component={Portafolio} path="/portafolios" />
+            <Route component={Portafolio} path="/portafolios"/>
             <Route component={VerPortafolio} path="/portafolios/:id" />
+
+            <CarrerasContextProvider>
+              <Route component={Principal} path="/principal" />
+              <AsignaturasContextProvider>
+                <Route component={Principal} path="/principal/:car_nombre" />
+              </AsignaturasContextProvider>
+            </CarrerasContextProvider>
+
 
           </Switch>
         </div>
