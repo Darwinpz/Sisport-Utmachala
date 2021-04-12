@@ -51,7 +51,6 @@ export default function PrincipalPage({params}) {
                                 <h4>*SELECCIONA TU CARRERA*</h4>
                             }
                             
-
                             <Asignaturas asignaturas={asignaturas || []}/>
 
                         </div>

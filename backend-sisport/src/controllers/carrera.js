@@ -25,6 +25,47 @@ CarreraCtrl.all = async (req, res, next) => {
     }
 }
 
+
+/*
+    * Retorna todas las Carreras y su facultad respectiva
+*/
+CarreraCtrl.allxfacultad = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const facultades = await pool.query("SELECT fac_codigo,fac_nombre FROM facultad order by fac_nombre");
+
+        const carreras = await pool.query("SELECT car.car_codigo, car.car_nombre, fac.fac_nombre, fac.fac_codigo FROM carrera as car, facultad as fac where car.fac_codigo = fac.fac_codigo order by fac.fac_nombre");
+
+        var arreglo = []
+
+        facultades.rows.forEach(facultad => {
+            
+            obj = {"facultad":facultad.fac_nombre,"fac_id":facultad.fac_codigo,"carreras":null}
+
+            var data = carreras.rows.filter(carrera => carrera.fac_codigo == facultad.fac_codigo)
+
+            obj.carreras = data
+
+            arreglo.push(obj)
+
+        });
+        
+        res.status(200).json({ "message": arreglo });
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
 /*
     * Retorna un solo resultado de los registros de la Carrera
 */
@@ -52,6 +93,8 @@ CarreraCtrl.find = async (req, res, next) => {
     }
 
 }
+
+
 
 /*
     * Inserta a la BD una Carrera

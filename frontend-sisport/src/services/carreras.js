@@ -1,4 +1,4 @@
-const ENDPOINT = 'http://190.155.140.58/api/carrera'
+const ENDPOINT = 'http://localhost/api/carrerasandfacultad'
 
 export default function Carreras() {
 
