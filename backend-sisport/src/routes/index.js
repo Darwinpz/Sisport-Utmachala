@@ -39,6 +39,7 @@ module.exports = (app) => {
 
     //RUTAS DE LAS CARERRAS
     app.get('/api/carrera', carrera.all);
+    app.get('/api/carrerasandfacultad', carrera.allxfacultad);
     app.get('/api/carrera/:id', carrera.find);
     app.post('/api/carrera/add', carrera.add);
     app.put('/api/carrera/put', carrera.put);
@@ -81,12 +82,12 @@ module.exports = (app) => {
     app.delete('/api/familiar/delete', familiar.delete);
 
     //RUTAS DE LAS PERSONAS_ASIGNATURAS
-    app.get('/api/persona_asignatura', persona_asignatura.all);
+    app.post('/api/persona_asignatura', persona_asignatura.all);
     app.get('/api/persona_asignatura/:id', persona_asignatura.find);
     app.post('/api/persona_asignatura/add', persona_asignatura.add);
     app.put('/api/persona_asignatura/put', persona_asignatura.put);
     app.delete('/api/persona_asignatura/delete', persona_asignatura.delete);
-
+    
 
     //RUTAS DE LAS ASIGNATURAS
     app.get('/api/asignatura', asignatura.all);

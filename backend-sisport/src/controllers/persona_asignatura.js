@@ -11,9 +11,27 @@ PerAsigCtrl.all = async (req, res, next) => {
 
     try {
 
-        const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura");
+        const {per_id} = req.body;
+        
+        const periodos = await pool.query("SELECT * FROM periodo order by peri_nombre")
 
-        res.status(200).json({ "message": personas_asignaturas.rows });
+        const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura as per_as, asignatura as asig, semestre as sem where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and per_as.per_codigo = $1 ",[per_id]);
+
+        const arreglo = []
+
+        periodos.rows.forEach(periodo => {
+            
+            obj = {"periodo":periodo.peri_nombre,"asignaturas":null}
+
+            asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.sem_codigo == periodo.sem_codigo)
+
+            obj.asignaturas = asignaturas
+
+            arreglo.push(obj)
+
+        });
+
+        res.status(200).json({ "message": arreglo });
 
 
     } catch (e) {
