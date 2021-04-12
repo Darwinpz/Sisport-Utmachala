@@ -1,15 +1,15 @@
 
 import React from "react";
 
-import { Link } from 'wouter'
+import useCarreras from 'hooks/useCarreras'
 
 export default function Acordion() {
 
+    const { carreras } = useCarreras()
 
     return (
 
         <>
-
             <div className="accordion" id="accordionExample">
                 <div className="card">
                     <div className="card-header" id="headingOne">
@@ -22,14 +22,18 @@ export default function Acordion() {
 
                     <div id="collapseOne" className="collapse">
                         <ul className="list-group list-group-flush">
-                            <Link to ="#"  type="button" className="list-group-item border-secondary">Carrera de Ingeniería Civil</Link>
-                            <Link to ="#"  type="button" className="list-group-item border-secondary">Carrera de Ingeniería de Sistemas</Link>
-                            <Link to ="#"   type="button" className="list-group-item border-secondary">Carrera de Ingeniería Ambiental</Link>
+                            {
+                                carreras.map(({car_codigo,car_nombre}) =>
+                                
+                                    <a href={`/principal/${car_nombre}`} key={car_codigo} type="button" className="list-group-item border-secondary">{car_nombre}</a>
+                            
+                                )
+                            }
+                            
                         </ul>
                     </div>
                 </div>
-                
-                
+
             </div>
 
         </>

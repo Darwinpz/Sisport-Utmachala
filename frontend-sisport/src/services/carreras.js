@@ -1,15 +1,14 @@
-const ENDPOINT = 'http://190.155.140.58/api/persona'
+const ENDPOINT = 'http://190.155.140.58/api/carrera'
 
-export default function login({ username, password }) {
+export default function Carreras() {
 
-    return fetch(`${ENDPOINT}/login`, {
-        method: 'POST',
+    return fetch(ENDPOINT, {
+        method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': true
-        },
-        body: JSON.stringify({per_cedula: username, per_clave : password})
+        }
     }).then(res => {
         if (!res.ok) throw new Error('Response is NOT ok')
         return res.json()

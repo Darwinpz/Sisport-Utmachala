@@ -1,8 +1,14 @@
 import React from 'react'
 import Acordion from 'components/Principal/acordion'
 import Asignaturas from 'components/Principal/asignaturas'
+import useAsignaturas from 'hooks/useAsignaturas'
 
-export default function PrincipalPage() {
+export default function PrincipalPage({params}) {
+
+    const { car_nombre } = params
+
+    const { asignaturas} = useAsignaturas({car_nombre:decodeURI(car_nombre)})
+
     return (
         <>
             <div className="row">
@@ -35,13 +41,18 @@ export default function PrincipalPage() {
 
                         <div className="card-header  border-secondary">
 
-                            <h4> Asignaturas </h4>
+                            <h4> ASIGNATURAS{`: ${decodeURI(car_nombre || "") }`}</h4>
 
                         </div>
 
-                        <div className="card-body">
+                        <div className="card-body text-center">
+                            {
+                                !asignaturas &&
+                                <h4>*SELECCIONA TU CARRERA*</h4>
+                            }
+                            
 
-                            <Asignaturas/>
+                            <Asignaturas asignaturas={asignaturas || []}/>
 
                         </div>
 
