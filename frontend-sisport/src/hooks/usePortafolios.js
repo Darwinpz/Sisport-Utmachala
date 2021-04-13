@@ -24,11 +24,10 @@ export default function usePortafolios() {
             .catch(err => {
                 setLoading(false)
                 
-                /*if (err.message === 403){
+                if (err.message === '403'){
 
                     logout()
-                    window.location.href = "/login"
-                }*/
+                }
 
             })
     }, [jwt,logout,setPORTAFOLIOS])

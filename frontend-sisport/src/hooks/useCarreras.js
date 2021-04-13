@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import Context from 'context/CarrerasContext'
 import carreraService from 'services/carreras'
+import useUser from 'hooks/useUser'
 
 export default function useCarreras() {
 
@@ -9,6 +10,7 @@ export default function useCarreras() {
 
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
+    const { logout } = useUser()
 
     useEffect(function () {
         setLoading(true)
@@ -19,9 +21,12 @@ export default function useCarreras() {
             })
             .catch(err => {
                 setLoading(false)
-                console.log(err)
+                if (err.message === '403'){
+
+                    logout()
+                }
             })
-    }, [jwt,setCARRERAS])
+    }, [jwt,logout,setCARRERAS])
 
     return {
         loading,

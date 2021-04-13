@@ -27,7 +27,7 @@ export default function Portafolios() {
 
                         <div className="row" >
                             {
-                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador,docente }) =>
+                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, docente }) =>
 
                                     <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 

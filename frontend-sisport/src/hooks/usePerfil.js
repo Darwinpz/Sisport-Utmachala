@@ -22,12 +22,11 @@ export default function usePortafolios() {
             })
             .catch(err => {
                 setLoading(false)
-                
-                /*if (err.message === 403){
-
+                console.log(err.message)
+                if (err.message === '403'){
+                   
                     logout()
-                    window.location.href = "/login"
-                }*/
+                }
 
             })
     }, [jwt, logout,setPERFIL])

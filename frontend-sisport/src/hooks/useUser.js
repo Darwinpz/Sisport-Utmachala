@@ -1,10 +1,11 @@
 import { useCallback, useContext, useState } from 'react'
 import Context from 'context/UserContext'
 import loginService from 'services/login'
+import matriculaService from 'services/matricularse'
 
 export default function useUser() {
 
-    const {jwt, setJWT} = useContext(Context)
+    const { matricula, jwt, setMATRICULA, setJWT } = useContext(Context)
     const [state, setState] = useState({ loading: false, error: false })
 
     const login = useCallback(({ username, password }) => {
@@ -12,7 +13,7 @@ export default function useUser() {
         loginService({ username, password })
             .then(jwt => {
                 //window.sessionStorage.setItem('jwt', jwt)
-                localStorage.setItem('jwt',jwt)
+                localStorage.setItem('jwt', jwt)
                 setState({ loading: false, error: false })
                 setJWT(jwt)
             })
@@ -30,7 +31,19 @@ export default function useUser() {
         setJWT(null)
     }, [setJWT])
 
+    const addMatricula = useCallback(({asig_codigo, peri_codigo,clave}) => {
+
+        matriculaService({ asig_codigo, peri_codigo, jwt })
+            .then(setMATRICULA)
+            .catch(err => {
+                console.log(err)
+            })
+
+    }, [jwt, setMATRICULA])
+
     return {
+        addMatricula,
+        matricula,
         isLogged: Boolean(jwt),
         isLoginLoading: state.loading,
         hasLoginError: state.error,
