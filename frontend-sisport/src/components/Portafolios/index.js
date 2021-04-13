@@ -1,11 +1,18 @@
 
-import React from "react";
+import React, {useState} from "react";
 
 import usePortafolios from 'hooks/usePortafolios'
+import usePerfil from 'hooks/usePerfil'
+import Horario from 'components/Modals/horarios'
 
 export default function Portafolios() {
 
     const { portafolios } = usePortafolios()
+
+    const { perfil } = usePerfil()
+
+    const [clave, setCLAVE] = useState("");
+
 
     return (
 
@@ -39,17 +46,40 @@ export default function Portafolios() {
                                             <div className="card-body" >
                                                 <p className="card-text mb-1">{sem_nombre} {sem_paralelo}</p>
                                                 <p className="card-text mb-1"><small className="text-muted">-{asig_identificador}-</small></p>
-                                                <p className="card-text mb-3">{docente}</p>
-                                                <a className="btn btn-success float-right " href={`/portafolios/${asig_codigo}`}>Ver Portafolio</a>
+                                                {
+                                                    perfil.per_tipo === "ESTUDIANTE" &&
+                                                    <>
+                                                        <p className="card-text mb-3">{docente}</p>
+                                                        <a className="btn btn-success float-right " href={`/portafolios/${asig_codigo}`}>Ver Portafolio</a>
+                                                    </>
+                                                }
+
+                                                {
+                                                    perfil.per_tipo === "DOCENTE" &&
+
+                                                    <div className="d-flex justify-content-between align-items-center">
+
+                                                        <input type="text" className="form-control mr-2" onChange={(e) =>setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
+                                                        <button className="btn btn-success" type="button" data-toggle="modal" data-target={`#horario${asig_codigo}`} >Activar</button>
+                                                
+                                                        <Horario asig_nombre={asig_nombre} id={`horario${asig_codigo}`}/>
+
+                                                    </div>
+                                                    
+
+                                                }
 
                                             </div>
                                         </div>
 
                                     </div>
+                                    
 
                                 )
+                                
                             }
                         </div>
+
 
                     </div>
 

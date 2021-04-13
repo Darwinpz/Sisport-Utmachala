@@ -9,17 +9,17 @@ EstructuraCtrl.add = async (req, res, next) => {
 
     try {
 
-        const {nombre_esquema, cod_asignatura, periodo,nombre_asignatura,syllabus,contenidos,docente,clave} = req.body;
+        const {nombre_esquema, asig_codigo, peri_codigo,asig_nombre,syllabus,docente,clave} = req.body;
 
         const estructura = EstructuraSchema.add(nombre_esquema);
 
         const estructuraModel = new estructura();
 
-        estructuraModel.generales.cod_asignatura = cod_asignatura;
-        estructuraModel.generales.periodo = periodo;
-        estructuraModel.generales.nombre_asignatura = nombre_asignatura;
+        estructuraModel.generales.cod_asignatura = asig_codigo;
+        estructuraModel.generales.periodo = peri_codigo;
+        estructuraModel.generales.nombre_asignatura = asig_nombre;
         estructuraModel.generales.syllabus = syllabus;
-        estructuraModel.generales.contenidos = contenidos;
+        estructuraModel.generales.contenidos = [];
         estructuraModel.generales.docente = docente;
         estructuraModel.generales.clave = clave;
         
