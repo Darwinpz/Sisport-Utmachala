@@ -40,7 +40,7 @@ export default function Portafolios() {
                                                 <p className="card-text mb-1">{sem_nombre} {sem_paralelo}</p>
                                                 <p className="card-text mb-1"><small className="text-muted">-{asig_identificador}-</small></p>
                                                 <p className="card-text mb-3">{docente}</p>
-                                                <a className="btn btn-success float-right " href="/portafolios/1">Ver Portafolio</a>
+                                                <a className="btn btn-success float-right " href={`/portafolios/${asig_codigo}`}>Ver Portafolio</a>
 
                                             </div>
                                         </div>

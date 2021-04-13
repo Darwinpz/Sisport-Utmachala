@@ -4,7 +4,7 @@ const Context = React.createContext({})
 
 export function UserContextProvider ({children}) {
   const [jwt, setJWT] = useState(
-    () => window.sessionStorage.getItem('jwt')
+    () => localStorage.getItem("jwt")//window.sessionStorage.getItem('jwt')
   )
   
   return <Context.Provider value={{

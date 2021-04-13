@@ -7,7 +7,8 @@ export default function useCarreras() {
     const {carreras, setCARRERAS} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
-    const jwt = window.sessionStorage.getItem("jwt")
+    //const jwt = window.sessionStorage.getItem("jwt")
+    const jwt = localStorage.getItem("jwt")
 
     useEffect(function () {
         setLoading(true)

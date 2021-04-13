@@ -46,18 +46,26 @@ export default function Perfil() {
                                     <p className="text-nowrap text-left">{perfil.per_correo}</p>
                                     <p className="text-left"><strong>Tipo de Usuario:</strong></p>
                                     <p className="text-left">{perfil.per_tipo}</p>
-                                    <p className="text-left"><strong>{perfil.per_titulo || ''}</strong></p>
-                                    <p className="text-left"></p>
 
                                 </div>
 
                                 <div className="col">
-                                    <p className="text-left"><strong>Dirección:</strong></p>
-                                    <p className="text-nowrap text-left">{perfil.per_direccion}</p>
+
                                     <p className="text-left"><strong>Celular:</strong></p>
-                                    <p className="text-left">{perfil.per_telf_celular}</p>
+                                    <p className="text-left">{perfil.per_telf_celular || 'Ninguno'}</p>
                                     <p className="text-left"><strong>Sexo</strong></p>
                                     <p className="text-left">{perfil.per_sexo}</p>
+
+                                </div>
+
+                            </div>
+
+                            <div className="row">
+
+                                <div className="col">
+
+                                    <p className="text-left"><strong>Dirección:</strong></p>
+                                    <p className="text-left">{perfil.per_direccion}</p>
 
                                 </div>
 
