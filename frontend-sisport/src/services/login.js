@@ -1,4 +1,4 @@
-const ENDPOINT = 'http://190.155.140.58/api/persona'
+const ENDPOINT = process.env.REACT_APP_SERVER+'/api/persona'
 
 export default function login({ username, password }) {
 

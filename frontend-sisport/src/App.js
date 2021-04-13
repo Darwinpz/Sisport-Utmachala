@@ -17,7 +17,6 @@ import { AsignaturasContextProvider } from "context/AsignaturasContext";
 import { PortafoliosContextProvider } from "context/PortafoliosContext";
 
 
-
 export default function App() {
   return (
 

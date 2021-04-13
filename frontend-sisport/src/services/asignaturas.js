@@ -1,4 +1,4 @@
-const ENDPOINT = 'http://190.155.140.58/api/asignatura/buscar'
+const ENDPOINT = process.env.REACT_APP_SERVER+'/api/asignatura/buscar'
 
 export default function Asignaturas({car_nombre,jwt}) {
 
