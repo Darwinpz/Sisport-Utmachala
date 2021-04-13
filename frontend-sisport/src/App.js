@@ -15,7 +15,7 @@ import { UserContextProvider } from "context/UserContext";
 import { CarrerasContextProvider } from "context/CarrerasContext";
 import { AsignaturasContextProvider } from "context/AsignaturasContext";
 import { PortafoliosContextProvider } from "context/PortafoliosContext";
-
+import { PerfilContextProvider } from "context/PerfilContext";
 
 export default function App() {
   return (
@@ -24,31 +24,33 @@ export default function App() {
 
       <UserContextProvider>
 
-        <Navbar />
+        <PerfilContextProvider>
+          <Navbar />
 
-        <div className=" mt-5 p-5">
-          <Switch>
+          <div className=" mt-5 p-5">
+            <Switch>
 
-            <Route component={Home} path="/" />
-            <Route component={Login} path="/login" />
-            
-            <Route component={Perfil} path="/perfil" />
+              <Route component={Home} path="/" />
+              <Route component={Login} path="/login" />
 
-            <PortafoliosContextProvider>
-              <Route component={Portafolio} path="/portafolios"/>
-              <Route component={VerPortafolio} path="/portafolios/:id" />
-            
-              <CarrerasContextProvider>
-                <Route component={Principal} path="/principal" />
-                <AsignaturasContextProvider>
-                  <Route component={Principal} path="/principal/:car_nombre" />
-                </AsignaturasContextProvider>
-              </CarrerasContextProvider>
+              <Route component={Perfil} path="/perfil" />
 
-            </PortafoliosContextProvider>
+              <PortafoliosContextProvider>
+                <Route component={Portafolio} path="/portafolios" />
+                <Route component={VerPortafolio} path="/portafolios/:id" />
 
-          </Switch>
-        </div>
+                <CarrerasContextProvider>
+                  <Route component={Principal} path="/principal" />
+                  <AsignaturasContextProvider>
+                    <Route component={Principal} path="/principal/:car_nombre" />
+                  </AsignaturasContextProvider>
+                </CarrerasContextProvider>
+
+              </PortafoliosContextProvider>
+
+            </Switch>
+          </div>
+        </PerfilContextProvider>
       </UserContextProvider>
     </>
 

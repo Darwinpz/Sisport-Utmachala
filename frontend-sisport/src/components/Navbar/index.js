@@ -4,7 +4,7 @@ import { Link } from 'wouter'
 import useUser from 'hooks/useUser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignInAlt, faSignOutAlt, faBook, faUser, faHome } from '@fortawesome/free-solid-svg-icons'
-
+import usePerfil from 'hooks/usePerfil'
 
 export default function Navbar() {
 
@@ -17,6 +17,8 @@ export default function Navbar() {
         logout()
         window.location.href = "/"
     };
+
+    const {perfil} = usePerfil()
 
     const renderLoginButtons = ({ isLogged }) => {
 
@@ -34,7 +36,7 @@ export default function Navbar() {
                 
                 <li className="nav-item dropdown active">
 
-                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">dpilaloa1@utmachala</Link>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">{perfil.per_correo}</Link>
 
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</Link>

@@ -1,8 +1,12 @@
 
 import React from "react";
 
-export default function Perfil() {
 
+import usePerfil from 'hooks/usePerfil'
+
+export default function Perfil() {
+    
+    const {perfil} = usePerfil()
 
     return (
 
@@ -31,7 +35,7 @@ export default function Perfil() {
                         <div className="card-body">
                             <div className="row ">
                                 <div className="col">
-                                    <h3 className="text-center ">Darwin Pilaloa</h3>
+                                    <h3 className="text-center ">{perfil.per_nombre}</h3>
                                 </div>
 
                             </div>
@@ -39,21 +43,21 @@ export default function Perfil() {
 
                                 <div className="col">
                                     <p className="text-left"><strong>Correo:</strong></p>
-                                    <p className="text-nowrap text-left">@gmail.com</p>
+                                    <p className="text-nowrap text-left">{perfil.per_correo}</p>
                                     <p className="text-left"><strong>Tipo de Usuario:</strong></p>
-                                    <p className="text-left">Estudiante</p>
-                                    <p className="text-left"><strong>Titulo</strong></p>
+                                    <p className="text-left">{perfil.per_tipo}</p>
+                                    <p className="text-left"><strong>{perfil.per_titulo || ''}</strong></p>
                                     <p className="text-left"></p>
 
                                 </div>
 
                                 <div className="col">
                                     <p className="text-left"><strong>Dirección:</strong></p>
-                                    <p className="text-nowrap text-left">machala</p>
+                                    <p className="text-nowrap text-left">{perfil.per_direccion}</p>
                                     <p className="text-left"><strong>Celular:</strong></p>
-                                    <p className="text-left">0999999</p>
+                                    <p className="text-left">{perfil.per_telf_celular}</p>
                                     <p className="text-left"><strong>Sexo</strong></p>
-                                    <p className="text-left">asdas@gmail.com</p>
+                                    <p className="text-left">{perfil.per_sexo}</p>
 
                                 </div>
 
