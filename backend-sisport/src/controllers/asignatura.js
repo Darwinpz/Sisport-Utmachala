@@ -64,7 +64,9 @@ AsignaturaCtrl.buscar = async (req, res, next) => {
 
         const { car_nombre } = req.body;
 
-        const asignaturas = await pool.query("SELECT *FROM asignatura as asig,semestre as sem,carrera as car WHERE asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$1", [car_nombre]);
+        const asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, sem.sem_nombre, sem.sem_paralelo, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente"
+        + " FROM asignatura as asig,semestre as sem,carrera as car, vi_docente_asignaturas as vi, persona as per"
+        + " WHERE asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and per.per_codigo = vi.per_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$1", [car_nombre]);
 
         const resultado = asignaturas.rows;
 

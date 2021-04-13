@@ -9,8 +9,9 @@ export default function usePortafolios() {
     const {portafolios, setPORTAFOLIOS} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
-    const jwt = window.sessionStorage.getItem("jwt")
-    
+    //const jwt = window.sessionStorage.getItem("jwt")
+    const jwt = localStorage.getItem("jwt")
+
     const { logout } = useUser()
 
     useEffect(function () {
@@ -23,11 +24,11 @@ export default function usePortafolios() {
             .catch(err => {
                 setLoading(false)
                 
-                if (err.message === 403){
+                /*if (err.message === 403){
 
                     logout()
                     window.location.href = "/login"
-                }
+                }*/
 
             })
     }, [jwt,logout,setPORTAFOLIOS])
