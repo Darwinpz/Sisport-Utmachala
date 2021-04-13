@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import Context from 'context/AsignaturasContext'
 import asignaturasService from 'services/asignaturas'
+import useUser from 'hooks/useUser'
 
 export default function useAsignaturas({car_nombre}) {
 
@@ -9,6 +10,7 @@ export default function useAsignaturas({car_nombre}) {
 
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
+    const { logout } = useUser()
 
     useEffect(function () {
         setLoading(true)
@@ -19,9 +21,12 @@ export default function useAsignaturas({car_nombre}) {
             })
             .catch(err => {
                 setLoading(false)
-                console.log(err)
+                if (err.message === '403'){
+
+                    logout()
+                }
             })
-    }, [car_nombre,jwt,setASIGNATURAS])
+    }, [car_nombre,jwt,logout,setASIGNATURAS])
 
     return {
         loading,

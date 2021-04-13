@@ -106,6 +106,7 @@ module.exports = (app) => {
 
     //RUTAS DEL PORTAFOLIO
     app.get('/api/portafolio/add', portafolio.add)
+    app.get('/api/portafolio/find', portafolio.find)
 
     function validarToken(req, res, next) {
 
