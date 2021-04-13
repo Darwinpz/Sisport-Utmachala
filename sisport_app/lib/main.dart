@@ -10,9 +10,9 @@ import 'Inicio.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var email = preferences.getString('email');
+  var token = preferences.getString('token');
   runApp(MaterialApp(
-    home: email == null ? Login() : Inicio(),
+    home: token == null ? Login() : Inicio(),
   ));
 }
 
@@ -33,17 +33,34 @@ class _LoginState extends State<Login> {
 
     Map<String, dynamic> datos = json.decode(response.body);
 
-    debugPrint("Esto es el response body" + response.body);
-    debugPrint("Este es el status" + (response.statusCode).toString());
-
     if (response.statusCode == 200) {
-      var email = (datos["message"]["per_correo"]);
-      var nombre = (datos["message"]["per_nombre"]);
-      var apellido = (datos["message"]["per_apellido"]);
+      var token = (datos["token"]);
+
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      preferences.setString('email', email);
+      preferences.setString('token', token);
+
+      Map<String, String> headers = {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'bearer ' + token,
+      };
+
+      var response = await http
+          .get('http://190.155.140.58:80/api/persona/perfil', headers: headers);
+
+      Map<String, dynamic> extractdata = json.decode(response.body);
+
+      var nombre = extractdata["message"]["per_nombre"].toString();
+      var apellido = extractdata["message"]["per_apellido"].toString();
+      var correo = extractdata["message"]["per_correo"].toString();
+      var tipo = extractdata["message"]["per_tipo"].toString();
+      var codigo = extractdata["message"]["per_codigo"].toString();
+
+      preferences.setString('apellido', apellido);
       preferences.setString('nombre', nombre);
-      preferences.setString(('apellido'), apellido);
+      preferences.setString('correo', correo);
+      preferences.setString('tipo', tipo);
+      preferences.setString('codigo', codigo);
 
       Navigator.push(
         context,
@@ -52,7 +69,6 @@ class _LoginState extends State<Login> {
         ),
       );
     } else if (response.statusCode == 403) {
-      debugPrint("no entra al 403");
       Fluttertoast.showToast(
           msg: "Cédula o contraseña inválidos.",
           toastLength: Toast.LENGTH_SHORT,
@@ -115,7 +131,7 @@ class _LoginState extends State<Login> {
             minWidth: 350,
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
-            child: Text('Ingresar', style: TextStyle(color: Colors.white)),
+            child: Text('Ingresar', style: TextStyle(color: Colors.white, fontSize: 15)),
           ),
         ],
       ),
