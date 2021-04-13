@@ -1,5 +1,5 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const PersonaCtrl = {};
 
 /*
@@ -37,19 +37,21 @@ PersonaCtrl.login = async (req, res, next) => {
 
         const { per_cedula, per_clave } = req.body;
 
-        const persona = await pool.query("SELECT *FROM persona where per_cedula=$1 and per_clave=$2",[per_cedula,per_clave]);
+        const persona = await pool.query("SELECT per_codigo,per_cedula, per_titulo, per_nombre, per_apellido, per_tipo, per_correo FROM persona where per_cedula=$1 and per_clave=$2", [per_cedula, per_clave]);
 
-        if (persona.rowCount > 0){
+        if (persona.rowCount > 0) {
 
-            res.status(200).json({ "message": persona.rows[0] });
+            const token = jwt.sign({ usuario: persona.rows[0] }, process.env.jwtcode, { expiresIn: "1h" });
 
-        }else{
+            res.status(200).json({ "token": token });
+
+        } else {
 
             res.status(403).json({ "message": 'Error al iniciar sesión' });
 
         }
 
-        
+
     } catch (e) {
 
         err.message = e.message;
@@ -58,8 +60,9 @@ PersonaCtrl.login = async (req, res, next) => {
 
     }
 
-   
+
 }
+
 
 /*
     * Retorna un solo resultado de los registros de las Personas o Usuarios
@@ -87,6 +90,46 @@ PersonaCtrl.find = async (req, res, next) => {
     }
 
 }
+
+/*
+    * Retorna el perfil del usuario conectado
+*/
+PersonaCtrl.perfil = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const persona = await pool.query("SELECT per_nombre, per_apellido, per_correo, per_direccion, per_titulo, per_telef_celular, per_sexo, per_tipo FROM persona WHERE per_codigo=$1", [per_codigo]);
+
+                const resultado = persona.rows[0];
+
+                resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+            }
+        })
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 
 /*
     * Inserta a la BD una Persona o Usuario

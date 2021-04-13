@@ -7,9 +7,11 @@ export default function useAsignaturas({car_nombre}) {
     const {asignaturas, setASIGNATURAS} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
+    const jwt = window.sessionStorage.getItem("jwt")
+
     useEffect(function () {
         setLoading(true)
-        asignaturasService({car_nombre})
+        asignaturasService({car_nombre,jwt})
             .then(asig => {
                 setASIGNATURAS(asig)
                 setLoading(false)
@@ -18,7 +20,7 @@ export default function useAsignaturas({car_nombre}) {
                 setLoading(false)
                 console.log(err)
             })
-    }, [car_nombre,setASIGNATURAS])
+    }, [car_nombre,jwt,setASIGNATURAS])
 
     return {
         loading,

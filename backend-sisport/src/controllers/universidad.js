@@ -1,6 +1,6 @@
 
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const UniversidadCtrl = {};
 
 /*
@@ -12,10 +12,22 @@ UniversidadCtrl.all = async (req, res, next) => {
 
     try {
 
-        const universidades = await pool.query("SELECT *FROM universidad");
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        res.status(200).json({ "message": universidades.rows });
+            if (err) {
 
+                
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const universidades = await pool.query("SELECT *FROM universidad");
+
+                res.status(200).json({ "message": universidades.rows });
+
+            }
+
+        })
 
     } catch (e) {
 
