@@ -1,4 +1,4 @@
-const ENDPOINT = 'http://190.155.140.58/api/carrerasandfacultad'
+const ENDPOINT = process.env.REACT_APP_SERVER+'/api/carrerasandfacultad'
 
 export default function Carreras({ jwt }) {
 

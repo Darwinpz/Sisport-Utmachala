@@ -1,4 +1,5 @@
-const ENDPOINT = 'http://190.155.140.58/api/persona_asignatura'
+const ENDPOINT = process.env.REACT_APP_SERVER+'/api/persona_asignatura'
+
 
 export default function Portafolios({ jwt }) {
 
