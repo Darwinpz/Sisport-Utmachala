@@ -11,12 +11,12 @@ export default function login({ username, password }) {
         },
         body: JSON.stringify({per_cedula: username, per_clave : password})
     }).then(res => {
-        if (!res.ok) throw new Error('Response is NOT ok')
+        if (!res.ok) throw new Error(res.status)
         return res.json()
     }).then(res => {
         console.log(res)
-        const { message } = res
-        return message
+        const { token } = res
+        return token
     })
 
 

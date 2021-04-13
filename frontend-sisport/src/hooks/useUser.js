@@ -4,31 +4,31 @@ import loginService from 'services/login'
 
 export default function useUser() {
 
-    const {user, setUSER} = useContext(Context)
+    const {jwt, setJWT} = useContext(Context)
     const [state, setState] = useState({ loading: false, error: false })
 
     const login = useCallback(({ username, password }) => {
         setState({ loading: true, error: false })
         loginService({ username, password })
-            .then(user => {
-                window.sessionStorage.setItem('user', user)
+            .then(jwt => {
+                window.sessionStorage.setItem('jwt', jwt)
                 setState({ loading: false, error: false })
-                setUSER(user)
+                setJWT(jwt)
             })
             .catch(err => {
-                window.sessionStorage.removeItem('user')
+                window.sessionStorage.removeItem('jwt')
                 setState({ loading: false, error: true })
                 console.log(err)
             })
-    }, [setUSER])
+    }, [setJWT])
 
     const logout = useCallback(() => {
-        window.sessionStorage.removeItem('user')
-        setUSER(null)
-    }, [setUSER])
+        window.sessionStorage.removeItem('jwt')
+        setJWT(null)
+    }, [setJWT])
 
     return {
-        isLogged: Boolean(user),
+        isLogged: Boolean(jwt),
         isLoginLoading: state.loading,
         hasLoginError: state.error,
         login,

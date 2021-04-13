@@ -7,9 +7,11 @@ export default function useCarreras() {
     const {carreras, setCARRERAS} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
+    const jwt = window.sessionStorage.getItem("jwt")
+
     useEffect(function () {
         setLoading(true)
-        carreraService()
+        carreraService({jwt})
             .then(carr => {
                 setCARRERAS(carr)
                 setLoading(false)
@@ -18,7 +20,7 @@ export default function useCarreras() {
                 setLoading(false)
                 console.log(err)
             })
-    }, [setCARRERAS])
+    }, [jwt,setCARRERAS])
 
     return {
         loading,

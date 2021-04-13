@@ -1,5 +1,5 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const PerAsigCtrl = {};
 
 /*
@@ -11,27 +11,42 @@ PerAsigCtrl.all = async (req, res, next) => {
 
     try {
 
-        const {per_id} = req.body;
-        
-        const periodos = await pool.query("SELECT * FROM periodo order by peri_nombre")
 
-        const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura as per_as, asignatura as asig, semestre as sem where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and per_as.per_codigo = $1 ",[per_id]);
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        const arreglo = []
+            if (err) {
 
-        periodos.rows.forEach(periodo => {
-            
-            obj = {"periodo":periodo.peri_nombre,"asignaturas":null}
+                res.status(403).json({ "message": 'Token no válido' });
 
-            asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.sem_codigo == periodo.sem_codigo)
+            } else {
 
-            obj.asignaturas = asignaturas
+                const per_codigo = data.usuario.per_codigo
 
-            arreglo.push(obj)
+                const periodos = await pool.query("SELECT * FROM periodo order by peri_nombre")
 
-        });
+                //const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura as per_as, asignatura as asig, semestre as sem where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and per_as.per_codigo = $1 ", [per_codigo]);
+                const personas_asignaturas = await pool.query("SELECT  asig.asig_codigo, asig.asig_nombre, asig.asig_identificador, (per.per_titulo ||' '|| per.per_nombre) as docente, sem.sem_codigo, sem.sem_nombre, sem.sem_paralelo" 
+                +" FROM persona_asignatura as per_as, asignatura as asig, semestre as sem , vi_docente_asignaturas as vi, persona as per" 
+                +" where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and vi.asig_codigo = asig.asig_codigo and per.per_codigo = vi.per_codigo and per_as.per_codigo = $1 ", [per_codigo]);
 
-        res.status(200).json({ "message": arreglo });
+                var arreglo = []
+
+                periodos.rows.forEach(periodo => {
+
+                    obj = { "periodo": periodo.peri_nombre, "asignaturas": null }
+
+                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.sem_codigo == periodo.sem_codigo)
+
+                    obj.asignaturas = asignaturas
+
+                    arreglo.push(obj)
+
+                });
+
+                res.status(200).json({ "message": arreglo });
+
+            }
+        })
 
 
     } catch (e) {
