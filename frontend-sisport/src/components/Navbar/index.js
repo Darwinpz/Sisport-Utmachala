@@ -18,22 +18,32 @@ export default function Navbar() {
         window.location.href = "/"
     };
 
-    const {perfil} = usePerfil()
+    const { perfil } = usePerfil()
 
     const renderLoginButtons = ({ isLogged }) => {
 
         return isLogged
             ?
             <>
+                { perfil.per_tipo === "ESTUDIANTE" &&
+                    <>
+                        <li className="nav-item active">
+                            <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
+                        </li>
 
-                <li className="nav-item active">
-                    <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
-                </li>
+                        <li className="nav-item active">
+                            <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Mis Portafolios</Link>
+                        </li>
+                    </>
+                }
 
-                <li className="nav-item active">
-                    <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Mis Portafolios</Link>
-                </li>
-                
+                {
+                    perfil.per_tipo === "DOCENTE" &&
+                    <li className="nav-item active">
+                        <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
+                    </li>
+                }
+
                 <li className="nav-item dropdown active">
 
                     <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">{perfil.per_correo}</Link>
@@ -51,7 +61,7 @@ export default function Navbar() {
 
     }
 
-    const content =  renderLoginButtons({ isLogged })
+    const content = renderLoginButtons({ isLogged })
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-1 navbar-static-top">

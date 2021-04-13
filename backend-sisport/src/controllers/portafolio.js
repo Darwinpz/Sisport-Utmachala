@@ -2,7 +2,7 @@
 //const PortafolioSchema = require('../models/portafolio')
 
 const EstructuraSchema = require('../models/estructura')
-
+const jwt = require("jsonwebtoken")
 const PortafolioCtrl = {};
 
 PortafolioCtrl.add = async (req, res, next) => {
@@ -11,15 +11,31 @@ PortafolioCtrl.add = async (req, res, next) => {
 
     try {
 
-        const esquema = EstructuraSchema.add("fic.is.esqs")
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        const busqueda = await esquema.findOne({ 'generales.periodo': '1' });
+            if (err) {
 
-        busqueda.portafolios.push(portafolio())
+                res.status(403).json({ "message": 'Token no válido' });
 
-        await busqueda.save()
+            } else {
 
-        res.status(200).json({ "message": "Portafolio Creado" });
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo, nombre_esquema } = req.body
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                busqueda.portafolios.push(portafolio(per_codigo))
+
+                await busqueda.save()
+
+                res.status(200).json({ "message": "Portafolio Creado" });
+
+            }
+        })
+
 
     } catch (e) {
 
@@ -38,17 +54,29 @@ PortafolioCtrl.find = async (req, res, next) => {
 
     try {
 
-        const esquema = EstructuraSchema.add("fic.is.esqs")
 
-        const busqueda = await esquema.find({});
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        console.log(busqueda)
+            if (err) {
 
-        //const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == "1")
+                res.status(403).json({ "message": 'Token no válido' });
 
-//        console.log(portafolio)
+            } else {
 
-        res.status(200).json({ "message": "" });
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo, nombre_esquema } = req.body
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                res.status(200).json({ "message": portafolio });
+
+            }
+        })
 
     } catch (e) {
 
@@ -60,18 +88,17 @@ PortafolioCtrl.find = async (req, res, next) => {
 
 }
 
-function portafolio() {
+function portafolio(per_codigo) {
 
     const obj = {
 
         datos_informativos: {
 
-            cod_estudiante: {}
+            cod_estudiante: per_codigo
         },
 
         elementos_curriculares: {
 
-            syllabus: {},
             expectativas: {},
             apuntes: [],
             evaluaciones: [],
