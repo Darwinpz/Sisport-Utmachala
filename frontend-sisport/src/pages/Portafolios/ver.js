@@ -13,7 +13,7 @@ export default function PortafolioVer() {
 
                         <div className="card-header text-center">
 
-                            <h4>Portafolio de Programación VII</h4>
+                            <h4>PORTAFOLIO DE SISTEMAS OPERATIVOS II:</h4>
 
                         </div>
 

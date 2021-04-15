@@ -196,11 +196,6 @@ export default function VerPortafolio() {
                     </div>
 
                 </div>
-                <div className="col">
-
-                    
-                    
-                </div>
 
             </div>
 

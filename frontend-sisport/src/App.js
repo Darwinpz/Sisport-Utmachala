@@ -5,6 +5,7 @@ import Portafolio from "pages/Portafolios/index";
 import VerPortafolio from "pages/Portafolios/ver";
 import Principal from "pages/Principal";
 import Perfil from "pages/Users/perfil";
+import Estudiantes from "pages/Estudiantes/index"
 
 import { Route, Switch } from "wouter";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,6 +35,7 @@ export default function App() {
               <Route component={Login} path="/login" />
 
               <Route component={Perfil} path="/perfil" />
+              <Route component={Estudiantes} path="/estudiantes" />
 
               <PortafoliosContextProvider>
                 <Route component={Portafolio} path="/portafolios" />
