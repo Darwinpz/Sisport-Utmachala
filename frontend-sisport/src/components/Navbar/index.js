@@ -29,7 +29,7 @@ export default function Navbar() {
                     <>
                         
                         <li className="nav-item active">
-                            <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
+                            <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
                         </li>
 
                         <li className="nav-item active">
@@ -68,7 +68,7 @@ export default function Navbar() {
 
                 <li className="nav-item dropdown active">
 
-                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">jhonores@utmachala.edu.ec</Link>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">{perfil.per_correo}</Link>
 
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
