@@ -52,7 +52,7 @@ export default function Login({ onLogin }) {
                         />
                     </div>
 
-                    <button className="btn btn-block btn-primary">Login</button>
+                    <button className="btn btn-block btn-primary">Iniciar Sesión</button>
                 </form>
             }{
                 hasLoginError && <strong>Credenciales incorrectas</strong>

@@ -35,7 +35,7 @@ export default function Perfil() {
                         <div className="card-body">
                             <div className="row ">
                                 <div className="col">
-                                    <h3 className="text-center ">{perfil.per_nombre}</h3>
+                                    <h3 className="text-center ">{perfil.per_nombre} {perfil.per_apellido}</h3>
                                 </div>
 
                             </div>
