@@ -1,7 +1,6 @@
 import {  useState, useEffect, useContext } from 'react'
 import perfilService from 'services/perfil'
 import Context from 'context/PerfilContext'
-import useUser from 'hooks/useUser'
 
 export default function usePortafolios() {
 
@@ -10,8 +9,7 @@ export default function usePortafolios() {
 
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
-    
-    const { logout } = useUser()
+
 
     useEffect(function () {
         setLoading(true)
@@ -22,14 +20,11 @@ export default function usePortafolios() {
             })
             .catch(err => {
                 setLoading(false)
-                console.log(err.message)
-                if (err.message === '403'){
-                   
-                    logout()
-                }
+                localStorage.removeItem('jwt')
+                console.log(err)
 
             })
-    }, [jwt, logout,setPERFIL])
+    }, [jwt,setPERFIL])
 
     
 

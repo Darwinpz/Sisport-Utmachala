@@ -60,6 +60,45 @@ PerAsigCtrl.all = async (req, res, next) => {
 }
 
 /*
+    * Retorna alumnos matriculados por asignatura y periodo
+*/
+PerAsigCtrl.matriculadosxasignaturas = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const { asig_codigo, peri_codigo } = req.body;
+
+                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per WHERE "
+                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE'  ", [asig_codigo, peri_codigo]);
+
+                const resultado = persona_asignaturas.rows;
+
+                resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
+/*
     * Retorna un solo resultado de los registros de las Personas_Asignaturas
 */
 PerAsigCtrl.find = async (req, res, next) => {

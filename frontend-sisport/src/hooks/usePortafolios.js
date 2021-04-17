@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from 'react'
 import Context from 'context/PortafoliosContext'
 import portafolioService from 'services/portafolios'
 
-import useUser from 'hooks/useUser'
 
 export default function usePortafolios() {
 
@@ -11,8 +10,6 @@ export default function usePortafolios() {
 
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
-
-    const { logout } = useUser()
 
     useEffect(function () {
         setLoading(true)
@@ -24,13 +21,11 @@ export default function usePortafolios() {
             .catch(err => {
                 setLoading(false)
                 
-                if (err.message === '403'){
-
-                    logout()
-                }
+                localStorage.removeItem('jwt')
+                console.log(err)
 
             })
-    }, [jwt,logout,setPORTAFOLIOS])
+    }, [jwt,setPORTAFOLIOS])
 
     
 
