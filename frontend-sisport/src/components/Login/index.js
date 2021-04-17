@@ -4,7 +4,7 @@ import { useLocation } from "wouter"
 import useUser from 'hooks/useUser'
 import { useEffect } from "react";
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin}) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

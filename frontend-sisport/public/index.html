@@ -26,17 +26,14 @@
 
   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
     crossorigin="anonymous"></script>
-  
+
   <script src="https://kit.fontawesome.com/f9b9767b36.js" crossorigin="anonymous"></script>
 
-  <!--script src="/js/file-explore.js" type="text/javascript"></script-->
-  <link rel="stylesheet" href="/css/file-explore.css">
-  
 </head>
 
 <body>
   <!--noscript>You need to enable JavaScript to run this app.</noscript-->
-  
+
   <div id="root"></div>
   <!--
       This HTML file is a template.
@@ -49,21 +46,6 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-  <script> $(document).ready(function () {
-
-      var file = document.getElementsByClassName("file-tree")
-      
-      if (file.length!=0) {
-
-        $(".file-tree").filetree();
-
-        document.getElementsByClassName("folder-root")[0].className = "folder-root open"
-      }
-    });
-
-  </script>
-
-  
 </body>
 
 </html>

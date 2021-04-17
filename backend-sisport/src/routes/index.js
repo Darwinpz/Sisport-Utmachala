@@ -84,6 +84,7 @@ module.exports = (app) => {
 
     //RUTAS DE LAS PERSONAS_ASIGNATURAS
     app.get('/api/persona_asignatura', validarToken, persona_asignatura.all);
+    app.post('/api/persona_asignatura/matriculados', validarToken, persona_asignatura.matriculadosxasignaturas);
     app.get('/api/persona_asignatura/:id', validarToken, persona_asignatura.find);
     app.post('/api/persona_asignatura/add', validarToken, persona_asignatura.add);
     app.put('/api/persona_asignatura/put', validarToken, persona_asignatura.put);

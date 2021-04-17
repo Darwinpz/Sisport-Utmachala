@@ -27,27 +27,16 @@ export default function Navbar() {
             <>
                 { perfil.per_tipo === "ESTUDIANTE" &&
                     <>
-                        
+
                         <li className="nav-item active">
                             <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
                         </li>
-
-                        <li className="nav-item active">
-                            <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} />Mis Portafolios</Link>
-                        </li>
                     </>
-                }
-            
-                {
-                    perfil.per_tipo === "DOCENTE" &&
-                    <li className="nav-item active">
-                        <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
-                    </li>
                 }
 
                 {
                     perfil.per_tipo === "COORDINADOR" &&
-                    
+
                     <>
                         <li className="nav-item active">
                             <Link to="/estudiantes" className="nav-link"><FontAwesomeIcon icon={faUsers} /> Estudiantes</Link>
@@ -59,12 +48,12 @@ export default function Navbar() {
                             <Link to="/asignaturas" className="nav-link"><FontAwesomeIcon icon={faBookmark} /> Asignaturas</Link>
                         </li>
 
-                        <li className="nav-item active">
-                            <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
-                        </li>
                     </>
 
                 }
+                <li className="nav-item active">
+                    <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
+                </li>
 
                 <li className="nav-item dropdown active">
 
