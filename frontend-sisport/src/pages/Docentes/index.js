@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function EstudiantesPage() {
+export default function DocentesPage() {
     return (
         <>
             <div className="row">
@@ -12,11 +12,11 @@ export default function EstudiantesPage() {
 
                         <div className="card-header d-flex justify-content-between align-items-center">
 
-                            <h4>Administración de Estudiantes:</h4>
+                            <h4>Administración de Docentes:</h4>
                             <div className="card" style={{backgroundColor:"transparent", border:"none"}}>
 
                                 <button type="button" className="btn btn-primary mb-2">Importar csv</button>
-                                <button type="button" className="btn btn-success">Crear Estudiante</button>
+                                <button type="button" className="btn btn-success">Crear Docente</button>
 
                             </div>
 
