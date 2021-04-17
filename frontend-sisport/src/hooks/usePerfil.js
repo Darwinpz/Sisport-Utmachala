@@ -20,7 +20,7 @@ export default function usePortafolios() {
             })
             .catch(err => {
                 setLoading(false)
-                localStorage.removeItem('jwt')
+                //localStorage.removeItem('jwt')
                 console.log(err)
 
             })

@@ -19,7 +19,7 @@ export default function useCarreras() {
             })
             .catch(err => {
                 setLoading(false)
-                localStorage.removeItem('jwt')
+                //localStorage.removeItem('jwt')
                 console.log(err)
             })
     }, [jwt,setCARRERAS])
