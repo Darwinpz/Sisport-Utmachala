@@ -5,14 +5,17 @@ import { Link } from 'wouter'
 import useScript from 'hooks/useScript'
 import { useLocation } from "wouter"
 import useUser from 'hooks/useUser'
+import usePerfil from 'hooks/usePerfil'
 import usePortafolio from "hooks/usePortafolio"
 import './index.css'
 
-export default function VerPortafolio({ asig_codigo, peri_codigo }) {
+export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
 
     const { isLogged } = useUser()
 
-    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo })
+    const { perfil } = usePerfil()
+
+    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo, per_codigo })
 
     const [, navigate] = useLocation()
 
@@ -32,13 +35,18 @@ export default function VerPortafolio({ asig_codigo, peri_codigo }) {
                     <div className="card-header text-center">
 
                         {
-                            portafolio.map(({estructura})=>
+                            portafolio.map(({ estructura }) =>
 
-                                <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:</h4>
+                                <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
+                                    {
+                                        perfil.per_tipo !=="ESTUDIANTE"&&
+                                        " ESTUDIANT"
+                                    }
+                                 </h4>
 
                             )
                         }
-                        
+
 
                     </div>
 
@@ -55,11 +63,11 @@ export default function VerPortafolio({ asig_codigo, peri_codigo }) {
                                         <ul className="file-tree">
                                             <li>
                                                 {
-                                                    portafolio.map(({estructura})=>
+                                                    portafolio.map(({ estructura }) =>
 
                                                         <Link to="#" to="#" key={estructura.cod_asignatura}>{estructura.nombre_asignatura}</Link>
                                                     )
-                                                    
+
                                                 }
                                                 <ul>
                                                     <li><Link to="#" >1. Datos Informativos</Link>
@@ -233,9 +241,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo }) {
                                     <div className="row">
 
                                         <div className="col">
-                                            
+
                                             <button type="button" className="btn btn-success m-2">DESCARGAR PORTAFOLIO</button>
-                                            <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+                                            {
+                                                perfil.per_tipo === "COORDINADOR" &&
+                                                <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+
+                                            }
 
                                         </div>
 
