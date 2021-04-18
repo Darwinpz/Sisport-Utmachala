@@ -50,12 +50,12 @@ export default function Portafolios() {
                                                     perfil.per_tipo === "ESTUDIANTE" &&
                                                     <>
                                                         <p className="card-text mb-3">{docente}</p>
-                                                        <a className="btn btn-success float-right " href={`/portafolios/${asig_codigo}`}>Ver Portafolio</a>
+                                                        <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}`}>Ver Portafolio</a>
                                                     </>
                                                 }
 
                                                 {
-                                                    perfil.per_tipo != "ESTUDIANTE" &&
+                                                    perfil.per_tipo !== "ESTUDIANTE" &&
 
                                                     <>
                                                         {

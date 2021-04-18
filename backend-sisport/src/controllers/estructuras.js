@@ -10,12 +10,18 @@ EstructuraCtrl.add = async (req, res, next) => {
 
     try {
 
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
 
                 const { nombre_esquema, asig_codigo, peri_codigo, asig_nombre, clave } = req.body;
 
-                const docente_codigo = "data.usuario.per_codigo";
-                const nombre_docente = "";
+                const docente_codigo = data.usuario.per_codigo;
+                const nombre_docente = data.usuario.per_nombre;
 
                 const periodo = await pool.query("SELECT *FROM periodo WHERE peri_codigo = $1", [peri_codigo]);
 
@@ -47,8 +53,9 @@ EstructuraCtrl.add = async (req, res, next) => {
 
                 res.status(200).json({ "message": "Estructura Creada" });
 
-            
-        
+            }
+        })
+
 
     } catch (e) {
 
