@@ -82,15 +82,18 @@ AsignaturaCtrl.buscar = async (req, res, next) => {
                     + " FROM asignatura as asig,semestre as sem,carrera as car, vi_docente_asignaturas as vi, persona as per, periodo as peri"
                     + " WHERE asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and vi.peri_codigo = peri.peri_codigo and per.per_codigo = vi.per_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$2", [per_codigo, car_nombre]);
 
-
                 asignaturas.rows.forEach(asignatura => {
 
-                    const temp = activados.rows.filter(activado => activado.asig_est_asig_codigo == asignatura.asig_codigo && activado.asig_est_peri_codigo == asignatura.peri_codigo)
-                    
+                    const temp = activados.rows.filter(activado => activado.asig_est_asig_codigo == asignatura.asig_codigo && activado.asig_est_peri_codigo == asignatura.peri_codigo && activado.asig_est_estado == true)
+
                     if(temp.length > 0){
+                        
                         asignatura["estado"] = true;
+
                     }else{
+
                         asignatura["estado"] = false;
+
                     }
 
 

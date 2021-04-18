@@ -79,9 +79,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
             } else {
 
-                const per_codigo = data.usuario.per_codigo
-
-                const { asig_codigo, peri_codigo } = req.body
+                const { asig_codigo, peri_codigo, per_codigo } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
