@@ -3,9 +3,9 @@ import React from "react";
 
 import useMatriculados from 'hooks/useMatriculados'
 
-export default function Portafolios() {
-
-    const { matriculados } = useMatriculados({asig_codigo:1,peri_codigo:1})
+export default function Portafolios({asig_codigo,peri_codigo}) {
+    
+    const { matriculados } = useMatriculados({asig_codigo,peri_codigo})
 
     return (
 

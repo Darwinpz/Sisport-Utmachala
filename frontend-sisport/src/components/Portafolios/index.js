@@ -34,7 +34,7 @@ export default function Portafolios() {
 
                         <div className="row" >
                             {
-                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, docente, asig_est_estado }) =>
+                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador,peri_codigo, docente, asig_est_estado }) =>
 
                                     <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
@@ -50,7 +50,7 @@ export default function Portafolios() {
                                                     perfil.per_tipo === "ESTUDIANTE" &&
                                                     <>
                                                         <p className="card-text mb-3">{docente}</p>
-                                                        <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}`}>Ver Portafolio</a>
+                                                        <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}`}>Ver Portafolio</a>
                                                     </>
                                                 }
 
@@ -61,7 +61,7 @@ export default function Portafolios() {
                                                         {
                                                             asig_est_estado &&
                                                             <>
-                                                                <a className="btn btn-primary float-right " href={`/portafolios/estudiantes`}>Ver Portafolios</a>
+                                                                <a className="btn btn-primary float-right " href={`/portafolios/estudiantes/${asig_codigo}/${peri_codigo}`}>Ver Portafolios</a>
                                                             </>
 
                                                         }
