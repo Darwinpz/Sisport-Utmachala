@@ -40,7 +40,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
                                         perfil.per_tipo !=="ESTUDIANTE"&&
-                                        " ESTUDIANTE"
+                                        " ESTUDIANT"
                                     }
                                  </h4>
 
