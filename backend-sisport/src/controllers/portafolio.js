@@ -26,15 +26,59 @@ PortafolioCtrl.add = async (req, res, next) => {
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
-                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura+"."+carrera_facultad.rows[0].car_abreviatura+"."+"esqs"
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
 
                 const esquema = EstructuraSchema.add(nombre_esquema)
 
                 const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
 
-                if (busqueda!=null && busqueda.generales.clave == clave){
+                if (busqueda != null && busqueda.generales.clave == clave) {
 
-                    busqueda.portafolios.push(portafolio(per_codigo))
+                    const diarios = []
+
+                    const horario = await pool.query("SELECT * FROM horario WHERE asig_codigo=$1 and peri_codigo=$2 order by hor_num_dia", [asig_codigo, peri_codigo]);
+
+                    if (horario.rowCount > 0) {
+
+                        const periodo = await pool.query("SELECT *FROM periodo WHERE peri_codigo = $1", [peri_codigo]);
+
+                        const periodos = periodo.rows[0];
+
+                        var semanas = total_semanas(periodos.peri_fecha_inicial, periodos.peri_fecha_final);
+
+                        var num_diario = 1;
+
+                        var fecha_inicio = new Date(periodos.peri_fecha_inicial);
+
+                        for (let i = 0; i < semanas; i++) {
+
+                            horario.rows.forEach(dia => {
+
+                                var fecha_diario = new Date(fecha_inicio);
+
+                                fecha_diario.setDate(fecha_diario.getDate() + (dia.hor_num_dia - 1));
+
+                                json_diario = {
+                                    "num_diario": num_diario, "tiempo": dia.hor_cant_horas+ "HORAS",
+                                    "fecha": dia.hor_dia + ", " + fecha_diario.getDate() + " DE " + obtener_mes(fecha_diario.getMonth()) + " DEL " + fecha_diario.getFullYear(),
+                                    "unidad": "",
+                                    "tema": "", "problema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
+                                    "resumen": "", "reflexion": "", "anexos": ""
+                                }
+
+                                num_diario++;
+
+                                diarios.push(json_diario)
+
+
+                            })
+                            
+                            fecha_inicio.setDate(fecha_inicio.getDate() + 7);
+
+                        }
+                    }
+
+                    busqueda.portafolios.push(portafolio(per_codigo,diarios))
 
                     await busqueda.save()
 
@@ -42,7 +86,7 @@ PortafolioCtrl.add = async (req, res, next) => {
 
                     res.status(200).json({ "message": "Portafolio Creado" });
 
-                }else{
+                } else {
 
                     res.status(400).json({ "message": 'Clave incorrecta' });
 
@@ -71,7 +115,7 @@ PortafolioCtrl.find = async (req, res, next) => {
     try {
 
 
-        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
 
             if (err) {
 
@@ -83,7 +127,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
-                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura+"."+carrera_facultad.rows[0].car_abreviatura+"."+"esqs"
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
 
                 const esquema = EstructuraSchema.add(nombre_esquema)
 
@@ -91,7 +135,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                 const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
-                res.status(200).json({ "message": [{estructura:busqueda.generales,portafolio}] });
+                res.status(200).json({ "message": [{ estructura: busqueda.generales, portafolio_data:portafolio[0] }] });
 
             }
         })
@@ -106,7 +150,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
 }
 
-function portafolio(per_codigo) {
+function portafolio(per_codigo, diarios) {
 
     const obj = {
 
@@ -118,7 +162,7 @@ function portafolio(per_codigo) {
         elementos_curriculares: {
 
             expectativas: {},
-            apuntes: [],
+            apuntes: diarios,
             evaluaciones: [],
             investigaciones: [],
             actividades: [],
@@ -137,8 +181,28 @@ function portafolio(per_codigo) {
 
     }
 
+
     return obj
 
+}
+
+function obtener_mes(num_mes) {
+
+    var meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+
+    return meses[num_mes];
+
+}
+
+
+
+function total_semanas(fecha_inicio, fecha_fin) {
+
+    var inicio = new Date(fecha_inicio);
+    var fin = new Date(fecha_fin);
+    var cant_dias = fin.getTime() - inicio.getTime();
+
+    return Math.round(cant_dias / (1000 * 60 * 60 * 24 * 7)) - 1;
 }
 
 

@@ -39,10 +39,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
-                                        perfil.per_tipo !=="ESTUDIANTE"&&
-                                        " ESTUDIANT"
+                                        perfil.per_tipo !== "ESTUDIANTE" &&
+                                        " ESTUDIANTE"
                                     }
-                                 </h4>
+                                </h4>
 
                             )
                         }
@@ -101,9 +101,24 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <li><Link to="#" >c) Apuntes de clase</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Diario Metacognitivo 1</Link>
-                                                                    </li>
+                                                                    {
+                                                                        portafolio.length > 0 &&
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario }) =>
+
+                                                                                        <li key={num_diario}><Link to="#" data-toggle="modal"
+                                                                                            data-target="#popupdiario">Diario Metacognitivo {num_diario}</Link>
+                                                                                        </li>
+                                                                                    )
+                                                                                }
+
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
                                                                 </ul>
                                                             </li>
 

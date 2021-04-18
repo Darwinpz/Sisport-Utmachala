@@ -2,6 +2,8 @@ import React from 'react'
 import Perfil from 'components/Users/perfil'
 
 export default function PerfilPage() {
+
+
     return (
         <>
             <div className="row">
