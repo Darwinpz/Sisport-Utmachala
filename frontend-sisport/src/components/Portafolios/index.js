@@ -1,5 +1,5 @@
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import usePortafolios from 'hooks/usePortafolios'
 import usePerfil from 'hooks/usePerfil'
@@ -34,7 +34,7 @@ export default function Portafolios() {
 
                         <div className="row" >
                             {
-                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, docente }) =>
+                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, docente, asig_est_estado }) =>
 
                                     <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
@@ -55,17 +55,30 @@ export default function Portafolios() {
                                                 }
 
                                                 {
-                                                    perfil.per_tipo === "DOCENTE" &&
+                                                    perfil.per_tipo != "ESTUDIANTE" &&
 
-                                                    <div className="d-flex justify-content-between align-items-center">
+                                                    <>
+                                                        {
+                                                            asig_est_estado &&
+                                                            <>
+                                                                <a className="btn btn-primary float-right " href={`/portafolios/estudiantes`}>Ver Portafolios</a>
+                                                            </>
 
-                                                        <input type="text" className="form-control mr-2" onChange={(e) =>setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
-                                                        <button className="btn btn-success" type="button" data-toggle="modal" data-target={`#horario${asig_codigo}`} >Activar</button>
-                                                
-                                                        <Horario asig_nombre={asig_nombre} id={`horario${asig_codigo}`}/>
+                                                        }
 
-                                                    </div>
-                                                    
+                                                        {
+                                                            !asig_est_estado &&
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                <input type="text" className="form-control mr-2" onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
+                                                                <button className="btn btn-success" type="button" data-toggle="modal" data-target={`#horario${asig_codigo}`} >Activar</button>
+
+                                                            </div>
+                                                        }
+
+                                                        <Horario asig_nombre={asig_nombre} id={`horario${asig_codigo}`} />
+
+                                                    </>
+
 
                                                 }
 
@@ -73,10 +86,10 @@ export default function Portafolios() {
                                         </div>
 
                                     </div>
-                                    
+
 
                                 )
-                                
+
                             }
                         </div>
 
