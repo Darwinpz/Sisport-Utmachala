@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 
 import useUser from 'hooks/useUser'
+import usePerfil from 'hooks/usePerfil'
 
 export default function Asignaturas({ asignaturas }) {
 
@@ -9,6 +10,8 @@ export default function Asignaturas({ asignaturas }) {
     const [clave, setCLAVE] = useState("");
 
     const { addMatricula } = useUser()
+
+    const { perfil } = usePerfil()
 
     const handleClick = () => {
 
@@ -63,7 +66,7 @@ export default function Asignaturas({ asignaturas }) {
                                     {
                                         matriculado &&
 
-                                        <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}`} type="button">Ver Portafolio</a>
+                                        <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
 
                                     }
 

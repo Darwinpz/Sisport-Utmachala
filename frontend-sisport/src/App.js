@@ -51,7 +51,7 @@ export default function App() {
                 <Route component={Portafolio} path="/portafolios" />
                 
                 <PortafolioContextProvider>
-                  <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo" />
+                  <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
 
                 </PortafolioContextProvider>
                 

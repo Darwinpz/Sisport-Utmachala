@@ -34,7 +34,7 @@ export default function Portafolios({asig_codigo,peri_codigo}) {
                                 </div>
                                 <div className="card-body" >
 
-                                    <a className="btn btn-success float-right " href={`/portafolios/ver/`} >Ver Portafolio</a>
+                                    <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${per_codigo}`} >Ver Portafolio</a>
 
 
                                 </div>
