@@ -5,11 +5,14 @@ import { Link } from 'wouter'
 import useScript from 'hooks/useScript'
 import { useLocation } from "wouter"
 import useUser from 'hooks/useUser'
+import usePortafolio from "hooks/usePortafolio"
 import './index.css'
 
-export default function VerPortafolio() {
+export default function VerPortafolio({ asig_codigo, peri_codigo }) {
 
     const { isLogged } = useUser()
+
+    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo })
 
     const [, navigate] = useLocation()
 
@@ -17,7 +20,7 @@ export default function VerPortafolio() {
         if (!isLogged) {
             navigate("/login")
         }
-    }, [isLogged,navigate])
+    }, [isLogged, navigate])
 
     useScript("/js/file-explore.js")
 
@@ -28,7 +31,14 @@ export default function VerPortafolio() {
                 <div className="card border-secondary">
                     <div className="card-header text-center">
 
-                        <h4>PORTAFOLIO DE SISTEMAS OPERATIVOS II:</h4>
+                        {
+                            portafolio.map(({estructura})=>
+
+                                <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:</h4>
+
+                            )
+                        }
+                        
 
                     </div>
 
@@ -43,7 +53,14 @@ export default function VerPortafolio() {
                                     <div className="card-body">
 
                                         <ul className="file-tree">
-                                            <li><Link to="#" to="#">I.S.B.A16282</Link>
+                                            <li>
+                                                {
+                                                    portafolio.map(({estructura})=>
+
+                                                        <Link to="#" to="#" key={estructura.cod_asignatura}>{estructura.nombre_asignatura}</Link>
+                                                    )
+                                                    
+                                                }
                                                 <ul>
                                                     <li><Link to="#" >1. Datos Informativos</Link>
                                                         <ul>
@@ -213,10 +230,16 @@ export default function VerPortafolio() {
 
                                     </div>
 
-                                    <div className="container">
+                                    <div className="row">
 
-                                        <button type="button" className="btn btn-success m-2">DESCARGAR PORTAFOLIO</button>
-                                        <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+                                        <div className="col">
+                                            
+                                            <button type="button" className="btn btn-success m-2">DESCARGAR PORTAFOLIO</button>
+                                            <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+
+                                        </div>
+
+
                                     </div>
 
                                 </div>

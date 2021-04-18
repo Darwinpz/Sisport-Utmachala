@@ -1,6 +1,6 @@
-const ENDPOINT = process.env.REACT_APP_SERVER+'/api/portafolio/add'
+const ENDPOINT = process.env.REACT_APP_SERVER+'/api/portafolio/find'
 
-export default function Matricularse({asig_codigo, peri_codigo,clave,jwt}) {
+export default function Portafolio({asig_codigo, peri_codigo,jwt}) {
 
     return fetch(ENDPOINT, {
         method: 'POST',
@@ -10,7 +10,7 @@ export default function Matricularse({asig_codigo, peri_codigo,clave,jwt}) {
             'Access-Control-Allow-Origin': true,
             'Authorization': "Bearer "+jwt
         },
-        body: JSON.stringify({asig_codigo, peri_codigo,clave})
+        body: JSON.stringify({asig_codigo, peri_codigo})
     }).then(res => {
         if (!res.ok) throw new Error(res.status)
         return res.json()

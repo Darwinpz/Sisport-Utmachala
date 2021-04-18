@@ -2,7 +2,11 @@ import React from 'react'
 import Portafolios from 'components/Portafolios/estudiantes'
 
 
-export default function PortafoliosEstudiantesPage() {
+
+export default function PortafoliosEstudiantesPage({params}) {
+
+    const {asig_codigo, peri_codigo} = params
+
     return (
         <>
             <div className="row">
@@ -20,7 +24,7 @@ export default function PortafoliosEstudiantesPage() {
 
                         <div className="card-body">
 
-                            <Portafolios/>
+                            <Portafolios asig_codigo={asig_codigo} peri_codigo={peri_codigo}/>
 
                         </div>
 

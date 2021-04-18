@@ -106,8 +106,8 @@ module.exports = (app) => {
     app.post('/api/estructura/add', estructura.add)
 
     //RUTAS DEL PORTAFOLIO
-    app.get('/api/portafolio/add', portafolio.add)
-    app.get('/api/portafolio/find', portafolio.find)
+    app.post('/api/portafolio/add', validarToken, portafolio.add)
+    app.post('/api/portafolio/find', validarToken, portafolio.find)
 
     function validarToken(req, res, next) {
 
