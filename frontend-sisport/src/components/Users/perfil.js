@@ -8,7 +8,6 @@ export default function Perfil() {
 
     const { perfil } = usePerfil()
 
-
     return (
 
         <>

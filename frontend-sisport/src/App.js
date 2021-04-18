@@ -3,6 +3,7 @@ import Login from "pages/Login";
 import Home from "pages/Home";
 import Portafolio from "pages/Portafolios/index";
 import VerPortafolio from "pages/Portafolios/ver";
+import PortafoliosEstudiantes from "pages/Portafolios/estudiantes"
 import Principal from "pages/Principal";
 import Perfil from "pages/Users/perfil";
 import Estudiantes from "pages/Estudiantes/index"
@@ -19,6 +20,7 @@ import { CarrerasContextProvider } from "context/CarrerasContext";
 import { AsignaturasContextProvider } from "context/AsignaturasContext";
 import { PortafoliosContextProvider } from "context/PortafoliosContext";
 import { PerfilContextProvider } from "context/PerfilContext";
+import {MatriculadosContextProvider} from "context/MatriculadosContext"
 
 export default function App() {
   return (
@@ -41,9 +43,18 @@ export default function App() {
               <Route component={Docentes} path="/docentes" />
               <Route component={Asignaturas} path="/asignaturas" />
 
+              
+
               <PortafoliosContextProvider>
                 <Route component={Portafolio} path="/portafolios" />
-                <Route component={VerPortafolio} path="/portafolios/:id" />
+
+                <Route component={VerPortafolio} path="/portafolios/ver/:id" />
+
+                <MatriculadosContextProvider>
+                
+                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes" />
+
+               </MatriculadosContextProvider>
 
                 <CarrerasContextProvider>
                   <Route component={Principal} path="/principal" />
