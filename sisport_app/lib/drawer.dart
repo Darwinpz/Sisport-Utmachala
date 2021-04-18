@@ -105,21 +105,38 @@ class _MyDrawerState extends State<MyDrawer> {
                   context, MaterialPageRoute(builder: (context) => Inicio()));
             },
           ),
-          ListTile(
-            leading: Icon(
-              Icons.library_add_outlined,
-              color: Colors.black,
-              size: 30,
+          if(tipo=="DOCENTE" || tipo=="COORDINADOR")
+            ListTile(
+              leading: Icon(
+                Icons.vpn_key_outlined,
+                color: Colors.black,
+                size: 30,
+              ),
+              title: Text('Asignación de claves'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Matriculacion()));
+              },
             ),
-            title: Text('Matricularse'),
-            onTap: () {
-              // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Matriculacion()));
-            },
-          ),
+          if(tipo=="ESTUDIANTE")
+            ListTile(
+              leading: Icon(
+                Icons.library_add_outlined,
+                color: Colors.black,
+                size: 30,
+              ),
+              title: Text('Matriculación'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Matriculacion()));
+              },
+            ),
           ListTile(
             title: Text('Cerrar sesión'),
             leading: Icon(

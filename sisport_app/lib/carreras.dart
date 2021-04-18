@@ -46,7 +46,7 @@ class _CarrerasState extends State<Carreras> {
           textColor: Colors.white,
           fontSize: 16.0);
       
-      //print(notesJson);
+      print(notesJson);
     }
     return notes;
   }

@@ -315,18 +315,24 @@ class _DiarioState extends State<Diario> {
                         border: new OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.7)))),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              MaterialButton(
-                color: Colors.green,
-                onPressed: () {},
-                height: 50,
-                minWidth: 350,
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0)),
-                child: Text('Guardar', style: TextStyle(color: Colors.white)),
-              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Center(
+                    child: MaterialButton(
+                      color: Colors.green,
+                      onPressed: () {},
+                      height: 50,
+                      minWidth: 365,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0)),
+                      child: Text('Guardar',
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                    ),
+                  )
+                ],
+              )
             ],
           )
         ],
