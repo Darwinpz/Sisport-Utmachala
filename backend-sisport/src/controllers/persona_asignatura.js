@@ -1,6 +1,7 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const PerAsigCtrl = {};
+
 
 /*
     * Retorna todos los registros de las Personas_Asignaturas
@@ -11,9 +12,46 @@ PerAsigCtrl.all = async (req, res, next) => {
 
     try {
 
-        const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura");
 
-        res.status(200).json({ "message": personas_asignaturas.rows });
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+
+                const periodos = await pool.query("SELECT * FROM periodo order by peri_nombre")
+
+                //const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura as per_as, asignatura as asig, semestre as sem where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and per_as.per_codigo = $1 ", [per_codigo]);
+
+                const personas_asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, asig.asig_identificador, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente, sem.sem_codigo, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, asig_estado.asig_est_estado"
+                    + " FROM persona_asignatura as per_as, asignatura as asig, semestre as sem , vi_docente_asignaturas as vi, persona as per, periodo as peri, asignatura_estado as asig_estado"
+                    + " where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and vi.asig_codigo = asig.asig_codigo and peri.peri_codigo =vi.peri_codigo"
+                    +" and asig_estado.asig_est_peri_codigo = peri.peri_codigo and  asig.asig_codigo=asig_estado.asig_est_asig_codigo  and per.per_codigo = vi.per_codigo and per_as.per_codigo = $1 ", [per_codigo]);
+
+                var arreglo = []
+
+                periodos.rows.forEach(periodo => {
+
+                    obj = { "periodo": periodo.peri_nombre, "asignaturas": null }
+
+                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.peri_codigo == periodo.peri_codigo)
+
+                    obj.asignaturas = asignaturas
+
+                    arreglo.push(obj)
+
+                });
+
+                
+                res.status(200).json({ "message": arreglo });
+
+            }
+        })
 
 
     } catch (e) {
@@ -25,6 +63,45 @@ PerAsigCtrl.all = async (req, res, next) => {
     }
 
 }
+
+/*
+    * Retorna alumnos matriculados por asignatura y periodo
+*/
+PerAsigCtrl.matriculadosxasignaturas = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const { asig_codigo, peri_codigo } = req.body;
+
+                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per WHERE "
+                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE' and per_asig.asig_codigo=$1 and per_asig.peri_codigo=$2  ", [asig_codigo, peri_codigo]);
+
+                const resultado = persona_asignaturas.rows;
+
+                resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 
 /*
     * Retorna un solo resultado de los registros de las Personas_Asignaturas
@@ -62,12 +139,24 @@ PerAsigCtrl.add = async (req, res, next) => {
 
     try {
 
-        const { per_codigo, asig_codigo, peri_codigo } = req.body;
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        await pool.query("INSERT INTO persona_asignatura (per_codigo, asig_codigo, peri_codigo) values($1,$2,$3)", [per_codigo, asig_codigo, peri_codigo]);
+            if (err) {
 
-        res.status(200).json({ "message": "Persona_Asignatura Agregada" });
+                res.status(403).json({ "message": 'Token no válido' });
 
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo } = req.body;
+
+                await pool.query("INSERT INTO public.persona_asignatura (per_codigo, asig_codigo, peri_codigo) values($1,$2,$3)", [per_codigo, asig_codigo, peri_codigo]);
+
+                res.status(200).json({ "message": "Persona_Asignatura Agregada" });
+
+            }
+        })
 
     } catch (e) {
 

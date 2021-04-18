@@ -17,7 +17,9 @@ EstructuraCtrl.add = (nombre) => {
                 nombre_asignatura: {type: String},
                 syllabus: {type: String},
                 contenidos: [],
-                docente: {type: String},
+                cod_docente: {type: String},
+                nombre_docente: {type:String},
+                diarios: {type: Number},
                 clave: {type: String}
     
             },
@@ -33,4 +35,7 @@ EstructuraCtrl.add = (nombre) => {
 
 }
 
+
 module.exports = EstructuraCtrl;
+
+

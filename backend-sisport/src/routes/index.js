@@ -24,77 +24,80 @@ const estructura = require("../controllers/estructuras");
 module.exports = (app) => {
 
     //RUTAS DE LAS UNIVERSIDADES
-    app.get('/api/universidad', universidad.all);
-    app.get('/api/universidad/:id', universidad.find);
-    app.post('/api/universidad/add', universidad.add);
-    app.put('/api/universidad/put', universidad.put);
-    app.delete('/api/universidad/delete', universidad.delete);
+    app.get('/api/universidad', validarToken, universidad.all);
+    app.get('/api/universidad/:id', validarToken, universidad.find);
+    app.post('/api/universidad/add', validarToken, universidad.add);
+    app.put('/api/universidad/put', validarToken, universidad.put);
+    app.delete('/api/universidad/delete', validarToken, universidad.delete);
 
     //RUTAS DE LAS FACULTADES
-    app.get('/api/facultad', facultad.all);
-    app.get('/api/facultad/:id', facultad.find);
-    app.post('/api/facultad/add', facultad.add);
-    app.put('/api/facultad/put', facultad.put);
-    app.delete('/api/facultad/delete', facultad.delete);
+    app.get('/api/facultad', validarToken, facultad.all);
+    app.get('/api/facultad/:id', validarToken, facultad.find);
+    app.post('/api/facultad/add', validarToken, facultad.add);
+    app.put('/api/facultad/put', validarToken, facultad.put);
+    app.delete('/api/facultad/delete', validarToken, facultad.delete);
 
     //RUTAS DE LAS CARERRAS
-    app.get('/api/carrera', carrera.all);
-    app.get('/api/carrera/:id', carrera.find);
-    app.post('/api/carrera/add', carrera.add);
-    app.put('/api/carrera/put', carrera.put);
-    app.delete('/api/carrera/delete', carrera.delete);
+    app.get('/api/carrera', validarToken, carrera.all);
+    app.get('/api/carrerasandfacultad', validarToken, carrera.allxfacultad);
+    app.get('/api/carrera/:id', validarToken, carrera.find);
+    app.post('/api/carrera/add', validarToken, carrera.add);
+    app.put('/api/carrera/put', validarToken, carrera.put);
+    app.delete('/api/carrera/delete', validarToken, carrera.delete);
 
     //RUTAS DE LOS SEMESTRES
-    app.get('/api/semestre', semestre.all);
-    app.get('/api/semestre/:id', semestre.find);
-    app.post('/api/semestre/add', semestre.add);
-    app.put('/api/semestre/put', semestre.put);
-    app.delete('/api/semestre/delete', semestre.delete);
+    app.get('/api/semestre', validarToken, semestre.all);
+    app.get('/api/semestre/:id', validarToken, semestre.find);
+    app.post('/api/semestre/add', validarToken, semestre.add);
+    app.put('/api/semestre/put', validarToken, semestre.put);
+    app.delete('/api/semestre/delete', validarToken, semestre.delete);
 
     //RUTAS DE LOS PERIODOS
-    app.get('/api/periodo', periodo.all);
-    app.get('/api/periodo/:id', periodo.find);
-    app.post('/api/periodo/add', periodo.add);
-    app.put('/api/periodo/put', periodo.put);
-    app.delete('/api/periodo/delete', periodo.delete);
+    app.get('/api/periodo', validarToken, periodo.all);
+    app.get('/api/periodo/:id', validarToken, periodo.find);
+    app.post('/api/periodo/add', validarToken, periodo.add);
+    app.put('/api/periodo/put', validarToken, periodo.put);
+    app.delete('/api/periodo/delete', validarToken, periodo.delete);
 
     //RUTAS DE LOS HORARIOS
-    app.get('/api/horario', horario.all);
-    app.get('/api/horario/:id', horario.find);
-    app.post('/api/horario/add', horario.add);
-    app.put('/api/horario/put', horario.put);
-    app.delete('/api/horario/delete', horario.delete);
+    app.get('/api/horario', validarToken, horario.all);
+    app.get('/api/horario/:id', validarToken, horario.find);
+    app.post('/api/horario/add', validarToken, horario.add);
+    app.put('/api/horario/put', validarToken, horario.put);
+    app.delete('/api/horario/delete', validarToken, horario.delete);
 
     //RUTAS DE LAS PERSONAS
-    app.get('/api/persona', persona.all);
+    app.get('/api/persona', validarToken, persona.all);
+    app.get('/api/persona/perfil', validarToken, persona.perfil);
     app.post('/api/persona/login', persona.login);
-    app.post('/api/persona/add', persona.add);
-    app.put('/api/persona/put', persona.put);
-    app.delete('/api/persona/delete', persona.delete);
-    app.get('/api/persona/:id', persona.find);
+    app.post('/api/persona/add', validarToken, persona.add);
+    app.put('/api/persona/put', validarToken, persona.put);
+    app.delete('/api/persona/delete', validarToken, persona.delete);
+    app.get('/api/persona/:id', validarToken, persona.find);
 
     //RUTAS DE LOS FAMILIARES
-    app.get('/api/familiar', familiar.all);
-    app.get('/api/familiar/:id', familiar.find);
-    app.post('/api/familiar/add', familiar.add);
-    app.put('/api/familiar/put', familiar.put);
-    app.delete('/api/familiar/delete', familiar.delete);
+    app.get('/api/familiar', validarToken, familiar.all);
+    app.get('/api/familiar/:id', validarToken, familiar.find);
+    app.post('/api/familiar/add', validarToken, familiar.add);
+    app.put('/api/familiar/put', validarToken, familiar.put);
+    app.delete('/api/familiar/delete', validarToken, familiar.delete);
 
     //RUTAS DE LAS PERSONAS_ASIGNATURAS
-    app.get('/api/persona_asignatura', persona_asignatura.all);
-    app.get('/api/persona_asignatura/:id', persona_asignatura.find);
-    app.post('/api/persona_asignatura/add', persona_asignatura.add);
-    app.put('/api/persona_asignatura/put', persona_asignatura.put);
-    app.delete('/api/persona_asignatura/delete', persona_asignatura.delete);
+    app.get('/api/persona_asignatura', validarToken, persona_asignatura.all);
+    app.post('/api/persona_asignatura/matriculados', validarToken, persona_asignatura.matriculadosxasignaturas);
+    app.get('/api/persona_asignatura/:id', validarToken, persona_asignatura.find);
+    app.post('/api/persona_asignatura/add', validarToken, persona_asignatura.add);
+    app.put('/api/persona_asignatura/put', validarToken, persona_asignatura.put);
+    app.delete('/api/persona_asignatura/delete', validarToken, persona_asignatura.delete);
 
 
     //RUTAS DE LAS ASIGNATURAS
-    app.get('/api/asignatura', asignatura.all);
-    app.post('/api/asignatura/buscar', asignatura.buscar);
-    app.post('/api/asignatura/add', asignatura.add);
-    app.put('/api/asignatura/put', asignatura.put);
-    app.delete('/api/asignatura/delete', asignatura.delete);
-    app.get('/api/asignatura/:id', asignatura.find);
+    app.get('/api/asignatura', validarToken, asignatura.all);
+    app.post('/api/asignatura/buscar', validarToken, asignatura.buscar);
+    app.post('/api/asignatura/add', validarToken, asignatura.add);
+    app.put('/api/asignatura/put', validarToken, asignatura.put);
+    app.delete('/api/asignatura/delete', validarToken, asignatura.delete);
+    app.get('/api/asignatura/:id', validarToken, asignatura.find);
 
     //RUTAS ESQUEMAS 
     app.post('/api/esquemas/add', esquema.add)
@@ -104,6 +107,24 @@ module.exports = (app) => {
 
     //RUTAS DEL PORTAFOLIO
     app.get('/api/portafolio/add', portafolio.add)
+    app.get('/api/portafolio/find', portafolio.find)
+
+    function validarToken(req, res, next) {
+
+        var token = req.headers['authorization']
+
+        if (typeof token !== 'undefined') {
+
+            req.token = token.split(" ")[1];
+            next()
+
+        } else {
+
+            res.status(403).json({ "message": "Falta autorizacion" })
+
+        }
+
+    }
 
     //GESTIÓN DE ERRORES
     app.use(function (err, req, res, next) {

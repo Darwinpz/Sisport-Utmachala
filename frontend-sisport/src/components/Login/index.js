@@ -4,7 +4,7 @@ import { useLocation } from "wouter"
 import useUser from 'hooks/useUser'
 import { useEffect } from "react";
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin}) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -52,7 +52,7 @@ export default function Login({ onLogin }) {
                         />
                     </div>
 
-                    <button className="btn btn-block btn-primary">Login</button>
+                    <button className="btn btn-block btn-primary">Iniciar Sesión</button>
                 </form>
             }{
                 hasLoginError && <strong>Credenciales incorrectas</strong>

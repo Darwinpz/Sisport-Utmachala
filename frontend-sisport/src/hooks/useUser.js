@@ -1,34 +1,50 @@
 import { useCallback, useContext, useState } from 'react'
 import Context from 'context/UserContext'
 import loginService from 'services/login'
+import matriculaService from 'services/matricularse'
 
 export default function useUser() {
 
-    const {user, setUSER} = useContext(Context)
+    const { matricula, jwt, setMATRICULA, setJWT } = useContext(Context)
     const [state, setState] = useState({ loading: false, error: false })
 
     const login = useCallback(({ username, password }) => {
         setState({ loading: true, error: false })
         loginService({ username, password })
-            .then(user => {
-                window.sessionStorage.setItem('user', user)
+            .then(jwt => {
+                //window.sessionStorage.setItem('jwt', jwt)
+                localStorage.setItem('jwt', jwt)
                 setState({ loading: false, error: false })
-                setUSER(user)
+                setJWT(jwt)
             })
             .catch(err => {
-                window.sessionStorage.removeItem('user')
+                //window.sessionStorage.removeItem('jwt')
+                localStorage.removeItem('jwt')
                 setState({ loading: false, error: true })
                 console.log(err)
             })
-    }, [setUSER])
+    }, [setJWT])
 
     const logout = useCallback(() => {
-        window.sessionStorage.removeItem('user')
-        setUSER(null)
-    }, [setUSER])
+        localStorage.removeItem('jwt')
+        //window.sessionStorage.removeItem('jwt')
+        setJWT(null)
+    }, [setJWT])
+
+    const addMatricula = useCallback(({asig_codigo, peri_codigo,clave}) => {
+
+        matriculaService({ asig_codigo, peri_codigo, jwt })
+            .then(setMATRICULA)
+            .catch(err => {
+                console.log(err)
+            })
+
+    }, [jwt, setMATRICULA])
 
     return {
-        isLogged: Boolean(user),
+        addMatricula,
+        matricula,
+        isLogged: Boolean(jwt),
         isLoginLoading: state.loading,
         hasLoginError: state.error,
         login,

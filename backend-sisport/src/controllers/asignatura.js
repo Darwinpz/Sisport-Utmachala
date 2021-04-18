@@ -1,5 +1,5 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const AsignaturaCtrl = {};
 
 /*
@@ -62,16 +62,50 @@ AsignaturaCtrl.buscar = async (req, res, next) => {
 
     try {
 
-        const { car_nombre } = req.body;
 
-        const asignaturas = await pool.query("SELECT *FROM asignatura as asig,semestre as sem,carrera as car WHERE asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$1", [car_nombre]);
 
-        const resultado = asignaturas.rows;
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+                const { car_nombre } = req.body;
+
+                const activados = await pool.query("SELECT *from asignatura_estado")
+
+                const asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, peri.peri_nombre, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente,"
+                    + " CASE WHEN (select bool(est_asig.asig_codigo) from persona_asignatura as est_asig where est_asig.per_codigo=$1 and est_asig.asig_codigo = asig.asig_codigo) THEN true ELSE false END AS matriculado"
+                    + " FROM asignatura as asig,semestre as sem,carrera as car, vi_docente_asignaturas as vi, persona as per, periodo as peri"
+                    + " WHERE asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and vi.peri_codigo = peri.peri_codigo and per.per_codigo = vi.per_codigo and sem.car_codigo = car.car_codigo and car.car_nombre=$2", [per_codigo, car_nombre]);
+
+
+                asignaturas.rows.forEach(asignatura => {
+
+                    const temp = activados.rows.filter(activado => activado.asig_est_asig_codigo == asignatura.asig_codigo && activado.asig_est_peri_codigo == asignatura.peri_codigo)
+                    
+                    if(temp.length > 0){
+                        asignatura["estado"] = true;
+                    }else{
+                        asignatura["estado"] = false;
+                    }
+
+
+                });
+                
+                const resultado = asignaturas.rows;
+
+                resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+            }
+        })
+
 
     } catch (e) {
-
+        console.log(e.message)
         err.message = e.message;
         err.status = 500;
         next(err);

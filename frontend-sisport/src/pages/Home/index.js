@@ -71,13 +71,13 @@ export default function LoginPage() {
                                 <div className="carousel-inner">
 
                                     <div className="carousel-item active">
-                                        <img className="d-block w-100" height="350" src={'https://wipy.tv/wp-content/uploads/2020/02/Iron-Man-es-el-anticristo.jpg'} alt="1" />
+                                        <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="1" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img className="d-block w-100" height="350" src={'https://wipy.tv/wp-content/uploads/2020/02/Iron-Man-es-el-anticristo.jpg'} alt="2" />
+                                        <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="2" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img className="d-block w-100" height="350" src={'https://wipy.tv/wp-content/uploads/2020/02/Iron-Man-es-el-anticristo.jpg'} alt="3" />
+                                        <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="3" />
                                     </div>
                                 </div>
 

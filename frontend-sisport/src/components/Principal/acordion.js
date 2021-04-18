@@ -1,34 +1,45 @@
 
 import React from "react";
 
+import useCarreras from 'hooks/useCarreras'
+
 export default function Acordion() {
 
+    const { carreras } = useCarreras()
 
     return (
 
-        <>
+        <>  {
+            carreras.map(({ facultad, fac_id, carreras }) =>
 
-            <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-block text-left " type="button" data-toggle="collapse" data-target="#collapseOne" >
-                                <strong>Facultad de Ingeniería Civil</strong>
-                            </button>
-                        </h2>
+                <div className="accordion" id={`accordion${fac_id}`} key={fac_id}>
+                    <div className="card">
+                        <div className="card-header" id={`heading${fac_id}`}>
+                            <h2 className="mb-0">
+                                <button className="btn btn-block text-left " type="button" data-toggle="collapse" data-target={`#collapse${fac_id}`} >
+                                    <strong>{facultad}</strong>
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id={`collapse${fac_id}`} className="collapse">
+                            <ul className="list-group list-group-flush">
+                                {
+                                    carreras.map(({ car_codigo, car_nombre }) =>
+
+                                        <a href={`/principal/${car_nombre}`} key={car_codigo} type="button" className="list-group-item border-secondary">{car_nombre}</a>
+
+                                    )
+                                }
+
+                            </ul>
+                        </div>
                     </div>
 
-                    <div id="collapseOne" class="collapse">
-                        <ul class="list-group list-group-flush">
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería Civil</a>
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería de Sistemas</a>
-                            <a  type="button" class="list-group-item border-secondary">Carrera de Ingeniería Ambiental</a>
-                        </ul>
-                    </div>
                 </div>
-                
-                
-            </div>
+            )
+        }
+
 
         </>
 

@@ -3,8 +3,8 @@ import { Link } from 'wouter'
 
 import useUser from 'hooks/useUser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignInAlt, faSignOutAlt, faBook, faUser, faHome } from '@fortawesome/free-solid-svg-icons'
-
+import { faSignInAlt, faSignOutAlt, faBook, faUser, faHome, faChalkboardTeacher, faUsers, faBookmark } from '@fortawesome/free-solid-svg-icons'
+import usePerfil from 'hooks/usePerfil'
 
 export default function Navbar() {
 
@@ -18,27 +18,50 @@ export default function Navbar() {
         window.location.href = "/"
     };
 
+    const { perfil } = usePerfil()
+
     const renderLoginButtons = ({ isLogged }) => {
 
         return isLogged
             ?
             <>
+                { perfil.per_tipo === "ESTUDIANTE" &&
+                    <>
 
-                <li className="nav-item active">
-                    <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
-                </li>
+                        <li className="nav-item active">
+                            <Link to="/principal" className="nav-link"><FontAwesomeIcon icon={faHome} /> Principal</Link>
+                        </li>
+                    </>
+                }
 
+                {
+                    perfil.per_tipo === "COORDINADOR" &&
+
+                    <>
+                        <li className="nav-item active">
+                            <Link to="/estudiantes" className="nav-link"><FontAwesomeIcon icon={faUsers} /> Estudiantes</Link>
+                        </li>
+                        <li className="nav-item active">
+                            <Link to="/docentes" className="nav-link"><FontAwesomeIcon icon={faChalkboardTeacher} /> Docentes</Link>
+                        </li>
+                        <li className="nav-item active">
+                            <Link to="/asignaturas" className="nav-link"><FontAwesomeIcon icon={faBookmark} /> Asignaturas</Link>
+                        </li>
+
+                    </>
+
+                }
                 <li className="nav-item active">
                     <Link to="/portafolios" className="nav-link"><FontAwesomeIcon icon={faBook} /> Portafolios</Link>
                 </li>
-                
+
                 <li className="nav-item dropdown active">
 
-                    <Link className="nav-link dropdown-toggle" to="" role="button" data-toggle="dropdown">@gmail</Link>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-toggle="dropdown">{perfil.per_correo}</Link>
 
                     <div className="dropdown-menu">
-                        <Link className="dropdown-item" to="/perfil/@{{sesion.per_correo}}"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
-                        <a onClick={cerrarSesion} to="" className="dropdown-item" type="button" ><FontAwesomeIcon icon={faSignOutAlt} /> Cerrar Sesión</a>
+                        <Link className="dropdown-item" to="/perfil"><FontAwesomeIcon icon={faUser} /> Perfil</Link>
+                        <Link onClick={cerrarSesion} to="#" className="dropdown-item" type="button" ><FontAwesomeIcon icon={faSignOutAlt} /> Cerrar Sesión</Link>
                     </div>
                 </li>
             </>
@@ -49,7 +72,7 @@ export default function Navbar() {
 
     }
 
-    const content =  renderLoginButtons({ isLogged })
+    const content = renderLoginButtons({ isLogged })
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top p-1 navbar-static-top">

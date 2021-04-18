@@ -1,15 +1,14 @@
 import React from 'react'
-import VerPortafolio from 'components/Portafolios/ver'
+import Perfil from 'components/Users/perfil'
 
-
-export default function PortafolioVer() {
+export default function PerfilPage() {
     return (
         <>
             <div className="row">
 
                 <div className="col">
 
-                    <VerPortafolio />
+                    <Perfil/>
 
                 </div>
 
