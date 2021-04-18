@@ -46,6 +46,7 @@ export default function App() {
               
 
               <PortafoliosContextProvider>
+                
                 <Route component={Portafolio} path="/portafolios" />
 
                 <Route component={VerPortafolio} path="/portafolios/ver/:id" />

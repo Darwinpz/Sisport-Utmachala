@@ -25,17 +25,16 @@ export default function Portafolios() {
                 {
                     matriculados.map(({  per_codigo, per_nombre, per_apellido  }) =>
 
-                        <div className="col-md-6 col-lg-4 mb-3" key={per_codigo}>
+                        <div className="col-md-6 col-lg-3 mb-3" key={per_codigo}>
 
                             <div className="card border-primary" >
 
                                 <div className="card-header">
-                                    <span><strong></strong></span>
+                                    <span><strong>{per_nombre} {per_apellido}</strong></span>
                                 </div>
                                 <div className="card-body" >
-                                    <p className="card-text mb-1">{per_nombre} {per_apellido}</p>
 
-                                    <a className="btn btn-success float-right " >Ver Portafolio</a>
+                                    <a className="btn btn-success float-right " href={`/portafolios/ver/`} >Ver Portafolio</a>
 
 
                                 </div>
