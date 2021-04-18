@@ -20,7 +20,8 @@ import { CarrerasContextProvider } from "context/CarrerasContext";
 import { AsignaturasContextProvider } from "context/AsignaturasContext";
 import { PortafoliosContextProvider } from "context/PortafoliosContext";
 import { PerfilContextProvider } from "context/PerfilContext";
-import {MatriculadosContextProvider} from "context/MatriculadosContext"
+import {MatriculadosContextProvider} from "context/MatriculadosContext";
+import {PortafolioContextProvider} from "context/PortafolioContext"
 
 export default function App() {
   return (
@@ -48,12 +49,15 @@ export default function App() {
               <PortafoliosContextProvider>
                 
                 <Route component={Portafolio} path="/portafolios" />
+                
+                <PortafolioContextProvider>
+                  <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo" />
 
-                <Route component={VerPortafolio} path="/portafolios/ver/:id" />
-
+                </PortafolioContextProvider>
+                
                 <MatriculadosContextProvider>
                 
-                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes" />
+                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo" />
 
                </MatriculadosContextProvider>
 

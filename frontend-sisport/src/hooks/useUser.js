@@ -33,7 +33,7 @@ export default function useUser() {
 
     const addMatricula = useCallback(({asig_codigo, peri_codigo,clave}) => {
 
-        matriculaService({ asig_codigo, peri_codigo, jwt })
+        matriculaService({ asig_codigo, peri_codigo,clave, jwt })
             .then(setMATRICULA)
             .catch(err => {
                 console.log(err)
