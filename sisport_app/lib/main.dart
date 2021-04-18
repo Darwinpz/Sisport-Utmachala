@@ -83,12 +83,20 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Center(
+        child: Container(
+        width: 350,
+        child: SingleChildScrollView(child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(8.0),
+            child: Text("SISTEMA DE GESTIÓN DE PORTAFOLIOS",textAlign: TextAlign.center,style: TextStyle(fontSize: 20, color: Colors.blueAccent, fontWeight: FontWeight.bold),
+            )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Image(
               image: AssetImage('assets/images/logo.png'),
               width: 250,
@@ -128,13 +136,16 @@ class _LoginState extends State<Login> {
               checkLogin(emailController.text, passController.text);
             },
             height: 50,
-            minWidth: 350,
+            minWidth: 330,
             shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
-            child: Text('Ingresar', style: TextStyle(color: Colors.white, fontSize: 15)),
+            child: Text('Ingresar', style: TextStyle(color: Colors.white, fontSize: 16)),
           ),
         ],
-      ),
+      ),) ,
+      ))
+      
+      
     );
   }
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85797783014",
+    "project_id": "fir-messaging-bc158",
+    "storage_bucket": "fir-messaging-bc158.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85797783014:android:e58431f80369bfeef1c227",
+        "android_client_info": {
+          "package_name": "com.example.sisport_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85797783014-legha6lffie7kjp13vmb61ipsckmkoqf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNCguI0P7ubRN0HOY8RpoJig6YAd_RaHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85797783014-legha6lffie7kjp13vmb61ipsckmkoqf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
