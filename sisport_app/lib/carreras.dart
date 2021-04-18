@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'asignaturas.dart';
 
@@ -10,11 +11,23 @@ class Carreras extends StatefulWidget {
 }
 
 class _CarrerasState extends State<Carreras> {
+
+  String token="";
+
+  Future getDatosPer()async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+    });
+  }
+
   List<Note> _notes = List<Note>();
 
   Future<List<Note>> fecthNotes() async {
+
+
     var url = 'http://190.155.140.58:80/api/carrera';
-    var response = await http.get(url);
+    var response = await http.get(url, headers: {"Authorization":"bearer "+token});
 
     var notes = List<Note>();
 
@@ -27,13 +40,13 @@ class _CarrerasState extends State<Carreras> {
       Fluttertoast.showToast(
           msg: "Escoga su carrera",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
       
-      print(notesJson);
+      //print(notesJson);
     }
     return notes;
   }
@@ -45,6 +58,7 @@ class _CarrerasState extends State<Carreras> {
         _notes.addAll(value);
       });
     });
+    getDatosPer();
     super.initState();
   }
 
@@ -71,7 +85,7 @@ class _CarrerasState extends State<Carreras> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  MyRecord(_notes[index].car_nombre),
+                      builder: (context) =>  MyRecord(_notes[index].car_nombre), //pasa el nombre
                     ));
               },
             ),

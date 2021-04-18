@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
 import 'drawer.dart' as slideBar;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-
-// class Semestres extends StatelessWidget {
-  
-//   final Note note;
-
-//   // In the constructor, require a Note.
-//   Semestres({Key key, @required this.note}) : super(key: key);
-
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     String carNombre=note.car_nombre;
-//     return Scaffold(
-//       appBar: AppBar(title: Text("Matriculación")),
-//       drawer: slideBar.MyDrawer(),
-//       body: Text(carNombre)
-        
-//       );
-      
-    
-//   }
-// }
-// 
-// 
+import './Estructura/tree.dart';
+import 'Inicio.dart';
 
 
 class MyRecord extends StatefulWidget {
@@ -40,18 +18,26 @@ class MyRecord extends StatefulWidget {
 
 class MyRecordState extends State<MyRecord> {
 
+   String token="";
+
   List<Note> _notes = List<Note>();
 
   Future<List<Note>> fecthNotes() async {
 
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+    });
+
     Map data = {'car_nombre': widget.recordName};
+    
     var url = 'http://190.155.140.58:80/api/asignatura/buscar';
-    var response = await http.post(url, body: data);
+    var response = await http.post(url, body: data, headers: {"Authorization":"bearer "+token});
 
     var notes = List<Note>();
 
     if (response.statusCode == 200) {
-      var notesJson = json.decode(response.body);
+      Map<String, dynamic> notesJson = json.decode(response.body);
       for (var noteJson in notesJson["message"]) {
         notes.add(Note.fromJson(noteJson));
       }
@@ -59,13 +45,13 @@ class MyRecordState extends State<MyRecord> {
       Fluttertoast.showToast(
           msg: "Escoga su asignatura",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
       
-      print(notesJson);
+      debugPrint("aber: "+notesJson.toString());
     }
     return notes;
   }
@@ -78,6 +64,81 @@ class MyRecordState extends State<MyRecord> {
       });
     });
     super.initState();
+  }
+  
+  TextEditingController _textFieldController = TextEditingController();
+   String codeDialog;
+  String valueText;
+  Future<void> _displayTextInputDialog(BuildContext context, index, int asig_codigo, int peri_codigo) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Ingrese clave de acceso:'),
+            content: TextField(
+              obscureText: true,
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "Clave"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('Cancelar'),
+                onPressed: () {
+                  _textFieldController.clear();
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('Ingresar'),
+                onPressed: () {
+                  setState(() {
+                    _textFieldController.clear();
+                    matricularse(asig_codigo, peri_codigo);
+                    codeDialog = valueText;
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
+                    
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Future matricularse(int asig_codigo, int peri_codigo)async{
+
+    Map data = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString()};
+
+    http.Response response = await http
+        .post('http://190.155.140.58:80/api/persona_asignatura/add', body: data, headers: {"Authorization":"bearer "+token});
+
+    Map<String, dynamic> datos = json.decode(response.body);
+
+    debugPrint("aber2: "+datos.toString());
+
+    if(response.statusCode==200){
+      Fluttertoast.showToast(
+          msg: "Matriculación exitosa",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
+
   }
 
   @override
@@ -102,8 +163,14 @@ class MyRecordState extends State<MyRecord> {
                   Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          FlatButton(
-                              onPressed: () => {}, child: Text('Matricularse')),
+                          if(_notes[index].matriculado==false)
+                            FlatButton(
+                                onPressed: () => { _textFieldController.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo)},   
+                                child: Text('Matricularse')),
+                          if(_notes[index].matriculado==true)
+                            FlatButton(
+                                onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_nombre)))},   
+                                child: Text('Ver portafolio')),
                           // FlatButton(
                           //     onPressed: () => {}, child: Text('Cancelar'))
                         ],
@@ -122,10 +189,22 @@ class MyRecordState extends State<MyRecord> {
 
 class Note {
   String asig_nombre;
+  int asig_codigo;
+  String sem_nombre;
+  String sem_paralelo;
+  int peri_codigo;
+  String docente;
+  bool matriculado;
 
-  Note(this.asig_nombre);
+  Note(this.asig_nombre, this.asig_codigo, this.sem_nombre, this.sem_paralelo, this.peri_codigo, this.docente, this.matriculado);
 
   Note.fromJson(Map<String, dynamic> json) {
     asig_nombre = json['asig_nombre'];
+    asig_codigo = json['asig_codigo'];
+    sem_nombre = json['sem_nombre'];
+    sem_paralelo = json['sem_paralelo'];
+    peri_codigo = json['peri_codigo'];
+    docente = json['docente'];
+    matriculado = json['matriculado'];
   }
 }
