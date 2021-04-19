@@ -3,6 +3,7 @@ import '../drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'treeAlumDocen.dart';
 import 'diario.dart';
 
 class treeDocen extends StatefulWidget {
@@ -29,6 +30,7 @@ class treeDocenState extends State<treeDocen> {
     });
 
     Map data = {'asig_codigo': widget.asig_codigo, 'peri_codigo': widget.peri_codigo};
+
 
     http.Response response = await http
         .post('http://190.155.140.58:80/api/persona_asignatura/matriculados', body: data, headers: {"Authorization":"bearer "+token});
@@ -64,7 +66,7 @@ class treeDocenState extends State<treeDocen> {
   Widget build(BuildContext context) {
 
       return Scaffold(
-         appBar: AppBar(title: Text(widget.asig_nombre)),
+         appBar: AppBar(title: Text(widget.asig_nombre, style: TextStyle(fontSize: 14),)),
          drawer: slideBar.MyDrawer(),
          body: _notes.length==0? Center(child: Text("Ningún alumno se ha matriculado aún.", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic))):
           ListView.builder(
@@ -86,7 +88,11 @@ class treeDocenState extends State<treeDocen> {
                         children: <Widget>[
 
                          FlatButton(
-                                  onPressed: () => { },   
+                                  onPressed: () => { Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => treeAlumDocen(
+                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, _notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido)))},   
                                   child: Text('Ver portafolio'))
                         ],
                       )

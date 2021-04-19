@@ -33,7 +33,7 @@ class _InicioState extends State<Inicio> {
 
     var notes = List<Note>();
 
-    debugPrint("Respuesta: " + response.body);
+    
     //debugPrint(response.statusCode.toString());
 
     if (response.statusCode == 200) {
@@ -54,7 +54,7 @@ class _InicioState extends State<Inicio> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
-    debugPrint(_notes.length.toString());
+
     return notes;
   }
 
@@ -104,7 +104,7 @@ class _InicioState extends State<Inicio> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  _notes[index].asig_nombre)))
+                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente)))
                                     },
                                 child: Text('Ver portafolio'))
                             : FlatButton(
