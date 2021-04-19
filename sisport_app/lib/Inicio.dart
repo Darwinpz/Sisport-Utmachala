@@ -33,9 +33,6 @@ class _InicioState extends State<Inicio> {
 
     var notes = List<Note>();
 
-    
-    //debugPrint(response.statusCode.toString());
-
     if (response.statusCode == 200) {
       Map<String, dynamic> notesJson = json.decode(response.body);
       
@@ -43,7 +40,6 @@ class _InicioState extends State<Inicio> {
         notes.add(Note.fromJson(noteJson));
       }
 
-      // print(notesJson["message"][0]["asignaturas"]);
     } else if (response.statusCode == 403) {
       Fluttertoast.showToast(
           msg: "Su sesión ha caducado. Por favor ingrese sesión nuevamente.",

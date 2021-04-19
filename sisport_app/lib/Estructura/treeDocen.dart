@@ -35,9 +35,6 @@ class treeDocenState extends State<treeDocen> {
     http.Response response = await http
         .post('http://190.155.140.58:80/api/persona_asignatura/matriculados', body: data, headers: {"Authorization":"bearer "+token});
 
-    Map<String, dynamic> datos = json.decode(response.body);
-
-    debugPrint("aber2: "+datos.toString());
 
     var notes = List<Note>();
 

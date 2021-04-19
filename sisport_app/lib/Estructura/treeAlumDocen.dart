@@ -36,13 +36,11 @@ class treeAlumDocenState extends State<treeAlumDocen> {
 
     Map data = {'asig_codigo': widget.asig_codigo, 'peri_codigo': widget.peri_codigo, 'per_codigo':widget.per_codigo};
 
-    debugPrint(widget.asig_codigo+" "+widget.peri_codigo+" "+widget.per_codigo);
+  
 
     http.Response response = await http
         .post('http://190.155.140.58:80/api/portafolio/find', body: data, headers: {"Authorization":"bearer "+token});
 
-    Map<String, dynamic> datos = json.decode(response.body);
-    debugPrint(datos.toString());
 
     var notes = List<Note>();
 
