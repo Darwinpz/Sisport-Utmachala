@@ -108,7 +108,7 @@ module.exports = (app) => {
 
     //RUTAS DEL PORTAFOLIO
     app.post('/api/portafolio/add', validarToken, portafolio.add)
-    app.post('/api/portafolio/diario', portafolio.updateDiario)
+    app.post('/api/portafolio/diario',validarToken, portafolio.updateDiario)
     app.post('/api/portafolio/find', validarToken, portafolio.find)
 
 

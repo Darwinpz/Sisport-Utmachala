@@ -66,7 +66,7 @@ PortafolioCtrl.add = async (req, res, next) => {
                                     "fecha": dia.hor_dia + ", " + fecha_diario.getDate() + " DE " + obtener_mes(fecha_diario.getMonth()) + " DEL " + fecha_diario.getFullYear(),
                                     "unidad": "", "periodo_inicio": periodo_inicio, "periodo_fin": periodo_final,
                                     "tema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
-                                    "resumen": "", "reflexion": "", "anexos": ""
+                                    "resumen": "", "preg1": "","preg2":"","preg3":"","preg4":"", "anexos": ""
                                 }
 
                                 num_diario++;
@@ -151,7 +151,11 @@ PortafolioCtrl.find = async (req, res, next) => {
 
     }
 
+
 }
+
+
+
 
 
 PortafolioCtrl.updateDiario = async (req, res, next) => {
@@ -162,51 +166,59 @@ PortafolioCtrl.updateDiario = async (req, res, next) => {
     try {
 
 
+        jwt.verify(req.token, process.env.jwtcode, async (err,data) => {
 
-        const { asig_codigo, peri_codigo, num_diario, tema, contenido, objetivo, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 } = req.body
+            if (err) {
 
-        const per_codigo = 1055
+                res.status(403).json({ "message": 'Token no válido' });
 
-        const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+            } else {
 
-        const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+                const { asig_codigo, peri_codigo, num_diario, tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 } = req.body
 
-        const esquema = EstructuraSchema.add(nombre_esquema)
+                const per_codigo = data.usuario.per_codigo
 
-        const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
-        var temp = []
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
 
-        for (var portafolio of busqueda.portafolios) {
+                const esquema = EstructuraSchema.add(nombre_esquema)
 
-            if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
 
-                portafolio.elementos_curriculares.apuntes[num_diario-1].tema = tema
-                portafolio.elementos_curriculares.apuntes[num_diario-1].contenido = contenido
-                portafolio.elementos_curriculares.apuntes[num_diario-1].objetivo = objetivo
-                portafolio.elementos_curriculares.apuntes[num_diario-1].actividades = actividades
-                portafolio.elementos_curriculares.apuntes[num_diario-1].estrategias = estrategias
-                portafolio.elementos_curriculares.apuntes[num_diario-1].resumen = resumen
-                portafolio.elementos_curriculares.apuntes[num_diario-1].preg1 = preg1
-                portafolio.elementos_curriculares.apuntes[num_diario-1].preg2 = preg2
-                portafolio.elementos_curriculares.apuntes[num_diario-1].preg3 = preg3
-                portafolio.elementos_curriculares.apuntes[num_diario-1].preg4 = preg4
+                var temp = []
 
-                break;
+                for (var portafolio of busqueda.portafolios) {
+
+                    if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].tema = tema
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].contenidos = contenidos
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].objetivos = objetivos
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].actividades = actividades
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].estrategias = estrategias
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].resumen = resumen
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg1 = preg1
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg2 = preg2
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg3 = preg3
+                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg4 = preg4
+
+                        break;
+                    }
+
+                }
+
+                temp = busqueda.portafolios
+
+                busqueda.portafolios = []
+
+                busqueda.portafolios = temp
+
+                await busqueda.save()
+
+                res.status(200).json({ "message": "Diario Editado" });
             }
-
-        }
-
-        temp = busqueda.portafolios
-
-        busqueda.portafolios = []
-
-        busqueda.portafolios = temp
-
-        await busqueda.save()
-
-        res.status(200).json({ "message": "Diario Editado" });
-
+        })
 
     } catch (e) {
 

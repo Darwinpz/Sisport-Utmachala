@@ -72,11 +72,30 @@ $('#subir').on('show.bs.modal', function (event) {
 
 $('#diario').on('show.bs.modal', function (event) {
 
-
     var button = $(event.relatedTarget)
     var numero = button.data('numero')
+    var horas = button.data('horas')
+    var fecha = button.data('fecha')
+    var inicio = button.data('inicio')
+    var tema = button.data('tema')
+    var contenido = button.data('contenido')
+
+    var fin = button.data('fin')
     var modal = $(this)
 
     modal.find('.modal-title').text('DIARIO METACOGNITIVO ' + numero)
+
+    var nombre = document.getElementById("asignatura_nombre")
+
+    modal.find('.modal-materia').text(nombre.innerText+" - "+horas)
+    modal.find('.modal-fecha').text(fecha)
+
+    modal.find('.modal-periodo').text(inicio.split("T")[0] + " al "+fin.split("T")[0])
+
+    modal.find('.modal-diario').text(numero)
+
+    modal.find('.modal-tema input').val(tema)
+    
+    modal.find('.modal-contenido input').val(contenido)
 
 })
