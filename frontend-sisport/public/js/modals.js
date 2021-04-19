@@ -1,6 +1,6 @@
 
 var myDropzone = new Dropzone("#myDropzone", {
-    url: "/home/Upload",
+    url: "/",
     autoProcessQueue: false,
     addRemoveLinks: true,
 
@@ -66,5 +66,17 @@ $('#subir').on('show.bs.modal', function (event) {
     myDropzone.hiddenFileInput.accept = type;
     myDropzone.options.paramName = paramName;
     myDropzone.options.parallelUploads = cantidad;
+
+})
+
+
+$('#diario').on('show.bs.modal', function (event) {
+
+
+    var button = $(event.relatedTarget)
+    var numero = button.data('numero')
+    var modal = $(this)
+
+    modal.find('.modal-title').text('DIARIO METACOGNITIVO ' + numero)
 
 })

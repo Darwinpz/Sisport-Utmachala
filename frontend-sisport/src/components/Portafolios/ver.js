@@ -8,6 +8,7 @@ import useUser from 'hooks/useUser'
 import usePerfil from 'hooks/usePerfil'
 import usePortafolio from "hooks/usePortafolio"
 import Upload from "components/Modals/upload"
+import Diario from "components/Modals/diario"
 import './index.css'
 
 export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
@@ -111,8 +112,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                                 {
                                                                                     portafolio_data.elementos_curriculares.apuntes.map(({ num_diario }) =>
 
-                                                                                        <li key={num_diario}><Link to="#" data-toggle="modal"
-                                                                                            data-target="#popupdiario">Diario Metacognitivo {num_diario}</Link>
+                                                                                        <li key={num_diario}><a style={{cursor:"pointer"}} href="/" data-toggle="modal" data-numero={num_diario}
+                                                                                            data-target="#diario">Diario Metacognitivo {num_diario}</a>
                                                                                         </li>
                                                                                     )
                                                                                 }
@@ -300,6 +301,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             }
 
             <Upload/>
+
+            <Diario/>
 
         </>
 

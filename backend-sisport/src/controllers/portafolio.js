@@ -58,14 +58,14 @@ PortafolioCtrl.add = async (req, res, next) => {
 
                                 fecha_diario.setDate(fecha_diario.getDate() + (dia.hor_num_dia - 1));
 
-                                const periodo_inicio =  periodos.peri_fecha_inicial
+                                const periodo_inicio = periodos.peri_fecha_inicial
                                 const periodo_final = periodos.peri_fecha_final
 
                                 json_diario = {
-                                    "num_diario": num_diario, "tiempo": dia.hor_cant_horas+ " HORAS",
+                                    "num_diario": num_diario, "tiempo": dia.hor_cant_horas + " HORAS",
                                     "fecha": dia.hor_dia + ", " + fecha_diario.getDate() + " DE " + obtener_mes(fecha_diario.getMonth()) + " DEL " + fecha_diario.getFullYear(),
-                                    "unidad": "", "periodo_inicio":periodo_inicio,"periodo_fin":periodo_final,
-                                    "tema": "", "problema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
+                                    "unidad": "", "periodo_inicio": periodo_inicio, "periodo_fin": periodo_final,
+                                    "tema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
                                     "resumen": "", "reflexion": "", "anexos": ""
                                 }
 
@@ -75,13 +75,13 @@ PortafolioCtrl.add = async (req, res, next) => {
 
 
                             })
-                            
+
                             fecha_inicio.setDate(fecha_inicio.getDate() + 7);
 
                         }
                     }
 
-                    busqueda.portafolios.push(portafolio(per_codigo,diarios))
+                    busqueda.portafolios.push(portafolio(per_codigo, diarios))
 
                     await busqueda.save()
 
@@ -138,7 +138,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                 const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
-                res.status(200).json({ "message": [{ estructura: busqueda.generales, portafolio_data:portafolio[0] }] });
+                res.status(200).json({ "message": [{ estructura: busqueda.generales, portafolio_data: portafolio[0] }] });
 
             }
         })
@@ -152,6 +152,74 @@ PortafolioCtrl.find = async (req, res, next) => {
     }
 
 }
+
+
+PortafolioCtrl.updateDiario = async (req, res, next) => {
+
+
+    var err = new Error();
+
+    try {
+
+
+
+        const { asig_codigo, peri_codigo, num_diario, tema, contenido, objetivo, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 } = req.body
+
+        const per_codigo = 1055
+
+        const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+        const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+        const esquema = EstructuraSchema.add(nombre_esquema)
+
+        const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+        var temp = []
+
+        for (var portafolio of busqueda.portafolios) {
+
+            if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+
+                portafolio.elementos_curriculares.apuntes[num_diario-1].tema = tema
+                portafolio.elementos_curriculares.apuntes[num_diario-1].contenido = contenido
+                portafolio.elementos_curriculares.apuntes[num_diario-1].objetivo = objetivo
+                portafolio.elementos_curriculares.apuntes[num_diario-1].actividades = actividades
+                portafolio.elementos_curriculares.apuntes[num_diario-1].estrategias = estrategias
+                portafolio.elementos_curriculares.apuntes[num_diario-1].resumen = resumen
+                portafolio.elementos_curriculares.apuntes[num_diario-1].preg1 = preg1
+                portafolio.elementos_curriculares.apuntes[num_diario-1].preg2 = preg2
+                portafolio.elementos_curriculares.apuntes[num_diario-1].preg3 = preg3
+                portafolio.elementos_curriculares.apuntes[num_diario-1].preg4 = preg4
+
+                break;
+            }
+
+        }
+
+        temp = busqueda.portafolios
+
+        busqueda.portafolios = []
+
+        busqueda.portafolios = temp
+
+        await busqueda.save()
+
+        res.status(200).json({ "message": "Diario Editado" });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+
+}
+
+
 
 function portafolio(per_codigo, diarios) {
 
