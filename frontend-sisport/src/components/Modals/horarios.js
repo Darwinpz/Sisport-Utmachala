@@ -47,7 +47,7 @@ export default function Horarios() {
     
     const [error,setError] = useState("");
 
-    const {addHorario,addEstructura} = useHORARIOS()
+    const {loading,addHorario,addEstructura} = useHORARIOS()
     
     const handleSubmit = () => {
       
@@ -94,11 +94,17 @@ export default function Horarios() {
             var clave = document.getElementById("clave").value
 
             if(clave != ""){    
+                
                 addHorario({arreglo:horas,asig_codigo,peri_codigo})
 
-                addEstructura({asig_codigo,peri_codigo,clave})
+                if (!loading){
 
-                window.location.reload()
+                    addEstructura({asig_codigo,peri_codigo,clave})
+
+                    window.location.reload()
+
+                }
+                
                 
             }else{
                 setError("Ingresa la clave de la asignatura")

@@ -1,6 +1,7 @@
 
 const EstructuraSchema = require('../models/estructura')
 const pool = require("../database/postgresql")
+const jwt = require("jsonwebtoken")
 
 const EstructuraCtrl = {};
 
@@ -45,14 +46,14 @@ EstructuraCtrl.add = async (req, res, next) => {
 
                 estructuraModel.generales.cod_asignatura = asig_codigo;
                 estructuraModel.generales.periodo = peri_codigo;
-                estructuraModel.generales.nombre_asignatura = asignatura[0].asig_nombre;
+                estructuraModel.generales.nombre_asignatura = asignatura.rows[0].asig_nombre;
                 estructuraModel.generales.syllabus = "";
                 estructuraModel.generales.contenidos = [];
                 estructuraModel.generales.cod_docente = docente_codigo;
                 estructuraModel.generales.nombre_docente = nombre_docente;
                 estructuraModel.generales.diarios = cant_diarios;
                 estructuraModel.generales.clave = clave;
-                estructuraModel.generales.identificador = asignatura[0].asig_identificador;
+                estructuraModel.generales.identificador = asignatura.rows[0].asig_identificador;
 
                 await estructuraModel.save();
 
@@ -68,6 +69,7 @@ EstructuraCtrl.add = async (req, res, next) => {
 
         err.message = e.message;
         err.status = 500;
+        console.log(err)
         next(err);
 
     }
