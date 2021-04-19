@@ -19,6 +19,11 @@ export default function useCarreras() {
             })
             .catch(err => {
                 setLoading(false)
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
                 //localStorage.removeItem('jwt')
                 console.log(err)
             })

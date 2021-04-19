@@ -24,6 +24,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
         if (!isLogged) {
             navigate("/login")
         }
+        console.log(isLogged)
     }, [isLogged, navigate])
 
     useScript("/js/file-explore.js")

@@ -21,7 +21,12 @@ export default function usePortafolios() {
             .catch(err => {
                 setLoading(false)
                 
-               //localStorage.removeItem('jwt')
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
+
                 console.log(err)
 
             })

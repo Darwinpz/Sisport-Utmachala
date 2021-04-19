@@ -19,6 +19,12 @@ export default function usePortafolio({asig_codigo,peri_codigo, per_codigo}) {
             })
             .catch(err => {
                 setLoading(false)
+                
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
                 //localStorage.removeItem('jwt')
                 console.log(err)
 

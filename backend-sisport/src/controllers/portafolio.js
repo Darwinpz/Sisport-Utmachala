@@ -62,7 +62,7 @@ PortafolioCtrl.add = async (req, res, next) => {
                                 const periodo_final = periodos.peri_fecha_final
 
                                 json_diario = {
-                                    "num_diario": num_diario, "tiempo": dia.hor_cant_horas+ "HORAS",
+                                    "num_diario": num_diario, "tiempo": dia.hor_cant_horas+ " HORAS",
                                     "fecha": dia.hor_dia + ", " + fecha_diario.getDate() + " DE " + obtener_mes(fecha_diario.getMonth()) + " DEL " + fecha_diario.getFullYear(),
                                     "unidad": "", "periodo_inicio":periodo_inicio,"periodo_fin":periodo_final,
                                     "tema": "", "problema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
