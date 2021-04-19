@@ -53,7 +53,6 @@ class asignaturasDocenState extends State<asignaturasDocen> {
           textColor: Colors.white,
           fontSize: 16.0);
       
-      debugPrint("aber: "+notesJson.toString());
     }
     return notes;
   }
@@ -125,9 +124,6 @@ class asignaturasDocenState extends State<asignaturasDocen> {
     http.Response response = await http
         .post('http://190.155.140.58:80/api/estructura/add', body: data, headers: {"Authorization":"bearer "+token});
 
-    Map<String, dynamic> datos = json.decode(response.body);
-
-    debugPrint("aber2: "+datos.toString());
 
     if(response.statusCode==200){
       Fluttertoast.showToast(

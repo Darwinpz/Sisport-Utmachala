@@ -2,44 +2,45 @@ import 'package:flutter/material.dart';
 import '../drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tree_view/tree_view.dart';
 import 'dart:convert';
 import 'diario.dart';
 
-class tree extends StatefulWidget {
+class treeAlumDocen extends StatefulWidget {
+
   final String asig_codigo;
   final String asig_nombre;
   final String peri_codigo;
-  final String docente;
-  const tree(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.docente);
+  final String per_codigo;
+  final String per_nombre;
+  final String per_apellido;
+  const treeAlumDocen(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.per_codigo, this.per_nombre, this.per_apellido);
 
   @override
-  treeState createState() => treeState();
+  treeAlumDocenState createState() => treeAlumDocenState();
 }
 
-class treeState extends State<tree> {
-  String token = "";
-  String codigo = "";
+class treeAlumDocenState extends State<treeAlumDocen> {
 
-  List<Note> _notes = List<Note>();
+  String token="";
+  String codigo="";
 
-  Future<List<Note>> buscarPortafolio() async {
+   List<Note> _notes = List<Note>();
+
+  Future<List<Note>> buscarPortafolio()async{
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString('token');
-      codigo = preferences.getString('codigo');
+      codigo=preferences.getString('codigo');
     });
 
-    Map data = {
-      'asig_codigo': widget.asig_codigo,
-      'peri_codigo': widget.peri_codigo,
-      'per_codigo': codigo
-    };
+    Map data = {'asig_codigo': widget.asig_codigo, 'peri_codigo': widget.peri_codigo, 'per_codigo':widget.per_codigo};
 
-    http.Response response = await http.post(
-        'http://190.155.140.58:80/api/portafolio/find',
-        body: data,
-        headers: {"Authorization": "bearer " + token});
+  
+
+    http.Response response = await http
+        .post('http://190.155.140.58:80/api/portafolio/find', body: data, headers: {"Authorization":"bearer "+token});
+
 
     var notes = List<Note>();
 
@@ -52,28 +53,41 @@ class treeState extends State<tree> {
     }
 
     return notes;
+
+
   }
 
-  
-
   @override
-  void initState() {
- 
+  void initState(){
     buscarPortafolio().then((value) {
       setState(() {
         _notes.addAll(value);
       });
     });
-    
+   
     super.initState();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(widget.asig_nombre, style: TextStyle(fontSize: 14),)),
+
+      return Scaffold(
+        appBar: AppBar(title: Column(children: [
+        Text(
+          widget.asig_nombre, style: TextStyle(fontSize: 14),
+        ),
+        GestureDetector(
+          child: Text('ESTUDIANTE: '+widget.per_nombre+" "+widget.per_apellido, style: TextStyle(fontSize: 12),),
+          onTap: () {
+            
+          },
+        )
+      ])),
         drawer: slideBar.MyDrawer(),
-        body: SingleChildScrollView(
+        body:SingleChildScrollView(
           child: Stack(children: <Widget>[
                     Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -140,12 +154,11 @@ class treeState extends State<tree> {
                     'c) Apuntes de clase',
                   ),
                   children: <Widget>[
-                    
                       ListView.builder(physics: NeverScrollableScrollPhysics(), scrollDirection: Axis.vertical, shrinkWrap: true,itemBuilder: (context, index){
                       return ListTile(
                       title: Text('DIARIO METACOGNITIVO '+_notes[index].num_diario.toString()),
                       leading: Icon(Icons.book),
-                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Diario("DIARIO METACOGNITIVO "+_notes[index].num_diario.toString(), _notes[index].num_diario.toString(), _notes[index].tiempo.toString(), _notes[index].fecha, codigo, widget.asig_codigo, widget.asig_nombre, widget.peri_codigo)));},
+                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Diario("DIARIO METACOGNITIVO "+_notes[index].num_diario.toString(), _notes[index].num_diario.toString(), _notes[index].tiempo.toString(), _notes[index].fecha, widget.per_codigo, widget.asig_codigo, widget.asig_nombre, widget.peri_codigo)));},
                     );
                     },  itemCount: _notes.length,)
 
@@ -296,22 +309,10 @@ class treeState extends State<tree> {
         ),
       ),
           ],),
-        ),);
+        ),
+
+      );
   }
-}
-
-
-class Note2{
-  String nombre_docente;
-
-  Note2(this.nombre_docente);
-
-  Note2.fromJson(Map<String, dynamic> json) {
-     nombre_docente=json['nombre_docente'];
-   }
-
-
-
 }
 
 class Note {

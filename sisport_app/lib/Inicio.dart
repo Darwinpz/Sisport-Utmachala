@@ -33,9 +33,6 @@ class _InicioState extends State<Inicio> {
 
     var notes = List<Note>();
 
-    debugPrint("Respuesta: " + response.body);
-    //debugPrint(response.statusCode.toString());
-
     if (response.statusCode == 200) {
       Map<String, dynamic> notesJson = json.decode(response.body);
       
@@ -43,7 +40,6 @@ class _InicioState extends State<Inicio> {
         notes.add(Note.fromJson(noteJson));
       }
 
-      // print(notesJson["message"][0]["asignaturas"]);
     } else if (response.statusCode == 403) {
       Fluttertoast.showToast(
           msg: "Su sesión ha caducado. Por favor ingrese sesión nuevamente.",
@@ -54,7 +50,7 @@ class _InicioState extends State<Inicio> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
-    debugPrint(_notes.length.toString());
+
     return notes;
   }
 
@@ -104,7 +100,7 @@ class _InicioState extends State<Inicio> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  _notes[index].asig_nombre)))
+                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente)))
                                     },
                                 child: Text('Ver portafolio'))
                             : FlatButton(

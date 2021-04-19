@@ -21,15 +21,17 @@ class MyRecordState extends State<MyRecord> {
 
    String token="";
    String tipo="";
+   String codigo="";
 
   List<Note> _notes = List<Note>();
 
-  Future<List<Note>> fecthNotes() async {
+  Future<List<Note>> asignaturas() async {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       token = preferences.getString('token');
       tipo=preferences.getString('tipo');
+      codigo=preferences.getString('codigo');
     });
 
     Map data = {'car_nombre': widget.recordName};
@@ -54,14 +56,13 @@ class MyRecordState extends State<MyRecord> {
           textColor: Colors.white,
           fontSize: 16.0);
       
-      debugPrint("aber: "+notesJson.toString());
     }
     return notes;
   }
 
   @override
   void initState(){
-    fecthNotes().then((value) {
+    asignaturas().then((value) {
       setState(() {
         _notes.addAll(value);
       });
@@ -107,7 +108,7 @@ class MyRecordState extends State<MyRecord> {
                 onPressed: () {
                   setState(() {
                     _textFieldController.clear();
-                    matricularse(asig_codigo, peri_codigo);
+                    matricularse(asig_codigo, peri_codigo, codigo);
                     codeDialog = valueText;
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
                     
@@ -119,16 +120,13 @@ class MyRecordState extends State<MyRecord> {
         });
   }
 
-  Future matricularse(int asig_codigo, int peri_codigo)async{
+  Future matricularse(int asig_codigo, int peri_codigo, String codigo)async{
 
-    Map data = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString()};
+    Map data = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'per_codigo':codigo};
 
     http.Response response = await http
-        .post('http://190.155.140.58:80/api/persona_asignatura/add', body: data, headers: {"Authorization":"bearer "+token});
+        .post('http://190.155.140.58:80/api/portafolio/add', body: data, headers: {"Authorization":"bearer "+token});
 
-    Map<String, dynamic> datos = json.decode(response.body);
-
-    debugPrint("aber2: "+datos.toString());
 
     if(response.statusCode==200){
       Fluttertoast.showToast(
@@ -147,9 +145,9 @@ class MyRecordState extends State<MyRecord> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: tipo=="ESTUDIANTE"? AppBar(title: Text("Matriculación")):AppBar(title: Text("Asignación de claves")),
+      appBar: AppBar(title: Text("Matriculación")),
       drawer: slideBar.MyDrawer(),
-      body:  ListView.builder(
+      body: _notes.length==0? Center(child: Text("Ninguna asignatura registrada para esta carrera.", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic))): ListView.builder(
         itemBuilder: (context, index) {
           return Card(
             shape:
@@ -171,7 +169,7 @@ class MyRecordState extends State<MyRecord> {
                           _notes[index].estado?_notes[index].matriculado==false ? FlatButton(
                                   onPressed: () => { _textFieldController.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre)},   
                                   child: Text('Matricularse')) : FlatButton(
-                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_nombre)))},   
+                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente)))},   
                                   child: Text('Ver portafolio')) :FlatButton(
                                   onPressed: () => { },   
                                   child: Text('Asignatura no activada'))
