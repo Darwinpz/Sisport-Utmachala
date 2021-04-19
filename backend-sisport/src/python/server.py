@@ -1,14 +1,14 @@
 
 from flask import Flask, request, jsonify
-#from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
 uploadAutonomo, uploadRefuerzo
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
 
 app = Flask(__name__,static_folder='./resources')
-#CORS(app, resources={r"/*": {"origins": "*"}})
-#app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MAX_CONTENT_LENGTH'] =  3 * 1024 * 1024
 app.config['EXTENSIONS_PERSONA'] = ['.xls', '.csv', '.xlsx']
 app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS']=[".pdf", ".doc", ".docx"]; 
@@ -24,27 +24,27 @@ def estudiante():
 def syllabus():
     return uploadSyllabus(request, app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS'])
 
-@app.route('/upload/evaluacion', methods=['POST'])
+@app.route('/upload/evaluaciones', methods=['POST'])
 def evaluacion():
     return uploadEvaluacion(request, app.config['EXTENSIONS_EVALUACIONES'])
 
-@app.route('/upload/investigacion', methods=['POST'])
+@app.route('/upload/investigaciones', methods=['POST'])
 def investigacion():
     return uploadInvestigacion(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/actividad', methods=['POST'])
+@app.route('/upload/actividades', methods=['POST'])
 def actividad():
     return uploadActividad(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/proyecto', methods=['POST'])
+@app.route('/upload/proyectos', methods=['POST'])
 def proyecto():
     return uploadProyecto(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/caso_estudio', methods=['POST'])
+@app.route('/upload/estudios', methods=['POST'])
 def caso_estudio():
     return uploadCasoEstudio(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/planteamiento', methods=['POST'])
+@app.route('/upload/planteamientos', methods=['POST'])
 def planteamiento():
     return uploadPlanteamiento(request, app.config['EXTENSIONS_OTROS'])
 
@@ -52,15 +52,15 @@ def planteamiento():
 def asistencia():
     return uploadAsistencia(request, app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS'])
 
-@app.route('/upload/observacion', methods=['POST'])
+@app.route('/upload/observaciones', methods=['POST'])
 def observacion():
     return uploadObservacion(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/intraclase', methods=['POST'])
+@app.route('/upload/intraclases', methods=['POST'])
 def intraclase():
     return uploadIntraclase(request, app.config['EXTENSIONS_INTRA_EXTRA'])
 
-@app.route('/upload/autonomo', methods=['POST'])
+@app.route('/upload/autonomos', methods=['POST'])
 def autonomo():
     return uploadAutonomo(request, app.config['EXTENSIONS_INTRA_EXTRA'])
 

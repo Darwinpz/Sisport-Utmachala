@@ -18,7 +18,7 @@ EstructuraCtrl.add = async (req, res, next) => {
 
             } else {
 
-                const { nombre_esquema, asig_codigo, peri_codigo, asig_nombre, clave } = req.body;
+                const { asig_codigo, peri_codigo, clave } = req.body;
 
                 const docente_codigo = data.usuario.per_codigo;
                 const nombre_docente = data.usuario.per_nombre;
@@ -27,7 +27,13 @@ EstructuraCtrl.add = async (req, res, next) => {
 
                 const periodos = periodo.rows[0];
 
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
                 var semanas = total_semanas(periodos.peri_fecha_inicial, periodos.peri_fecha_final)
+
+                const asignatura = await pool.query("SELECT asig_nombre, asig_identificador FROM asignatura where asig_codigo=$1", [asig_codigo]);
 
                 const horario = await pool.query("SELECT count(hor_codigo) FROM horario WHERE asig_codigo=$1 and peri_codigo=$2", [asig_codigo, peri_codigo]);
 
@@ -39,13 +45,14 @@ EstructuraCtrl.add = async (req, res, next) => {
 
                 estructuraModel.generales.cod_asignatura = asig_codigo;
                 estructuraModel.generales.periodo = peri_codigo;
-                estructuraModel.generales.nombre_asignatura = asig_nombre;
+                estructuraModel.generales.nombre_asignatura = asignatura[0].asig_nombre;
                 estructuraModel.generales.syllabus = "";
                 estructuraModel.generales.contenidos = [];
                 estructuraModel.generales.cod_docente = docente_codigo;
                 estructuraModel.generales.nombre_docente = nombre_docente;
                 estructuraModel.generales.diarios = cant_diarios;
                 estructuraModel.generales.clave = clave;
+                estructuraModel.generales.identificador = asignatura[0].asig_identificador;
 
                 await estructuraModel.save();
 

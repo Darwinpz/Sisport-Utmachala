@@ -52,7 +52,6 @@ def uploadEvaluacion(request, lista_extensions):
     
         if request.method == 'POST':
             archivos=request.files.getlist('file')
-            
             seperator=''
             fac_nombre= seperator.join(request.values.getlist('fac_nombre'))
             car_nombre= seperator.join(request.values.getlist('car_nombre'))
@@ -62,6 +61,7 @@ def uploadEvaluacion(request, lista_extensions):
             ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/d) Evaluaciones/')
 
             if len(archivos)<=7:
+                
                 for f in request.files.getlist('file'):
                     file_ext = os.path.splitext(f.filename)[1]
                     if file_ext not in lista_extensions:

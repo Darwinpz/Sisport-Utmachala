@@ -18,17 +18,18 @@ export default function Diario() {
 
     const {isDiarioLoading,updatediarios} = useDiarios()
 
+    
+    
+
     const handleSubmit = () => {
+
 
         var asig_codigo = document.getElementById("asig_codigo").innerText
         var peri_codigo = document.getElementById("peri_codigo").innerText
         var num_diario = document.getElementById("num_diario").innerText
-
-        //console.log(tema)
+        //console.log(objetivos)
         updatediarios({asig_codigo,peri_codigo,num_diario,tema,contenidos,objetivos,actividades,estrategias,resumen,preg1,preg2,preg3,preg4})
-        //updatediarios({as})
-        //useDiarios({asig_codigo:1,peri_codigo:1,tema,contenido,objetivo,actividades,estrategias,resumen,preg1,preg2,preg3,preg4})
-
+        
     };
 
     return (
@@ -77,12 +78,12 @@ export default function Diario() {
                                 placeholder="Tema"
                                 className="form-control border-primary"
                                 name="tema"
+                                id="tema"
                                 onChange={(e)=>setTEMA(e.target.value)}
-                                value={tema}
                             />
                         </div>
 
-                        <div className="form-group modal-contenido">
+                        <div className="form-group modal-contenidos">
                             <input
                                 placeholder="Contenidos"
                                 className="form-control border-primary"
@@ -91,14 +92,14 @@ export default function Diario() {
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group modal-objetivos">
                             <input
                                 type="text"
                                 placeholder="Objetivo"
                                 className="form-control border-primary"
                                 name="objetivos"
+                                id="objetivos"
                                 onChange={(e)=>setOBJETIVOS(e.target.value)}
-                                value={objetivo}
                             />
                         </div>
                         <div className="form-group">
@@ -108,7 +109,6 @@ export default function Diario() {
                                 className="form-control border-primary"
                                 name="actividades"
                                 onChange={(e)=>setACTIVIDADES(e.target.value)}
-                                value={actividades}
                             />
                         </div>
                         <div className="form-group">
@@ -118,7 +118,6 @@ export default function Diario() {
                                 className="form-control border-primary"
                                 name="estrategias"
                                 onChange={(e)=>setESTRATEGIAS(e.target.value)}
-                                value={estrategias}
                             />
                         </div>
                         <div className="form-group">
@@ -128,7 +127,6 @@ export default function Diario() {
                                 className="form-control border-primary"
                                 name="resumen"
                                 onChange={(e)=>setRESUMEN(e.target.value)}
-                                value={resumen}
                             />
                         </div>
                         <h5>Reflexionar: </h5>
@@ -140,7 +138,6 @@ export default function Diario() {
                                 placeholder="Respuesta..."
                                 name="preg1"
                                 onChange={(e)=>setPREG1(e.target.value)}
-                                value={preg1}
                             />
                         </div>
                         <span>¿Cuáles fueron fáciles?:</span>
@@ -151,7 +148,6 @@ export default function Diario() {
                                 placeholder="Respuesta..."
                                 name="preg2"
                                 onChange={(e)=>setPREG2(e.target.value)}
-                                value={preg2}
                             />
                         </div>
                         <span>¿Por qué?:</span>
@@ -162,7 +158,6 @@ export default function Diario() {
                                 className="form-control border-primary"
                                 name="preg3"
                                 onChange={(e)=>setPREG3(e.target.value)}
-                                value={preg3}
                             />
                         </div>
                         <span>¿Qué aprendí hoy?:</span>
@@ -173,7 +168,6 @@ export default function Diario() {
                                 className="form-control border-primary"
                                 name="preg4"
                                 onChange={(e)=>setPREG4(e.target.value)}
-                                value={preg4}
                             />
                         </div>
 
