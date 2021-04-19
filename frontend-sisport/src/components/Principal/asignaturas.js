@@ -65,9 +65,10 @@ export default function Asignaturas({ asignaturas }) {
                                     }
                                     {
                                         matriculado &&
-
+                                        <>
                                         <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
-
+                                    
+                                        </>
                                     }
 
                                 </div>

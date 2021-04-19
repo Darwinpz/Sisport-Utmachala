@@ -7,6 +7,8 @@ import { useLocation } from "wouter"
 import useUser from 'hooks/useUser'
 import usePerfil from 'hooks/usePerfil'
 import usePortafolio from "hooks/usePortafolio"
+import Upload from "components/Modals/upload"
+import Diario from "components/Modals/diario"
 import './index.css'
 
 export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
@@ -19,13 +21,16 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
     const [, navigate] = useLocation()
 
+
     useEffect(() => {
         if (!isLogged) {
             navigate("/login")
         }
+
     }, [isLogged, navigate])
 
     useScript("/js/file-explore.js")
+
 
     return (
 
@@ -39,12 +44,14 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
-                                        perfil.per_tipo !=="ESTUDIANTE"&&
-                                        " ESTUDIANT"
+                                        perfil.per_tipo !== "ESTUDIANTE" &&
+                                        " ESTUDIANTE"
+
                                     }
-                                 </h4>
+                                </h4>
 
                             )
+
                         }
 
 
@@ -65,7 +72,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                 {
                                                     portafolio.map(({ estructura }) =>
 
-                                                        <Link to="#" to="#" key={estructura.cod_asignatura}>{estructura.nombre_asignatura}</Link>
+                                                        <div key={estructura.cod_asignatura} >
+                                                            <Link to="#" to="#" id="asignatura_nombre">{estructura.nombre_asignatura}</Link>
+
+                                                            <p style={{ display: "none" }} id="asig_codigo">{estructura.cod_asignatura}</p>
+                                                            <p  style={{ display: "none" }} id="peri_codigo">{estructura.periodo}</p>
+                                                        </div>
                                                     )
 
                                                 }
@@ -101,18 +113,54 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <li><Link to="#" >c) Apuntes de clase</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Diario Metacognitivo 1</Link>
-                                                                    </li>
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario, tiempo, fecha, periodo_inicio, periodo_fin, tema,objetivo,actividades,estrategias,resumen,contenido,preg1,preg2,preg3,preg4}) =>
+
+                                                                                        <li key={num_diario}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-numero={num_diario}
+                                                                                            data-horas={tiempo} data-fecha={fecha} data-inicio={periodo_inicio} data-fin={periodo_fin} 
+                                                                                            
+                                                                                            data-tema={tema} data-actividades={actividades} data-estrategias={estrategias} data-resumen={resumen} data-contenido={contenido} data-preg1={preg1}
+                                                                                            data-objetivo={objetivo} data-preg2={preg2} data-preg3={preg3} data-preg4={preg4}
+                                                                                            
+                                                                                            data-target="#diario">Diario Metacognitivo {num_diario}</a>
+                                                                                        </li>
+                                                                                    )
+                                                                                }
+
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >d) Evaluaciones</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Evaluación </Link></li>
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Evaluaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.evaluaciones.map(() =>
+
+                                                                                        <li><Link to="#" data-toggle="modal"
+                                                                                            data-target="#popupdiario">Evaluación </Link></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
+
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Evaluaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -122,8 +170,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Investigacion </Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Investigaciones" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Investigaciones" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -133,8 +181,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">experimentación</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Actividades" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Actividades" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -144,8 +192,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Proyectos</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Proyectos" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Proyectos" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -155,8 +203,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Estudio de caso</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Estudios" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Estudios" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -165,8 +213,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                 <ul>
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Problemas</Link></li>
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Planteamientos" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Planteamientos" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -184,8 +232,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Observacion</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Observaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Observaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -195,8 +243,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Intraclases</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Intraclases" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Intraclases" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -206,8 +254,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Autonomos</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Autonomos" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Autonomos" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -217,8 +265,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     <li><Link to="#" data-toggle="modal"
                                                                         data-target="#popupdiario">Refuerzos</Link></li>
 
-                                                                    <li className="subida"><Link to="#" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Refuerzo" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</Link></li>
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-titulo="Refuerzo" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -264,6 +312,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                 </div>
             }
+
+            <Upload />
+
+            <Diario />
 
         </>
 

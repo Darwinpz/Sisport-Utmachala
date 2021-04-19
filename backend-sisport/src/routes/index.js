@@ -68,6 +68,7 @@ module.exports = (app) => {
 
     //RUTAS DE LAS PERSONAS
     app.get('/api/persona', validarToken, persona.all);
+    app.post('/api/persona/rol', validarToken, persona.all_rol);
     app.get('/api/persona/perfil', validarToken, persona.perfil);
     app.post('/api/persona/login', persona.login);
     app.post('/api/persona/add', validarToken, persona.add);
@@ -107,7 +108,9 @@ module.exports = (app) => {
 
     //RUTAS DEL PORTAFOLIO
     app.post('/api/portafolio/add', validarToken, portafolio.add)
+    app.post('/api/portafolio/diario',validarToken, portafolio.updateDiario)
     app.post('/api/portafolio/find', validarToken, portafolio.find)
+
 
     function validarToken(req, res, next) {
 

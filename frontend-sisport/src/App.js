@@ -11,17 +11,16 @@ import Asignaturas from "pages/Asignaturas/index"
 import Docentes from "pages/Docentes/index"
 
 import { Route, Switch } from "wouter";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
-import 'popper.js';
 import Navbar from 'components/Navbar'
 import { UserContextProvider } from "context/UserContext";
 import { CarrerasContextProvider } from "context/CarrerasContext";
 import { AsignaturasContextProvider } from "context/AsignaturasContext";
 import { PortafoliosContextProvider } from "context/PortafoliosContext";
 import { PerfilContextProvider } from "context/PerfilContext";
-import {MatriculadosContextProvider} from "context/MatriculadosContext";
-import {PortafolioContextProvider} from "context/PortafolioContext"
+import { MatriculadosContextProvider } from "context/MatriculadosContext";
+import { PortafolioContextProvider } from "context/PortafolioContext";
+import { UsuariosContextProvider } from "context/UsuariosContext"
+import { DiariosContextProvider } from "context/DiariosContext"
 
 export default function App() {
   return (
@@ -40,26 +39,26 @@ export default function App() {
               <Route component={Login} path="/login" />
 
               <Route component={Perfil} path="/perfil" />
-              <Route component={Estudiantes} path="/estudiantes" />
-              <Route component={Docentes} path="/docentes" />
-              <Route component={Asignaturas} path="/asignaturas" />
-
-              
 
               <PortafoliosContextProvider>
-                
+
                 <Route component={Portafolio} path="/portafolios" />
-                
+
                 <PortafolioContextProvider>
-                  <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
+
+                  <DiariosContextProvider>
+                    
+                    <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
+
+                  </DiariosContextProvider>
 
                 </PortafolioContextProvider>
-                
+
                 <MatriculadosContextProvider>
-                
+
                   <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo" />
 
-               </MatriculadosContextProvider>
+                </MatriculadosContextProvider>
 
                 <CarrerasContextProvider>
                   <Route component={Principal} path="/principal" />
@@ -67,6 +66,18 @@ export default function App() {
                     <Route component={Principal} path="/principal/:car_nombre" />
                   </AsignaturasContextProvider>
                 </CarrerasContextProvider>
+
+
+                <UsuariosContextProvider>
+
+                  <Route component={Estudiantes} path="/estudiantes" />
+                  <Route component={Docentes} path="/docentes" />
+
+
+                </UsuariosContextProvider>
+
+
+                <Route component={Asignaturas} path="/asignaturas" />
 
               </PortafoliosContextProvider>
 

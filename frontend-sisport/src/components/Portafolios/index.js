@@ -18,6 +18,7 @@ export default function Portafolios() {
 
         <>
             {
+                
                 portafolios.map(({ periodo, asignaturas }) =>
 
                     <div key={`periodo-${periodo}`}>
@@ -28,6 +29,7 @@ export default function Portafolios() {
 
                                 <h3>* PERIODO {periodo} *</h3>
 
+                                
                             </div>
 
                         </div>
@@ -51,6 +53,8 @@ export default function Portafolios() {
                                                     <>
                                                         <p className="card-text mb-3">{docente}</p>
                                                         <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`}>Ver Portafolio</a>
+                                                    
+
                                                     </>
                                                 }
 

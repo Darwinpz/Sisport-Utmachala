@@ -37,6 +37,11 @@ export default function useUser() {
             .then(setMATRICULA)
             .catch(err => {
                 console.log(err)
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
             })
 
     }, [jwt, setMATRICULA])

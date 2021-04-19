@@ -1,37 +1,37 @@
 import { useContext, useState, useEffect } from 'react'
-import Context from 'context/CarrerasContext'
-import carreraService from 'services/carreras'
+import Context from 'context/UsuariosContext'
+import usuariosService from 'services/usuarios'
 
-export default function useCarreras() {
+export default function useCarreras({rol}) {
 
-    const {carreras, setCARRERAS} = useContext(Context)
+    const {usuarios, setUSUARIOS} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
-    //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
 
     useEffect(function () {
         setLoading(true)
-        carreraService({jwt})
-            .then(carr => {
-                setCARRERAS(carr)
+        usuariosService({rol,jwt})
+            .then(users => {
+                setUSUARIOS(null)
+                setUSUARIOS(users)
                 setLoading(false)
             })
             .catch(err => {
                 setLoading(false)
+                //localStorage.removeItem('jwt')
+                console.log(err)
                 if(err.message === "403"){
 
                     localStorage.removeItem('jwt')
 
                 }
-                //localStorage.removeItem('jwt')
-                console.log(err)
             })
-    }, [jwt,setCARRERAS])
+    }, [rol,jwt,setUSUARIOS])
 
     return {
         loading,
-        carreras
+        usuarios
     }
 
 }

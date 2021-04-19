@@ -20,6 +20,11 @@ export default function useAsignaturas({car_nombre}) {
             .catch(err => {
                 setLoading(false)
                 
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
                 //localStorage.removeItem('jwt')
                 console.log(err)
             })
