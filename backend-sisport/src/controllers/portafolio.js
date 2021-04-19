@@ -138,7 +138,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                 const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
-                res.status(200).json({ "message": [{ estructura: busqueda.generales, portafolio_data: portafolio[0] }] });
+                res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema:nombre_esquema, portafolio_data: portafolio[0] }] });
 
             }
         })

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import usePortafolios from 'hooks/usePortafolios'
 import usePerfil from 'hooks/usePerfil'
 import Horario from 'components/Modals/horarios'
+import useScript from "hooks/useScript";
 
 export default function Portafolios() {
 
@@ -11,8 +12,9 @@ export default function Portafolios() {
 
     const { perfil } = usePerfil()
 
-    const [clave, setCLAVE] = useState("");
+    const [clave,setCLAVE] = useState("");
 
+    useScript("/js/modalhorario.js")
 
     return (
 
@@ -73,13 +75,15 @@ export default function Portafolios() {
                                                         {
                                                             !asig_est_estado &&
                                                             <div className="d-flex justify-content-between align-items-center">
-                                                                <input type="text" className="form-control mr-2" onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
-                                                                <button className="btn btn-success" type="button" data-toggle="modal" data-target={`#horario${asig_codigo}`} >Activar</button>
-
+                                                                <input type="text" className="form-control mr-2" id="clave" onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
+                                                                <button className="btn btn-success" type="button" data-toggle="modal" data-target="#horario" data-asignatura={asig_nombre} >Activar</button>
+                                                                <p style={{ display: "none" }} id="asig_codigo">{asig_codigo}</p>
+                                                                <p  style={{ display: "none" }} id="peri_codigo">{peri_codigo}</p>
+                                                            
                                                             </div>
                                                         }
 
-                                                        <Horario asig_nombre={asig_nombre} id={`horario${asig_codigo}`} />
+                                                        
 
                                                     </>
 
@@ -105,6 +109,7 @@ export default function Portafolios() {
 
             }
 
+            <Horario  />
 
         </>
 

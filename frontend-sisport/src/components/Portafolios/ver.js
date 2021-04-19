@@ -21,7 +21,6 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
     const [, navigate] = useLocation()
 
-
     useEffect(() => {
         if (!isLogged) {
             navigate("/login")
@@ -70,6 +69,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                         <ul className="file-tree">
                                             <li>
                                                 {
+                                                    
                                                     portafolio.map(({ estructura }) =>
 
                                                         <div key={estructura.cod_asignatura} >
@@ -77,19 +77,26 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <p style={{ display: "none" }} id="asig_codigo">{estructura.cod_asignatura}</p>
                                                             <p  style={{ display: "none" }} id="peri_codigo">{estructura.periodo}</p>
+                                                            
+                                                            <p  style={{ display: "none" }} id="identificador">{estructura.identificador}</p>
+                                                            <p  style={{ display: "none" }} id="per_cedula">{perfil.per_cedula}</p>
+                                                            
                                                         </div>
                                                     )
+                                                    
 
                                                 }
+                                                {
+                                                    portafolio.map(({nombre_esquema})=>
+                                                    <p  style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
+                                                    )
+                                                }
+                                                
                                                 <ul>
                                                     <li><Link to="#" >1. Datos Informativos</Link>
                                                         <ul>
                                                             <li><Link to="#" data-toggle="modal"
-                                                                data-target="#popupconfirmar">Información General</Link></li>
-                                                            <li><Link to="#" data-toggle="modal"
                                                                 data-target="#popupconfirmar">Carta de Compromiso</Link></li>
-                                                            <li><Link to="#" data-toggle="modal"
-                                                                data-target="#popupconfirmar">Datos Personales</Link></li>
                                                         </ul>
                                                     </li>
 
@@ -118,13 +125,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         portafolio.map(({ portafolio_data }) =>
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
-                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario, tiempo, fecha, periodo_inicio, periodo_fin, tema,objetivo,actividades,estrategias,resumen,contenido,preg1,preg2,preg3,preg4}) =>
+                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario, tiempo, fecha, periodo_inicio, periodo_fin, tema,objetivos,actividades,estrategias,resumen,contenidos,preg1,preg2,preg3,preg4}) =>
 
                                                                                         <li key={num_diario}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-numero={num_diario}
                                                                                             data-horas={tiempo} data-fecha={fecha} data-inicio={periodo_inicio} data-fin={periodo_fin} 
                                                                                             
-                                                                                            data-tema={tema} data-actividades={actividades} data-estrategias={estrategias} data-resumen={resumen} data-contenido={contenido} data-preg1={preg1}
-                                                                                            data-objetivo={objetivo} data-preg2={preg2} data-preg3={preg3} data-preg4={preg4}
+                                                                                            data-tema={tema} data-actividades={actividades} data-estrategias={estrategias} data-resumen={resumen} data-contenidos={contenidos} data-preg1={preg1}
+                                                                                            data-objetivos={objetivos} data-preg2={preg2} data-preg3={preg3} data-preg4={preg4}
                                                                                             
                                                                                             data-target="#diario">Diario Metacognitivo {num_diario}</a>
                                                                                         </li>

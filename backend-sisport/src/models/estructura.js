@@ -20,7 +20,8 @@ EstructuraCtrl.add = (nombre) => {
                 cod_docente: {type: String},
                 nombre_docente: {type:String},
                 diarios: {type: Number},
-                clave: {type: String}
+                clave: {type: String},
+                identificador:{type: String}
     
             },
     

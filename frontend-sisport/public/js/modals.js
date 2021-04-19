@@ -24,6 +24,17 @@ var myDropzone = new Dropzone("#myDropzone", {
 
         this.on('sending', function (file, xhr, formData) {
 
+            var esquema = document.getElementById("esquema").innerText
+            var identificador = document.getElementById("identificador").innerText
+            var periodo = document.getElementById("peri_codigo").innerText
+            var cedula = document.getElementById("per_cedula").innerText
+
+            formData.append("fac_nombre", esquema.split(".")[0]);
+            formData.append("car_nombre", esquema.split(".")[1]);
+            formData.append("asig_identificador", identificador + periodo);
+            formData.append("per_cedula", cedula);
+
+
         });
 
     }
@@ -59,13 +70,14 @@ $('#subir').on('show.bs.modal', function (event) {
     modal.find('.modal-type').text('Formato: "' + type + '"')
 
 
-    myDropzone.options.url = "/subir/" + titulo.toLowerCase();
+    myDropzone.options.url = "http://localhost:4555/upload/" + titulo.toLowerCase();
     myDropzone.options.maxFiles = cantidad;
     myDropzone.options.maxFilesize = size;
     myDropzone.options.acceptedFiles = type;
     myDropzone.hiddenFileInput.accept = type;
-    myDropzone.options.paramName = paramName;
+    myDropzone.options.paramName = "file";
     myDropzone.options.parallelUploads = cantidad;
+
 
 })
 
@@ -78,7 +90,8 @@ $('#diario').on('show.bs.modal', function (event) {
     var fecha = button.data('fecha')
     var inicio = button.data('inicio')
     var tema = button.data('tema')
-    var contenido = button.data('contenido')
+    var contenidos = button.data('contenidos')
+    var objetivos = button.data('objetivos')
 
     var fin = button.data('fin')
     var modal = $(this)
@@ -87,15 +100,17 @@ $('#diario').on('show.bs.modal', function (event) {
 
     var nombre = document.getElementById("asignatura_nombre")
 
-    modal.find('.modal-materia').text(nombre.innerText+" - "+horas)
+    modal.find('.modal-materia').text(nombre.innerText + " - " + horas)
     modal.find('.modal-fecha').text(fecha)
 
-    modal.find('.modal-periodo').text(inicio.split("T")[0] + " al "+fin.split("T")[0])
+    modal.find('.modal-periodo').text(inicio.split("T")[0] + " al " + fin.split("T")[0])
 
     modal.find('.modal-diario').text(numero)
 
     modal.find('.modal-tema input').val(tema)
-    
-    modal.find('.modal-contenido input').val(contenido)
+
+    modal.find('.modal-contenidos input').val(contenidos)
+
+    modal.find('.modal-objetivos input').val(objetivos)
 
 })

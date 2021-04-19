@@ -62,17 +62,46 @@ HorarioCtrl.add = async (req, res, next) => {
 
     try {
 
-        const { hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia } = req.body;
+        //const { hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia } = req.body;
 
-        await pool.query("INSERT INTO horario (hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia)"
-            + "values($1,$2,$3,$4,$5,$6,$7)", [hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia]);
+        const { arreglo, asig_codigo, peri_codigo } = req.body
 
-        res.status(200).json({ "message": "Horario Agregado" });
+        var dia_temp = 0;
+        var fin_temp = "";
+
+        if (arreglo.length > 0) {
+
+            for (var i = 0; i < arreglo.length; i++) {
+
+                var dia = arreglo[i]
+
+                if (dia.num_dia == dia_temp && dia.inicio == fin_temp) {
+
+                    await pool.query("UPDATE horario set hor_hora_final=$1, hor_cant_horas=hor_cant_horas+1 where asig_codigo=$2 and peri_codigo=$3"
+                        , [dia.fin, asig_codigo, peri_codigo]);
+
+                } else {
+
+                    await pool.query("INSERT INTO horario (hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia)"
+                        + " values($1,$2,$3,$4,$5,$6,$7)", [obtener_dia(dia.num_dia), dia.inicio, dia.fin, 1, asig_codigo, peri_codigo, dia.num_dia]);
+
+                    dia_temp = dia.num_dia;
+                    fin_temp = dia.fin;
+                }
+
+            }
+
+            await pool.query("UPDATE asignatura_estado set asig_est_estado=$1 where asig_est_asig_codigo=$2 and asig_est_peri_codigo=$3"
+                , [true,asig_codigo,peri_codigo]);
+
+            res.status(200).json({ "message": "Horario Agregado" });
+        }
 
 
     } catch (e) {
 
         err.message = e.message;
+        console.log(err.message)
         err.status = 500;
         next(err);
 
@@ -80,6 +109,15 @@ HorarioCtrl.add = async (req, res, next) => {
 
 
 }
+
+function obtener_dia(num_dia) {
+
+    var dias = ['LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES'];
+
+    return dias[num_dia - 1];
+
+}
+
 
 /*
     * Edita un Horario de la BD

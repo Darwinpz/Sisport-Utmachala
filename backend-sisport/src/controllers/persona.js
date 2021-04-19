@@ -146,7 +146,7 @@ PersonaCtrl.perfil = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const persona = await pool.query("SELECT per_codigo, per_nombre, per_apellido, per_correo, per_direccion, per_titulo, per_telef_celular, per_sexo, per_tipo FROM persona WHERE per_codigo=$1", [per_codigo]);
+                const persona = await pool.query("SELECT per_codigo,per_cedula, per_nombre, per_apellido, per_correo, per_direccion, per_titulo, per_telef_celular, per_sexo, per_tipo FROM persona WHERE per_codigo=$1", [per_codigo]);
 
                 const resultado = persona.rows[0];
 
