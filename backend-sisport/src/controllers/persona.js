@@ -27,6 +27,42 @@ PersonaCtrl.all = async (req, res, next) => {
 }
 
 /*
+    * Retorna todos los registros de las Personas o Usuarios por ROL
+*/
+PersonaCtrl.all_rol = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const { rol } = req.body;
+
+                const personas = await pool.query("SELECT per_codigo, per_cedula, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1", [rol]);
+
+                res.status(200).json({ "message": personas.rows });
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+/*
     * Retorna El usuario actual
 */
 PersonaCtrl.login = async (req, res, next) => {

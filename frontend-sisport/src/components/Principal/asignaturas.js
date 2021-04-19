@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 import useUser from 'hooks/useUser'
 import usePerfil from 'hooks/usePerfil'
-import { Link } from "wouter";
 
 export default function Asignaturas({ asignaturas }) {
 
