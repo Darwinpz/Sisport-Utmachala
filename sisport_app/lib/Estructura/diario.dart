@@ -621,7 +621,7 @@ class _DiarioState extends State<Diario> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(30.0)),
                       child: Text('Guardar',
-                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                          style: TextStyle(color: Colors.white, fontSize: 17)),
                     ),
                   )
                 ],
