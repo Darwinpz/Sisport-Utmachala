@@ -21,6 +21,11 @@ export default function useCarreras({rol}) {
                 setLoading(false)
                 //localStorage.removeItem('jwt')
                 console.log(err)
+                if(err.message === "403"){
+
+                    localStorage.removeItem('jwt')
+
+                }
             })
     }, [rol,jwt,setUSUARIOS])
 
