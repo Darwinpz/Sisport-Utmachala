@@ -1,11 +1,8 @@
 
 import React from "react";
 
-import useScript from 'hooks/useScript'
 
 export default function Upload() {
-
-    useScript("/js/modals.js")
 
     return (
 

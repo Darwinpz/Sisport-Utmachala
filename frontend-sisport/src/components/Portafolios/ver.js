@@ -9,6 +9,10 @@ import usePerfil from 'hooks/usePerfil'
 import usePortafolio from "hooks/usePortafolio"
 import Upload from "components/Modals/upload"
 import Diario from "components/Modals/diario"
+import Archivos from "components/Modals/archivos"
+import Expectativas from "components/Modals/expectativas"
+import Informe from "components/Modals/informe"
+
 import './index.css'
 
 export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
@@ -29,6 +33,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
     }, [isLogged, navigate])
 
     useScript("/js/file-explore.js")
+    useScript("/js/modals.js")
 
 
     return (
@@ -69,29 +74,29 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                         <ul className="file-tree">
                                             <li>
                                                 {
-                                                    
+
                                                     portafolio.map(({ estructura }) =>
 
                                                         <div key={estructura.cod_asignatura} >
                                                             <Link to="#" to="#" id="asignatura_nombre">{estructura.nombre_asignatura}</Link>
 
                                                             <p style={{ display: "none" }} id="asig_codigo">{estructura.cod_asignatura}</p>
-                                                            <p  style={{ display: "none" }} id="peri_codigo">{estructura.periodo}</p>
-                                                            
-                                                            <p  style={{ display: "none" }} id="identificador">{estructura.identificador}</p>
-                                                            <p  style={{ display: "none" }} id="per_cedula">{perfil.per_cedula}</p>
-                                                            
+                                                            <p style={{ display: "none" }} id="peri_codigo">{estructura.periodo}</p>
+
+                                                            <p style={{ display: "none" }} id="identificador">{estructura.identificador}</p>
+                                                            <p style={{ display: "none" }} id="per_cedula">{perfil.per_cedula}</p>
+
                                                         </div>
                                                     )
-                                                    
+
 
                                                 }
                                                 {
-                                                    portafolio.map(({nombre_esquema})=>
-                                                    <p  style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
+                                                    portafolio.map(({ nombre_esquema }) =>
+                                                        <p style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
                                                     )
                                                 }
-                                                
+
                                                 <ul>
                                                     <li><Link to="#" >1. Datos Informativos</Link>
                                                         <ul>
@@ -105,16 +110,22 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <li><Link to="#" >a) Syllabus</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupconfirmar">Syllabus</Link>
-                                                                    </li>
+                                                                    {
+                                                                        portafolio.map(({ estructura }) =>
+
+                                                                            estructura.syllabus &&
+                                                                            <li key={estructura.syllabus}><a style={{ cursor: "pointer" }} href="#" >{estructura.syllabus}</a></li>
+
+                                                                        )
+
+                                                                    }
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >b) Expectativas del curso</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupconfirmar">Expectativas</Link></li>
+                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#expectativas">Expectativas</a></li>
                                                                 </ul>
                                                             </li>
 
@@ -125,11 +136,11 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         portafolio.map(({ portafolio_data }) =>
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
-                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario, tiempo, fecha, periodo_inicio, periodo_fin, tema,objetivos,actividades,estrategias,resumen,contenidos,preg1,preg2,preg3,preg4}) =>
+                                                                                    portafolio_data.elementos_curriculares.apuntes.map(({ num_diario, tiempo, fecha, periodo_inicio, periodo_fin }) =>
 
                                                                                         <li key={num_diario}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-numero={num_diario}
-                                                                                            data-horas={tiempo} data-fecha={fecha} data-inicio={periodo_inicio} data-fin={periodo_fin} 
-                                                                                            
+                                                                                            data-horas={tiempo} data-fecha={fecha} data-inicio={periodo_inicio} data-fin={periodo_fin}
+
                                                                                             data-target="#diario">Diario Metacognitivo {num_diario}</a>
                                                                                         </li>
                                                                                     )
@@ -151,10 +162,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         portafolio.map(({ portafolio_data }) =>
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
-                                                                                    portafolio_data.elementos_curriculares.evaluaciones.map(() =>
+                                                                                    portafolio_data.elementos_curriculares.evaluaciones.map(({ nombre_archivo }) =>
 
-                                                                                        <li><Link to="#" data-toggle="modal"
-                                                                                            data-target="#popupdiario">Evaluación </Link></li>
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="evaluaciones" data-titulo="EVALUACIÓN" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
                                                                                     )
                                                                                 }
 
@@ -164,113 +175,259 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Evaluaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="evaluaciones" data-titulo="EVALUACIONES" data-cant="3" data-size="2" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >e) Investigaciones</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Investigacion </Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.investigaciones.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="investigaciones" data-titulo="INVESTIGACION" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Investigaciones" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="investigaciones" data-titulo="INVESTIGACIONES" data-cant="5" data-size="3" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >f) Actividades de experimentación</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">experimentación</Link></li>
+                                                                    {
 
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.actividades.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="actividades" data-titulo="ACTIVIDAD DE EXPERIMENTACIÓN" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Actividades" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="actividades" data-titulo="ACTIVIDADES DE EXPERIMENTACIÓN" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >g) Proyectos</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Proyectos</Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.proyectos.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="proyectos" data-titulo="PROYECTO" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Proyectos" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="proyectos" data-titulo="PROYECTOS" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >h) Estudios de caso</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Estudio de caso</Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.casos_estudio.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="casos_estudio" data-titulo="ESTUDIOS DE CASO" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Estudios" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="casos_estudio" data-titulo="ESTUDIOS DE CASO" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >i) Planteamiento de problemas</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Problemas</Link></li>
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.planteamientos.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="planteamientos" data-titulo="PLANTEAMIENTO DE PROBLEMAS" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
+
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Planteamientos" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="planteamientos" data-titulo="PLANTEAMIENTO DE PROBLEMAS" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >j) Registro de asistencia</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupconfirmar">Asistencia</Link></li>
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.asistencia.nombre_archivo &&
+                                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre="Asistencia.docx">Asistencia</a></li>
+
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
+
+                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                        data-target="#subir" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-cant="1" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx">Subir Asistencia</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >k) Registro de observaciones</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Observacion</Link></li>
 
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.observaciones.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="observaciones" data-titulo="REGISTRO DE OBSERVACIÓN" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Observaciones" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="observaciones" data-titulo="REGISTRO DE OBSERVACIONES" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >l) Tareas intraclases</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Intraclases</Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.intraclases.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="intraclases" data-titulo="TAREA INTRACLASE" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Intraclases" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="intraclases" data-titulo="TAREAS INTRACLASES" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >m) Tareas autónomas</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Autonomos</Link></li>
+
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.autonomos.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="autonomos" data-titulo="TAREA AUTÓNOMA" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Autonomos" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="autonomos" data-titulo="TAREAS AUTÓNOMAS" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
 
                                                             <li><Link to="#" >n) Tareas de Refuerzo</Link>
                                                                 <ul>
-                                                                    <li><Link to="#" data-toggle="modal"
-                                                                        data-target="#popupdiario">Refuerzos</Link></li>
+                                                                    {
+
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.refuerzo.map(({ nombre_archivo }) =>
+
+                                                                                        <li key={nombre_archivo}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-tipo="refuerzo" data-titulo="TAREA DE REFUERZO" data-nombre={nombre_archivo}
+                                                                                            data-target="#archivo">{nombre_archivo}</a></li>
+                                                                                    )
+                                                                                }
+
+                                                                            </div>
+                                                                        )
+
+                                                                    }
 
                                                                     <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-titulo="Refuerzo" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                        data-target="#subir" data-tipo="refuerzo" data-titulo="TAREAS DE REFUERZO" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
                                                                 </ul>
                                                             </li>
@@ -280,8 +437,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                     <li id="informe_final"><Link to="#" >3. Informe final</Link>
                                                         <ul>
-                                                            <li><Link to="#" data-toggle="modal"
-                                                                data-target="#informe">Informe</Link></li>
+                                                            <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                data-target="#informe">Informe</a></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
@@ -320,6 +477,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             <Upload />
 
             <Diario />
+
+            <Archivos />
+
+            <Informe />
+
+            <Expectativas />
 
         </>
 

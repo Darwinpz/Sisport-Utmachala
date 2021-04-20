@@ -181,21 +181,21 @@ PortafolioCtrl.getDiario = async (req, res, next) => {
                 const esquema = EstructuraSchema.add(nombre_esquema)
 
                 const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
-                
-                if (busqueda){
+
+                if (busqueda) {
 
                     const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
-    
+
                     const diario = portafolio.elementos_curriculares.apuntes[num_diario - 1]
-    
+
                     res.status(200).json({ "message": diario });
 
-                }else{
-                    
+                } else {
+
                     res.status(400).json({ "message": "No existe el portafolio" });
 
                 }
-               
+
 
             }
         })
@@ -209,6 +209,268 @@ PortafolioCtrl.getDiario = async (req, res, next) => {
     }
 
 }
+
+
+PortafolioCtrl.getinforme = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                    const informe = portafolio.informe_final
+
+                    res.status(200).json({ "message": informe });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
+
+PortafolioCtrl.updateInforme = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo,contenido } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+                    var temp = []
+
+                    for (var portafolio of busqueda.portafolios) {
+
+                        if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+
+                            portafolio.informe_final = {contenido:contenido}
+
+                            break;
+                        }
+
+                    }
+
+                    temp = busqueda.portafolios
+
+                    busqueda.portafolios = []
+
+                    busqueda.portafolios = temp
+
+                    await busqueda.save()
+
+                    res.status(200).json({ "message": "Informe Editado" });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
+
+PortafolioCtrl.getExpectativas = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                    const expectativas = portafolio.elementos_curriculares.expectativas
+
+                    res.status(200).json({ "message": expectativas });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
+
+PortafolioCtrl.updateExpectativas = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo,contenido } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+                    var temp = []
+
+                    for (var portafolio of busqueda.portafolios) {
+
+                        if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+
+                            portafolio.elementos_curriculares.expectativas = {contenido:contenido}
+
+                            break;
+                        }
+
+                    }
+
+                    temp = busqueda.portafolios
+
+                    busqueda.portafolios = []
+
+                    busqueda.portafolios = temp
+
+                    await busqueda.save()
+
+                    res.status(200).json({ "message": "Expectativas Editado" });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 
 
 PortafolioCtrl.updateDiario = async (req, res, next) => {
@@ -239,37 +501,44 @@ PortafolioCtrl.updateDiario = async (req, res, next) => {
 
                 const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
 
-                var temp = []
+                if (busqueda) {
+                    var temp = []
 
-                for (var portafolio of busqueda.portafolios) {
+                    for (var portafolio of busqueda.portafolios) {
 
-                    if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+                        if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
 
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].tema = tema
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].contenidos = contenidos
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].objetivos = objetivos
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].actividades = actividades
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].estrategias = estrategias
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].resumen = resumen
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg1 = preg1
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg2 = preg2
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg3 = preg3
-                        portafolio.elementos_curriculares.apuntes[num_diario - 1].preg4 = preg4
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].tema = tema
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].contenidos = contenidos
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].objetivos = objetivos
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].actividades = actividades
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].estrategias = estrategias
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].resumen = resumen
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].preg1 = preg1
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].preg2 = preg2
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].preg3 = preg3
+                            portafolio.elementos_curriculares.apuntes[num_diario - 1].preg4 = preg4
 
-                        break;
+                            break;
+                        }
+
                     }
 
+                    temp = busqueda.portafolios
+
+                    busqueda.portafolios = []
+
+                    busqueda.portafolios = temp
+
+                    await busqueda.save()
+
+                    res.status(200).json({ "message": "Diario Editado" });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
                 }
-
-                temp = busqueda.portafolios
-
-                busqueda.portafolios = []
-
-                busqueda.portafolios = temp
-
-                await busqueda.save()
-
-                res.status(200).json({ "message": "Diario Editado" });
             }
         })
 
@@ -297,7 +566,7 @@ function portafolio(per_codigo, diarios) {
 
         elementos_curriculares: {
 
-            expectativas: {},
+            expectativas: {contenido:""},
             apuntes: diarios,
             evaluaciones: [],
             investigaciones: [],
@@ -313,7 +582,7 @@ function portafolio(per_codigo, diarios) {
 
         },
 
-        informe_final: {}
+        informe_final: {contenido:""}
 
     }
 

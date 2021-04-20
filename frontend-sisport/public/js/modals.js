@@ -50,10 +50,10 @@ $('#subir').on('show.bs.modal', function (event) {
     var cantidad = button.data('cant')
     var size = button.data('size')
     var type = button.data('type')
-    var paramName = button.data('parametro')
+    var tipo = button.data('tipo')
     var modal = $(this)
 
-    modal.find('.modal-title').text('Subir ' + titulo)
+    modal.find('.modal-title').text('SUBIR ' + titulo)
 
     if (cantidad > 1) {
 
@@ -70,7 +70,7 @@ $('#subir').on('show.bs.modal', function (event) {
     modal.find('.modal-type').text('Formato: "' + type + '"')
 
 
-    myDropzone.options.url = "http://localhost:4555/upload/" + titulo.toLowerCase();
+    myDropzone.options.url = "http://localhost:4555/upload/" + tipo;
     myDropzone.options.maxFiles = cantidad;
     myDropzone.options.maxFilesize = size;
     myDropzone.options.acceptedFiles = type;
@@ -136,6 +136,97 @@ $('#diario').on('show.bs.modal', function (event) {
             document.getElementById("preg4").value= preg4
             
 
+        }
+        ,
+        error: (jqXHR, textStatus, errorThrown)=>{
+            console.log(errorThrown)
+            console.log(jqXHR)
+            console.log(textStatus)
+        }
+
+    })
+
+
+})
+
+
+
+$('#archivo').on('show.bs.modal', function (event) {
+
+    var button = $(event.relatedTarget)
+    var titulo = button.data('titulo')
+    var nombre_archivo = button.data('nombre')
+    var modal = $(this)
+
+    modal.find('.modal-title').text('ARCHIVO DE ' + titulo)
+
+    modal.find('.modal-nombre_archivo').text(nombre_archivo)
+
+})
+
+
+
+$('#informe').on('show.bs.modal', function () {
+
+    const jwt = localStorage.getItem("jwt")
+    const asig_codigo = document.getElementById("asig_codigo").innerText
+    const peri_codigo = document.getElementById("peri_codigo").innerText
+
+    $.ajax({
+
+        url: 'http://localhost/api/portafolio/getinforme',
+        data: {
+            "asig_codigo": asig_codigo,
+            "peri_codigo": peri_codigo
+        },
+        headers:{
+            'Authorization': 'Bearer ' + jwt
+        },
+        type:"POST",
+        success: function (data) {
+
+            const {contenido} = data.message
+
+            document.getElementById("informe_contenido").value = contenido
+            
+        }
+        ,
+        error: (jqXHR, textStatus, errorThrown)=>{
+            console.log(errorThrown)
+            console.log(jqXHR)
+            console.log(textStatus)
+        }
+
+    })
+
+
+})
+
+
+
+$('#expectativas').on('show.bs.modal', function () {
+
+    const jwt = localStorage.getItem("jwt")
+    const asig_codigo = document.getElementById("asig_codigo").innerText
+    const peri_codigo = document.getElementById("peri_codigo").innerText
+
+    $.ajax({
+
+        url: 'http://localhost/api/portafolio/getexpectativas',
+        data: {
+            "asig_codigo": asig_codigo,
+            "peri_codigo": peri_codigo
+        },
+        headers:{
+            'Authorization': 'Bearer ' + jwt
+        },
+        type:"POST",
+        success: function (data) {
+
+            const {contenido} = data.message
+
+            document.getElementById("expectativas_contenido").value = contenido
+            
         }
         ,
         error: (jqXHR, textStatus, errorThrown)=>{
