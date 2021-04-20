@@ -8,10 +8,10 @@ def generar_diario(request):
 
     #lugar = arbol_json["elementos_curriculares"]["diarios"]
 
-	 try:
+	try:
         
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
@@ -62,8 +62,7 @@ def generar_diario(request):
 		reflexion4 = "porque si"
 
 		crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+cod_diario+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
-
-			
+		
 	except OSError:
 			
 		return jsonify({"message":"error al generar diario"}),500
