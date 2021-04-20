@@ -31,15 +31,58 @@ var myDropzone = new Dropzone("#myDropzone", {
 
             formData.append("fac_nombre", esquema.split(".")[0]);
             formData.append("car_nombre", esquema.split(".")[1]);
-            formData.append("asig_identificador", identificador + periodo);
+            formData.append("asig_identificador", identificador + "-" + periodo);
             formData.append("per_cedula", cedula);
 
 
         });
 
+        const jwt = localStorage.getItem("jwt")
+
+        this.on("success", function (file, response) {
+
+            const asig_codigo = document.getElementById("asig_codigo").innerText
+            const peri_codigo = document.getElementById("peri_codigo").innerText
+
+            const { tipo } = response.message
+
+            $.ajax({
+
+                url: 'http://190.155.140.58:80/api/portafolio/uploadfiles',
+                data: {
+                    "asig_codigo": asig_codigo,
+                    "peri_codigo": peri_codigo,
+                    "tipo": tipo,
+                    "nombre_archivo": file.name
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + jwt
+                },
+                type: "POST",
+                success: function () {
+
+                    window.location.reload()
+
+                }
+                ,
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(errorThrown)
+                    console.log(jqXHR)
+                    console.log(textStatus)
+                }
+
+            })
+
+
+        })
+
     }
 
 });
+
+
+
+
 
 $('#subir').on('show.bs.modal', function (event) {
 
@@ -68,7 +111,6 @@ $('#subir').on('show.bs.modal', function (event) {
 
     modal.find('.modal-size').text('Tamaño max: ' + size + ' mb')
     modal.find('.modal-type').text('Formato: "' + type + '"')
-
 
     myDropzone.options.url = "http://190.155.140.58:4555/upload/" + tipo;
     myDropzone.options.maxFiles = cantidad;
@@ -116,29 +158,29 @@ $('#diario').on('show.bs.modal', function (event) {
             "peri_codigo": peri_codigo,
             "num_diario": numero
         },
-        headers:{
+        headers: {
             'Authorization': 'Bearer ' + jwt
         },
-        type:"POST",
+        type: "POST",
         success: function (data) {
 
-            const {tema,contenidos,objetivos,actividades,estrategias,resumen,preg1,preg2,preg3,preg4} = data.message
+            const { tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 } = data.message
 
-            document.getElementById("tema").value= tema
-            document.getElementById("contenidos").value= contenidos
-            document.getElementById("objetivos").value= objetivos
-            document.getElementById("actividades").value= actividades
-            document.getElementById("estrategias").value= estrategias
-            document.getElementById("resumen").value= resumen
-            document.getElementById("preg1").value= preg1
-            document.getElementById("preg2").value= preg2
-            document.getElementById("preg3").value= preg3
-            document.getElementById("preg4").value= preg4
-            
+            document.getElementById("tema").value = tema
+            document.getElementById("contenidos").value = contenidos
+            document.getElementById("objetivos").value = objetivos
+            document.getElementById("actividades").value = actividades
+            document.getElementById("estrategias").value = estrategias
+            document.getElementById("resumen").value = resumen
+            document.getElementById("preg1").value = preg1
+            document.getElementById("preg2").value = preg2
+            document.getElementById("preg3").value = preg3
+            document.getElementById("preg4").value = preg4
+
 
         }
         ,
-        error: (jqXHR, textStatus, errorThrown)=>{
+        error: (jqXHR, textStatus, errorThrown) => {
             console.log(errorThrown)
             console.log(jqXHR)
             console.log(textStatus)
@@ -162,6 +204,7 @@ $('#archivo').on('show.bs.modal', function (event) {
 
     modal.find('.modal-nombre_archivo').text(nombre_archivo)
 
+
 })
 
 
@@ -179,19 +222,19 @@ $('#informe').on('show.bs.modal', function () {
             "asig_codigo": asig_codigo,
             "peri_codigo": peri_codigo
         },
-        headers:{
+        headers: {
             'Authorization': 'Bearer ' + jwt
         },
-        type:"POST",
+        type: "POST",
         success: function (data) {
 
-            const {contenido} = data.message
+            const { contenido } = data.message
 
             document.getElementById("informe_contenido").value = contenido
-            
+
         }
         ,
-        error: (jqXHR, textStatus, errorThrown)=>{
+        error: (jqXHR, textStatus, errorThrown) => {
             console.log(errorThrown)
             console.log(jqXHR)
             console.log(textStatus)
@@ -217,19 +260,19 @@ $('#expectativas').on('show.bs.modal', function () {
             "asig_codigo": asig_codigo,
             "peri_codigo": peri_codigo
         },
-        headers:{
+        headers: {
             'Authorization': 'Bearer ' + jwt
         },
-        type:"POST",
+        type: "POST",
         success: function (data) {
 
-            const {contenido} = data.message
+            const { contenido } = data.message
 
             document.getElementById("expectativas_contenido").value = contenido
-            
+
         }
         ,
-        error: (jqXHR, textStatus, errorThrown)=>{
+        error: (jqXHR, textStatus, errorThrown) => {
             console.log(errorThrown)
             console.log(jqXHR)
             console.log(textStatus)

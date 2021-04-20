@@ -73,7 +73,7 @@ def uploadEvaluacion(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"evaluacion guardada"}),200
+        return jsonify({"message":{"tipo":"evaluaciones","mensaje":"evaluacion guardada"}}),200
 
 
 def uploadInvestigacion(request, lista_extensions):
@@ -103,7 +103,7 @@ def uploadInvestigacion(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"investigacion guardada"}),200
+        return jsonify({"message":{"tipo":"investigaciones","mensaje":"investigacion guardada"}}),200
 
 
 def uploadActividad(request, lista_extensions):
@@ -132,7 +132,7 @@ def uploadActividad(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"actividad guardada"}),200
+        return jsonify({"message":{"tipo":"actividades","mensaje":"actividad guardada"}}),200
 
 
 def uploadProyecto(request, lista_extensions):
@@ -159,7 +159,7 @@ def uploadProyecto(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"proyecto guardado"}),200
+        return jsonify({"message":{"tipo":"proyectos","mensaje":"proyecto guardado"}}),200
 
 
 def uploadCasoEstudio(request, lista_extensions):
@@ -188,7 +188,7 @@ def uploadCasoEstudio(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"caso de estudio guardado"}),200
+        return jsonify({"message":{"tipo":"casos_estudio","mensaje":"caso de estudio guardado"}}),200
      
     
 def uploadPlanteamiento(request, lista_extensions):
@@ -216,7 +216,7 @@ def uploadPlanteamiento(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"planteamiento guardado"}),200
+        return jsonify({"message":{"tipo":"planteamientos","mensaje":"planteamiento guardado"}}),200
 
 
 def uploadAsistencia(request, lista_extensions):
@@ -243,7 +243,7 @@ def uploadAsistencia(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"asistencia guardada"}),200
+        return jsonify({"message":{"tipo":"asistencia","mensaje":"asistencia guardado"}}),200
     
 
 def uploadObservacion(request, lista_extensions):
@@ -270,7 +270,7 @@ def uploadObservacion(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"observacion guardada"}),200
+        return jsonify({"message":{"tipo":"observaciones","mensaje":"observacion guardado"}}),200
 
 
 def uploadIntraclase(request, lista_extensions):
@@ -298,7 +298,7 @@ def uploadIntraclase(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"intraclase guardado"}),200
+        return jsonify({"message":{"tipo":"intraclases","mensaje":"intraclase guardado"}}),200
 
 
 def uploadAutonomo(request, lista_extensions):
@@ -325,7 +325,7 @@ def uploadAutonomo(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"autonomo guardado"}),200
+        return jsonify({"message":{"tipo":"autonomos","mensaje":"intraclase guardado"}}),200
 
 
 def uploadRefuerzo(request, lista_extensions):
@@ -352,4 +352,4 @@ def uploadRefuerzo(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"refuerzo guardado"}),200
+        return jsonify({"message":{"tipo":"refuerzo","mensaje":"refuerzo guardado"}}),200

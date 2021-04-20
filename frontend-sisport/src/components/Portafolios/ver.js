@@ -154,7 +154,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                 </ul>
                                                             </li>
 
-                                                            <li><Link to="#" >d) Evaluaciones</Link>
+                                                            <li><Link to="#" id="evaluaciones" >d) Evaluaciones</Link>
                                                                 <ul>
 
                                                                     {

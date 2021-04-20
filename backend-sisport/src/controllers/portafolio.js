@@ -473,6 +473,81 @@ PortafolioCtrl.updateExpectativas = async (req, res, next) => {
 
 
 
+
+PortafolioCtrl.uploadfiles = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+                console.log("entra")
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo, tipo, nombre_archivo } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+                    var temp = []
+
+                    for (var portafolio of busqueda.portafolios) {
+
+                        if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
+
+                            portafolio.elementos_curriculares[tipo].push({nombre_archivo:nombre_archivo})
+
+                            break;
+                        }
+
+                    }
+
+                    temp = busqueda.portafolios
+
+                    busqueda.portafolios = []
+
+                    busqueda.portafolios = temp
+
+                    await busqueda.save()
+
+                    res.status(200).json({ "message": "Archivo Subido" });
+
+                } else {
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
 PortafolioCtrl.updateDiario = async (req, res, next) => {
 
 

@@ -41,7 +41,7 @@ def actividad():
 def proyecto():
     return uploadProyecto(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/estudios', methods=['POST'])
+@app.route('/upload/casos_estudio', methods=['POST'])
 def caso_estudio():
     return uploadCasoEstudio(request, app.config['EXTENSIONS_OTROS'])
 
