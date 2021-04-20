@@ -107,11 +107,10 @@ class MyRecordState extends State<MyRecord> {
                 child: Text('Ingresar'),
                 onPressed: () {
                   setState(() {
+                    debugPrint("estas es la clave: "+_textFieldController.text);
+                    matricularse(asig_codigo, peri_codigo, _textFieldController.text);
                     _textFieldController.clear();
-                    matricularse(asig_codigo, peri_codigo, codigo);
                     codeDialog = valueText;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
-                    
                   });
                 },
               ),
@@ -120,9 +119,9 @@ class MyRecordState extends State<MyRecord> {
         });
   }
 
-  Future matricularse(int asig_codigo, int peri_codigo, String codigo)async{
+  Future matricularse(int asig_codigo, int peri_codigo, String clave)async{
 
-    Map data = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'per_codigo':codigo};
+    Map data = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'clave':clave};
 
     http.Response response = await http
         .post('http://190.155.140.58:80/api/portafolio/add', body: data, headers: {"Authorization":"bearer "+token});
@@ -137,9 +136,19 @@ class MyRecordState extends State<MyRecord> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
+
+    }else{
+      Fluttertoast.showToast(
+          msg: "Clave incorrecta",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
     }
-
-
   }
 
   @override
