@@ -7,12 +7,13 @@ export default function usePortafolio({asig_codigo,peri_codigo, per_codigo}) {
     const {portafolio, setPORTAFOLIO} = useContext(Context)
     const [loading, setLoading] = useState(false)
 
-    //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
+
+    const {encontrar} = portafolioService({jwt})
 
     useEffect(function () {
         setLoading(true)
-        portafolioService({asig_codigo,peri_codigo,per_codigo,jwt})
+        encontrar({asig_codigo,peri_codigo,per_codigo})
             .then(data => {
                 setPORTAFOLIO(data)
                 setLoading(false)

@@ -1,5 +1,6 @@
 import {  useState, useEffect, useContext } from 'react'
-import perfilService from 'services/perfil'
+//import perfilService from 'services/perfil'
+import usuariosServices from 'services/usuarios'
 import Context from 'context/PerfilContext'
 
 export default function usePortafolios() {
@@ -10,10 +11,11 @@ export default function usePortafolios() {
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
 
+    const {miperfil} = usuariosServices({jwt})
 
     useEffect(function () {
         setLoading(true)
-        perfilService({jwt})
+        miperfil()
             .then(perfil => {
                 setPERFIL(perfil)
                 setLoading(false)

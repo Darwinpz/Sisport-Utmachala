@@ -74,13 +74,15 @@ export default function Portafolios() {
 
                                                         {
                                                             !asig_est_estado &&
+                                                            <>
                                                             <div className="d-flex justify-content-between align-items-center">
-                                                                <input type="text" className="form-control mr-2" id="clave" onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
+                                                                <input type="text" className="form-control mr-2" id="clave" value={clave} onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
                                                                 <button className="btn btn-success" type="button" data-toggle="modal" data-target="#horario" data-asignatura={asig_nombre} >Activar</button>
                                                                 <p style={{ display: "none" }} id="asig_codigo">{asig_codigo}</p>
                                                                 <p  style={{ display: "none" }} id="peri_codigo">{peri_codigo}</p>
                                                             
                                                             </div>
+                                                            </>
                                                         }
 
                                                         

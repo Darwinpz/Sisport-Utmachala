@@ -66,7 +66,7 @@ PortafolioCtrl.add = async (req, res, next) => {
                                     "fecha": dia.hor_dia + ", " + fecha_diario.getDate() + " DE " + obtener_mes(fecha_diario.getMonth()) + " DEL " + fecha_diario.getFullYear(),
                                     "unidad": "", "periodo_inicio": periodo_inicio, "periodo_fin": periodo_final,
                                     "tema": "", "contenidos": "", "objetivos": "", "actividades": "", "estrategias": "",
-                                    "resumen": "", "preg1": "","preg2":"","preg3":"","preg4":"", "anexos": ""
+                                    "resumen": "", "preg1": "", "preg2": "", "preg3": "", "preg4": "", "anexos": ""
                                 }
 
                                 num_diario++;
@@ -138,7 +138,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                 const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
-                res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema:nombre_esquema, portafolio_data: portafolio[0] }] });
+                res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema: nombre_esquema, portafolio_data: portafolio[0] }] });
 
             }
         })
@@ -155,7 +155,60 @@ PortafolioCtrl.find = async (req, res, next) => {
 }
 
 
+PortafolioCtrl.getDiario = async (req, res, next) => {
 
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const { asig_codigo, peri_codigo, num_diario } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+                
+                if (busqueda){
+
+                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+    
+                    const diario = portafolio.elementos_curriculares.apuntes[num_diario - 1]
+    
+                    res.status(200).json({ "message": diario });
+
+                }else{
+                    
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+               
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
 
 
 PortafolioCtrl.updateDiario = async (req, res, next) => {
@@ -166,7 +219,7 @@ PortafolioCtrl.updateDiario = async (req, res, next) => {
     try {
 
 
-        jwt.verify(req.token, process.env.jwtcode, async (err,data) => {
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
             if (err) {
 
