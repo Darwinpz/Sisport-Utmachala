@@ -70,7 +70,7 @@ $('#subir').on('show.bs.modal', function (event) {
     modal.find('.modal-type').text('Formato: "' + type + '"')
 
 
-    myDropzone.options.url = "http://localhost:4555/upload/" + tipo;
+    myDropzone.options.url = "http://190.155.140.58:4555/upload/" + tipo;
     myDropzone.options.maxFiles = cantidad;
     myDropzone.options.maxFilesize = size;
     myDropzone.options.acceptedFiles = type;
@@ -110,7 +110,7 @@ $('#diario').on('show.bs.modal', function (event) {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getdiario',
+        url: 'http://190.155.140.58:80/api/portafolio/getdiario',
         data: {
             "asig_codigo": asig_codigo,
             "peri_codigo": peri_codigo,
@@ -174,7 +174,7 @@ $('#informe').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getinforme',
+        url: 'http://190.155.140.58:80/api/portafolio/getinforme',
         data: {
             "asig_codigo": asig_codigo,
             "peri_codigo": peri_codigo
@@ -212,7 +212,7 @@ $('#expectativas').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getexpectativas',
+        url: 'http://190.155.140.58:80/api/portafolio/getexpectativas',
         data: {
             "asig_codigo": asig_codigo,
             "peri_codigo": peri_codigo
