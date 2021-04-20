@@ -67,7 +67,13 @@ class asignaturasDocenState extends State<asignaturasDocen> {
     super.initState();
   }
   
-  TextEditingController _textFieldController = TextEditingController();
+  TextEditingController clavecontroller = TextEditingController();
+    TextEditingController diacontroller = TextEditingController();
+      TextEditingController horacontroller = TextEditingController();
+          TextEditingController dia2controller = TextEditingController();
+      TextEditingController hora2controller = TextEditingController();
+          TextEditingController dia3controller = TextEditingController();
+      TextEditingController hora3controller = TextEditingController();
    String codeDialog;
   String valueText;
   Future<void> _displayTextInputDialog(BuildContext context, index, int asig_codigo, int peri_codigo, String asig_nombre, String clave) async {
@@ -76,23 +82,93 @@ class asignaturasDocenState extends State<asignaturasDocen> {
         builder: (context) {
           return AlertDialog(
             title: Text(asig_nombre+'\n'+'Asigne clave de acceso:'),
-            content: TextField(
+            content:  SingleChildScrollView(child: Column(children: <Widget>[
+              TextField(
               obscureText: true,
               onChanged: (value) {
                 setState(() {
                   valueText = value;
                 });
               },
-              controller: _textFieldController,
+              controller: clavecontroller,
               decoration: InputDecoration(hintText: "Clave"),
+            ), TextField(
+              obscureText: false,
+              
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                  
+                
+                });
+              },
+              controller: diacontroller,
+              decoration: InputDecoration(hintText: "Ingrese día de clases", helperText: "Ejm:Día 1, Día 2, Día 4..."),
+            ),TextField(
+              obscureText: false,
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: horacontroller,
+              decoration: InputDecoration(hintText: "Ingrese rango de hora", helperText: "Ejm: 07:30-8:30"),
+            ),TextField(
+              obscureText: false,
+              
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                  
+                
+                });
+              },
+              controller: dia2controller,
+              decoration: InputDecoration(hintText: "Ingrese día de clases", helperText: "Ejm:Día 1, Día 2, Día 4..."),
+            ),TextField(
+              obscureText: false,
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: hora2controller,
+              decoration: InputDecoration(hintText: "Ingrese rango de hora", helperText: "Ejm: 07:30-8:30"),
             ),
+            TextField(
+              obscureText: false,
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: dia3controller,
+              decoration: InputDecoration(hintText: "Ingrese día de clases", helperText: "Ejm:Día 1, Día 2, Día 4..."),
+            ),TextField(
+              obscureText: false,
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: hora3controller,
+              decoration: InputDecoration(hintText: "Ingrese rango de hora", helperText: "Ejm: 07:30-8:30"),
+            )
+              
+            ],)),
             actions: <Widget>[
               FlatButton(
                 color: Colors.red,
                 textColor: Colors.white,
                 child: Text('Cancelar'),
                 onPressed: () {
-                  _textFieldController.clear();
+                  clavecontroller.clear();
+                  diacontroller.clear();
+                  horacontroller.clear();
+                  dia2controller.clear();
+                  hora2controller.clear();
+                  dia3controller.clear();
+                  hora3controller.clear();
                   setState(() {
                     Navigator.pop(context);
                   });
@@ -104,8 +180,38 @@ class asignaturasDocenState extends State<asignaturasDocen> {
                 child: Text('Ingresar'),
                 onPressed: () {
                   setState(() {
-                    _textFieldController.clear();
-                    asignarClave('fic.is.esqs', asig_codigo, peri_codigo, asig_nombre, _textFieldController.toString());
+                    var diasdesemana=['Día 1','Día 2','Día 3','Día 4', 'Día 5'];
+                    var horario=[];
+                    var horas1=horacontroller.text.split("-");
+                    var horas2=hora2controller.text.split("-");
+                    var horas3=hora3controller.text.split("-");
+
+                    var horaInicio=horas1[0].trim();
+                    var horaFin=horas1.sublist(1).join(':').trim();
+                    DateTime fecha1 =  DateTime.parse('1969-07-20 '+horaInicio);
+                    DateTime fecha2 =  DateTime.parse('1969-07-20 '+horaFin);
+                    DateTime cantHoras= fecha2.subtract(new Duration(hours: fecha1.hour, minutes: fecha1.minute));
+
+                    horario.add({"num_dia":diasdesemana.indexOf(diacontroller.text)+1,"inicio":horaInicio,"fin":horaFin, "cant_horas":cantHoras.hour});
+                   
+                    if(hora2controller.text!=""){
+                      var horaInicio=horas2[0].trim();
+                      var horaFin=horas2.sublist(1).join(':').trim();
+                      DateTime fecha1 =  DateTime.parse('1969-07-20 '+horaInicio);
+                      DateTime fecha2 =  DateTime.parse('1969-07-20 '+horaFin);
+                      DateTime cantHoras= fecha2.subtract(new Duration(hours: fecha1.hour, minutes: fecha1.minute));
+                      horario.add({'num_dia':diasdesemana.indexOf(dia2controller.text)+1,'inicio':horaInicio,'fin':horaFin, 'cant_horas':cantHoras.hour});
+                    }else if(hora3controller.text!=""){
+                      var horaInicio=horas3[0].trim();
+                      var horaFin=horas3.sublist(1).join(':').trim();
+                      DateTime fecha1 =  DateTime.parse('1969-07-20 '+horaInicio);
+                      DateTime fecha2 =  DateTime.parse('1969-07-20 '+horaFin);
+                      DateTime cantHoras= fecha2.subtract(new Duration(hours: fecha1.hour, minutes: fecha1.minute));
+                      horario.add({"num_dia":diasdesemana.indexOf(dia3controller.text)+1,"inicio":horaInicio,"fin":horaFin, "cant_horas":cantHoras.hour});
+                    }
+                    
+                    clavecontroller.clear();
+                    asignarClave(horario, asig_codigo, peri_codigo, clavecontroller.text);
                     codeDialog = valueText;
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
                     
@@ -117,21 +223,35 @@ class asignaturasDocenState extends State<asignaturasDocen> {
         });
   }
 
-  Future asignarClave(String nombre_esquema, int asig_codigo, int peri_codigo, String asig_nombre, String clave)async{
+  Future asignarClave(var horario, int asig_codigo, int peri_codigo, String clave)async{
 
-    Map data = {'nombre_esquema':nombre_esquema,'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'asig_nombre':asig_nombre, 'clave':clave};
+    Map<String, dynamic> data = {'arreglo': horario, 'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString()};
 
-    http.Response response = await http
-        .post('http://190.155.140.58:80/api/estructura/add', body: data, headers: {"Authorization":"bearer "+token});
+        http.Response response = await http
+        .post('http://190.155.140.58:80/api/horario/add', body: json.encode(data), headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json',"Authorization":"bearer "+token});
+
+    Map data2 = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'clave':clave};
+    
+    http.Response response2 = await http.post('http://190.155.140.58:80/api/estructura/add',body:data2,headers: {"Authorization":"bearer "+token});
 
 
-    if(response.statusCode==200){
+    if(response.statusCode==200 && response2.statusCode==200){
       Fluttertoast.showToast(
           msg: "Asignación de clave exitosa",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
           backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }else{
+       Fluttertoast.showToast(
+          msg: "Error en asignación de clave",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
     }
@@ -164,7 +284,7 @@ class asignaturasDocenState extends State<asignaturasDocen> {
                           _notes[index].asig_est_estado?FlatButton(
                                   onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>treeDocen(_notes[index].asig_nombre, (_notes[index].asig_codigo).toString(), (_notes[index].peri_codigo).toString())))},   
                                   child: Text('Ver portafolios')): FlatButton(
-                                  onPressed: () => { _textFieldController.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "")},   
+                                  onPressed: () => { clavecontroller.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "")},   
                                   child: Text('Asignar clave'))
 
                         ],

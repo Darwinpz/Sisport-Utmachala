@@ -1,9 +1,12 @@
 import 'dart:ffi';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:sisport_app/Estructura/treeAlumDocen.dart';
 import 'dart:convert';
 import 'drawer.dart' as slideBar;
 import './Estructura/tree.dart';
@@ -15,6 +18,8 @@ class Inicio extends StatefulWidget {
 }
 
 class _InicioState extends State<Inicio> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FlutterLocalNotificationsPlugin fltNotification;
   String token = "";
   String tipo = "";
 
@@ -61,18 +66,28 @@ class _InicioState extends State<Inicio> {
         _notes.addAll(value);
       });
     });
+    notificationPermission();
+    initMessaging();
     super.initState();
+  }
+
+  void getToken()async{
+    print(await messaging.getToken());
+
   }
 
   @override
   Widget build(BuildContext context) {
+    //getToken();
     return Scaffold(
         appBar: AppBar(title: Text("Mis portafolios")),
         drawer: slideBar.MyDrawer(),
-        body: _notes.length==0? tipo=="ESTUDIANTE"?Center(child: Text("No tienes portafolios aún. Ve al menú Matriculación.", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic))):Center(child: Text("No tiene portafolios aún. Diríjase al menú Asignar claves.", style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic))):
+        body: _notes.length!=0?
+        
         ListView.builder(
-          itemBuilder: (context, index) {
-            return Card(
+          itemBuilder: (context, index) { 
+            if(_notes[index].asig_est_estado== true){
+              return Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               margin: EdgeInsets.all(15),
@@ -104,7 +119,8 @@ class _InicioState extends State<Inicio> {
                                     },
                                 child: Text('Ver portafolio'))
                             : FlatButton(
-                                onPressed: () => {
+                                onPressed: ()async => {
+                                  await messaging.subscribeToTopic('sendmeNotification'),
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -124,9 +140,52 @@ class _InicioState extends State<Inicio> {
                 ),
               ),
             );
+            }else if(_notes[index].asig_est_estado==false){
+              if(tipo=="ESTUDIANTE"){
+                return Padding(padding: EdgeInsets.fromLTRB(5,300,5,30),child: Center(child: Text("No tienes portafolios aún. Ve al menú Matriculación.", style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic), textAlign: TextAlign.center,)),); 
+              }else if(tipo=="DOCENTE" || tipo=="COORDINADOR")
+                return Padding(padding: EdgeInsets.fromLTRB(5,300,5,30),child: Center(child: Text("No tiene portafolios aún. Diríjase al menú Asignar claves.", style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic), textAlign: TextAlign.center,)),); 
+            }
+            
           },
           itemCount: _notes.length,
-        ));
+          
+        ): Center(child: Text("No tienes portafolios aún. Ve al menú Matriculación.", style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic), textAlign: TextAlign.center,)));
+  }
+
+  void initMessaging() {
+    var androidInit=AndroidInitializationSettings("@mipmap/ic_launcher");
+    var iosInit=IOSInitializationSettings();
+
+    var initSetting=InitializationSettings(android: androidInit, iOS: iosInit);
+
+    fltNotification=FlutterLocalNotificationsPlugin();
+    fltNotification.initialize(initSetting);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      showNotification();
+    });
+    
+  }
+
+  void showNotification()async{
+    var androidDetails=AndroidNotificationDetails('channelId', 'channelName', 'channelDescription');
+    var iosDetails=IOSNotificationDetails();
+
+    var generalNotificationDetails=NotificationDetails(android: androidDetails, iOS: iosDetails);
+    await fltNotification.show(0, 'Sisport-App te recuerda', 'No olvides realizar tus diarios de esta semana!', generalNotificationDetails, payload: 'Notification');
+  }
+
+  void notificationPermission() async {
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
   }
 }
 
@@ -137,9 +196,10 @@ class Note {
   int asig_codigo;
   String docente;
   int peri_codigo;
+  bool asig_est_estado;
 
   Note(this.asig_nombre, this.sem_nombre, this.sem_paralelo, this.asig_codigo,
-      this.docente, this.peri_codigo);
+      this.docente, this.peri_codigo, this.asig_est_estado);
 
   Note.fromJson(Map<String, dynamic> json) {
     asig_nombre = json['asig_nombre'];
@@ -148,5 +208,7 @@ class Note {
     asig_codigo = json['asig_codigo'];
     docente = json['docente'];
     peri_codigo = json['peri_codigo'];
+    asig_est_estado=json['asig_est_estado'];
   }
 }
+

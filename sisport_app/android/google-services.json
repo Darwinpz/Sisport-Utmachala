@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197198409629",
+    "project_id": "sisport-app-notifications",
+    "storage_bucket": "sisport-app-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197198409629:android:4892b2987c767679480974",
+        "android_client_info": {
+          "package_name": "com.example.sisport_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197198409629-ipp90pihgtp2h5he7to4c93ha4ks0ucb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwOe-1vnW2HJgpY-oKgcaz8TnwWyxTf30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197198409629-ipp90pihgtp2h5he7to4c93ha4ks0ucb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
