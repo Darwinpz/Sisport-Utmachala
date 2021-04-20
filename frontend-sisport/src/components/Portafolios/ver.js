@@ -130,9 +130,6 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                                         <li key={num_diario}><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-numero={num_diario}
                                                                                             data-horas={tiempo} data-fecha={fecha} data-inicio={periodo_inicio} data-fin={periodo_fin} 
                                                                                             
-                                                                                            data-tema={tema} data-actividades={actividades} data-estrategias={estrategias} data-resumen={resumen} data-contenidos={contenidos} data-preg1={preg1}
-                                                                                            data-objetivos={objetivos} data-preg2={preg2} data-preg3={preg3} data-preg4={preg4}
-                                                                                            
                                                                                             data-target="#diario">Diario Metacognitivo {num_diario}</a>
                                                                                         </li>
                                                                                     )

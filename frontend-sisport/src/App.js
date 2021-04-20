@@ -19,7 +19,6 @@ import { PortafoliosContextProvider } from "context/PortafoliosContext";
 import { PerfilContextProvider } from "context/PerfilContext";
 import { MatriculadosContextProvider } from "context/MatriculadosContext";
 import { PortafolioContextProvider } from "context/PortafolioContext";
-import { UsuariosContextProvider } from "context/UsuariosContext"
 import { DiariosContextProvider } from "context/DiariosContext"
 import { HorariosContextProvider } from "context/HorarioContext"
 
@@ -31,6 +30,7 @@ export default function App() {
       <UserContextProvider>
 
         <PerfilContextProvider>
+          
           <Navbar />
 
           <div className=" mt-5 p-5">
@@ -72,17 +72,10 @@ export default function App() {
                   </AsignaturasContextProvider>
                 </CarrerasContextProvider>
 
-
-                <UsuariosContextProvider>
-
                   <Route component={Estudiantes} path="/estudiantes" />
                   <Route component={Docentes} path="/docentes" />
 
-
-                </UsuariosContextProvider>
-
-
-                <Route component={Asignaturas} path="/asignaturas" />
+                  <Route component={Asignaturas} path="/asignaturas" />
 
               </PortafoliosContextProvider>
 

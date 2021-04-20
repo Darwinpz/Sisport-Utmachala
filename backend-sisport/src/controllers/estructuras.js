@@ -22,7 +22,7 @@ EstructuraCtrl.add = async (req, res, next) => {
                 const { asig_codigo, peri_codigo, clave } = req.body;
 
                 const docente_codigo = data.usuario.per_codigo;
-                const nombre_docente = data.usuario.per_nombre;
+                const nombre_docente = data.usuario.per_titulo+" "+ data.usuario.per_nombre+" " + data.usuario.per_apellido;
 
                 const periodo = await pool.query("SELECT *FROM periodo WHERE peri_codigo = $1", [peri_codigo]);
 

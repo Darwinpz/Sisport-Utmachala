@@ -1,23 +1,43 @@
 
-import React from "react";
+import React, { useEffect, useState }  from "react";
 
-import useUsuarios from 'hooks/useUsuarios'
-import useScript from 'hooks/useScript'
+import usuariosService from 'services/usuarios'
 
 export default function VERestudiantes() {
 
-    const { usuarios } = useUsuarios({ rol: "ESTUDIANTE" })
+    const [data, setData] = useState("")
 
-    useScript("https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js")
-    useScript("https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js")
-    useScript("/js/table.js")
+    const jwt = localStorage.getItem("jwt")
+
+    const {usuarios} = usuariosService({jwt})
+
+    useEffect(() => {
+
+        usuarios({ rol: "ESTUDIANTE"})
+            .then(docentes => {
+
+                setData(docentes)
+
+                const script = document.createElement('script');
+
+                script.src = "/js/table.js";
+                script.async = true;
+
+                document.body.appendChild(script);
+
+            })
+            .catch(() => {
+
+            })
+
+    }, [jwt, setData])
 
     return (
 
         <>
-            {usuarios &&
+            {data &&
                 <div className="table-responsive " style={{ marginTop: "auto" }}>
-                    <table id="table" width="100%" cellSpacing="0" className="table table-hover ">
+                    <table id="table_estudiantes" width="100%" cellSpacing="0" className="table table-hover ">
                         <thead>
                             <tr>
                                 <th scope="col">Cedula</th>
@@ -31,7 +51,7 @@ export default function VERestudiantes() {
                         </tfoot>
                         <tbody>
                             {
-                               usuarios.map(({ per_codigo, per_cedula, per_nombre, per_apellido, per_correo }) =>
+                               data.map(({ per_codigo, per_cedula, per_nombre, per_apellido, per_correo }) =>
 
                                     <tr key={per_codigo}>
                                         <th>{per_cedula}</th>

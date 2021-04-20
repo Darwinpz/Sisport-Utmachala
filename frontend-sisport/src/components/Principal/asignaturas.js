@@ -1,15 +1,16 @@
 
-import React, { useState } from "react";
+import React, {  useState } from "react";
 
-import useUser from 'hooks/useUser'
 import usePerfil from 'hooks/usePerfil'
+
+import matriculaService from 'services/matricularse'
 
 export default function Asignaturas({ asignaturas }) {
 
 
     const [clave, setCLAVE] = useState("");
 
-    const { addMatricula } = useUser()
+    const [error, setError] = useState("")
 
     const { perfil } = usePerfil()
 
@@ -18,9 +19,18 @@ export default function Asignaturas({ asignaturas }) {
         const asig_codigo = document.getElementById("asig_codigo").value
         const peri_codigo = document.getElementById("peri_codigo").value
 
-        addMatricula({ asig_codigo, peri_codigo, clave });
+        const jwt = window.localStorage.getItem("jwt")
 
-        window.location.reload();
+        matriculaService({ asig_codigo, peri_codigo, clave, jwt })
+            .then(() => {
+
+                window.location.reload()
+
+            })
+            .catch(() => {
+
+                setError("Clave incorrecta")
+            })
 
     };
 
@@ -47,14 +57,19 @@ export default function Asignaturas({ asignaturas }) {
 
                                             {
                                                 estado &&
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <input style={{ display: "none" }} type="number" id="asig_codigo" className="form-control mr-2" onChange={() => asig_codigo} placeholder="asig_codigo" required value={asig_codigo} />
-                                                    <input style={{ display: "none" }} type="number" id="peri_codigo" className="form-control mr-2" onChange={() => peri_codigo} placeholder="peri_codigo" required value={peri_codigo} />
-                                                    <input type="text" className="form-control mr-2" onChange={(e) => setCLAVE(e.target.value)} placeholder="Clave" required />
-                                                    <button className="btn btn-primary" type="button" onClick={handleClick}>Matricularme</button>
+                                                <>
+                                                    <div className="d-flex justify-content-between align-items-center">
+                                                        <input style={{ display: "none" }} type="number" id="asig_codigo" className="form-control mr-2" onChange={() => asig_codigo} placeholder="asig_codigo" required value={asig_codigo} />
+                                                        <input style={{ display: "none" }} type="number" id="peri_codigo" className="form-control mr-2" onChange={() => peri_codigo} placeholder="peri_codigo" required value={peri_codigo} />
+                                                        <input type="text" className="form-control mr-2" onChange={(e) => setCLAVE(e.target.value)} placeholder="Clave" required />
+                                                        <button className="btn btn-primary" type="button" onClick={() => handleClick()}>Matricularme</button>
 
-                                                </div>
+                                                    </div>
+                                                    {error && <strong>{error}</strong>}
+                                                </>
+
                                             }
+
                                             {
                                                 !estado &&
                                                 <span className="btn float-center" >Asignatura No Activada</span>
@@ -66,8 +81,8 @@ export default function Asignaturas({ asignaturas }) {
                                     {
                                         matriculado &&
                                         <>
-                                        <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
-                                    
+                                            <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
+
                                         </>
                                     }
 

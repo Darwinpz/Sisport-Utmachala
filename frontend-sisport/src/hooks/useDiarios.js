@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from 'react'
 import Context from 'context/DiariosContext'
-import diariosService from 'services/diarios'
+//import diariosService from 'services/diarios'
+import portafolioService from 'services/portafolio'
 
 export default function useDIARIOS() {
 
@@ -8,12 +9,13 @@ export default function useDIARIOS() {
     const [loading, setLoading] = useState(false)
     const [state, setState] = useState({ loading: false, error: false })
 
-    //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
+
+    const {savediarios} = portafolioService({jwt})
 
     const updatediarios = useCallback(({ asig_codigo, peri_codigo, num_diario, tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 }) => {
         setState({ loading: true, error: false })
-        diariosService({ asig_codigo, peri_codigo, num_diario, tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4, jwt })
+        savediarios({ asig_codigo, peri_codigo, num_diario, tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4 })
             .then(diarios => {
                 setDIARIOS(diarios)
                 setLoading(false)

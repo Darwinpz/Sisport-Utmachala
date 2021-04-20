@@ -89,9 +89,6 @@ $('#diario').on('show.bs.modal', function (event) {
     var horas = button.data('horas')
     var fecha = button.data('fecha')
     var inicio = button.data('inicio')
-    var tema = button.data('tema')
-    var contenidos = button.data('contenidos')
-    var objetivos = button.data('objetivos')
 
     var fin = button.data('fin')
     var modal = $(this)
@@ -107,10 +104,47 @@ $('#diario').on('show.bs.modal', function (event) {
 
     modal.find('.modal-diario').text(numero)
 
-    modal.find('.modal-tema input').val(tema)
+    const jwt = localStorage.getItem("jwt")
+    const asig_codigo = document.getElementById("asig_codigo").innerText
+    const peri_codigo = document.getElementById("peri_codigo").innerText
 
-    modal.find('.modal-contenidos input').val(contenidos)
+    $.ajax({
 
-    modal.find('.modal-objetivos input').val(objetivos)
+        url: 'http://localhost/api/portafolio/getdiario',
+        data: {
+            "asig_codigo": asig_codigo,
+            "peri_codigo": peri_codigo,
+            "num_diario": numero
+        },
+        headers:{
+            'Authorization': 'Bearer ' + jwt
+        },
+        type:"POST",
+        success: function (data) {
+
+            const {tema,contenidos,objetivos,actividades,estrategias,resumen,preg1,preg2,preg3,preg4} = data.message
+
+            document.getElementById("tema").value= tema
+            document.getElementById("contenidos").value= contenidos
+            document.getElementById("objetivos").value= objetivos
+            document.getElementById("actividades").value= actividades
+            document.getElementById("estrategias").value= estrategias
+            document.getElementById("resumen").value= resumen
+            document.getElementById("preg1").value= preg1
+            document.getElementById("preg2").value= preg2
+            document.getElementById("preg3").value= preg3
+            document.getElementById("preg4").value= preg4
+            
+
+        }
+        ,
+        error: (jqXHR, textStatus, errorThrown)=>{
+            console.log(errorThrown)
+            console.log(jqXHR)
+            console.log(textStatus)
+        }
+
+    })
+
 
 })
