@@ -3,7 +3,7 @@ import React, {  useState } from "react";
 
 import usePerfil from 'hooks/usePerfil'
 
-import matriculaService from 'services/matricularse'
+import portafolioService from 'services/portafolio'
 
 export default function Asignaturas({ asignaturas }) {
 
@@ -14,14 +14,17 @@ export default function Asignaturas({ asignaturas }) {
 
     const { perfil } = usePerfil()
 
+    const jwt = window.localStorage.getItem("jwt")
+
+    const {matricularse} = portafolioService({jwt})
+
     const handleClick = () => {
 
         const asig_codigo = document.getElementById("asig_codigo").value
         const peri_codigo = document.getElementById("peri_codigo").value
 
-        const jwt = window.localStorage.getItem("jwt")
-
-        matriculaService({ asig_codigo, peri_codigo, clave, jwt })
+        
+        matricularse({ asig_codigo, peri_codigo, clave})
             .then(() => {
 
                 window.location.reload()

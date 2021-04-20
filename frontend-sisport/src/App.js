@@ -19,7 +19,6 @@ import { PortafoliosContextProvider } from "context/PortafoliosContext";
 import { PerfilContextProvider } from "context/PerfilContext";
 import { MatriculadosContextProvider } from "context/MatriculadosContext";
 import { PortafolioContextProvider } from "context/PortafolioContext";
-import { DiariosContextProvider } from "context/DiariosContext"
 import { HorariosContextProvider } from "context/HorarioContext"
 
 export default function App() {
@@ -51,11 +50,7 @@ export default function App() {
 
                 <PortafolioContextProvider>
 
-                  <DiariosContextProvider>
-
                     <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
-
-                  </DiariosContextProvider>
 
                 </PortafolioContextProvider>
 
