@@ -48,10 +48,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
-                                        perfil.per_tipo !== "ESTUDIANTE" && 
-                                        
+                                        perfil.per_tipo !== "ESTUDIANTE" &&
+
                                         <>
-                                            {" "+estudiante.per_nombre+" "+estudiante.per_apellido}
+                                            {" " + estudiante.per_nombre + " " + estudiante.per_apellido}
                                             <p style={{ display: "none" }} id="est_cedula">{estudiante.per_cedula}</p>
                                         </>
 
@@ -59,8 +59,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                 </h4>
 
                             )
-                                
-                                    
+
+
 
                         }
                     </div>
@@ -99,10 +99,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                 {
                                                     portafolio.map(({ portafolio_data }) =>
                                                         <p key="est_codigo" style={{ display: "none" }} id="est_codigo">{portafolio_data.datos_informativos.cod_estudiante}</p>
-                                                        
+
                                                     )
                                                 }
-                                                
+
                                                 {
                                                     portafolio.map(({ nombre_esquema }) =>
                                                         <p style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
@@ -122,15 +122,22 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <li><Link to="#" >a) Syllabus</Link>
                                                                 <ul>
+
                                                                     {
-                                                                        portafolio.map(({ estructura }) =>
 
-                                                                            estructura.syllabus &&
-                                                                            <li key="syllabus"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={estructura.syllabus}>{estructura.syllabus}</a></li>
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.syllabus.nombre_archivo &&
+                                                                                    <li key="asistencia"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={portafolio_data.elementos_curriculares.syllabus.nombre_archivo}>{portafolio_data.elementos_curriculares.syllabus.nombre_archivo}</a></li>
 
+                                                                                }
+
+                                                                            </div>
                                                                         )
 
                                                                     }
+
                                                                     {
                                                                         perfil.per_tipo === "ESTUDIANTE" &&
                                                                         <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
