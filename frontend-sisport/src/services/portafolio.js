@@ -128,6 +128,27 @@ export default function Portafolio({ jwt }) {
     
     }
 
+    const removefiles = async ({asig_codigo, peri_codigo, tipo, nombre_archivo })=>{
+
+        return fetch(ENDPOINT+"/remove", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer "+jwt
+            },
+            body: JSON.stringify({asig_codigo, peri_codigo, tipo, nombre_archivo})
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+            return message
+        })
+    
+    }
+
     return {
 
         encontrar,
@@ -135,7 +156,8 @@ export default function Portafolio({ jwt }) {
         matricularse,
         saveInforme,
         saveExpectativas,
-        eliminarPortafolio
+        eliminarPortafolio,
+        removefiles
 
     }
 

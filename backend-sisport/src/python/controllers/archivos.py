@@ -23,7 +23,7 @@ def generar_diario(request):
 		docente = "WILMER RIVAS"
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/c) Apuntes de clase/')
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/c) Apuntes de clase/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
@@ -89,7 +89,7 @@ def eliminarArchivo(request):
 		nombre_archivo=json_req['nombre_archivo']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
 		if(tipo_archivo=='syllabus'):
 			ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
@@ -139,7 +139,7 @@ def descargarPortafolio(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/')
+						'/Portafolios/'+per_cedula+'/')
 		
 		
 		archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
@@ -221,7 +221,7 @@ def generar_informe(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/3. Informe final/')
+						'/Portafolios/'+per_cedula+'/3. Informe final/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
@@ -259,7 +259,7 @@ def generar_expectativas(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/b) Expectativas/')
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/b) Expectativas/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)

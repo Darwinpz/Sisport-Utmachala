@@ -27,10 +27,12 @@ export default function Asignaturas({ asignaturas }) {
         const car_nombre = document.getElementById("car_nombre").value
         const asig_identificador = document.getElementById("asig_identificador").value
 
+        const {crearPortafolio} = portafolioPythonService()
+
         matricularse({ asig_codigo, peri_codigo, clave})
             .then(() => {
 
-                portafolioPythonService({fac_nombre,car_nombre,asig_identificador:asig_identificador+"-"+peri_codigo,per_cedula:perfil.per_cedula}).then(()=>{
+                crearPortafolio({fac_nombre,car_nombre,asig_identificador:asig_identificador+"-"+peri_codigo,per_cedula:perfil.per_cedula}).then(()=>{
 
                     window.location.reload()
 
