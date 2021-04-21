@@ -68,6 +68,9 @@ HorarioCtrl.add = async (req, res, next) => {
 
         var dia_temp = 0;
 
+        await pool.query("DELETE from horario where asig_codigo=$1 and peri_codigo=$2"
+                        , [asig_codigo, peri_codigo]); 
+        
         if (arreglo.length > 0) {
 
             for (var i = 0; i < arreglo.length; i++) {
@@ -89,8 +92,6 @@ HorarioCtrl.add = async (req, res, next) => {
 
             }
 
-            await pool.query("UPDATE asignatura_estado set asig_est_estado=$1 where asig_est_asig_codigo=$2 and asig_est_peri_codigo=$3"
-                , [true,asig_codigo,peri_codigo]);
 
             res.status(200).json({ "message": "Horario Agregado" });
         }

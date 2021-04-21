@@ -1,6 +1,6 @@
 const ENDPOINT = process.env.REACT_APP_SERVER+'/api/estructura/add'
 
-export default function Horario({asig_codigo, peri_codigo, clave,jwt}) {
+export default function Estructura({asig_codigo, peri_codigo, clave,jwt}) {
 
     return fetch(ENDPOINT, {
         method: 'POST',

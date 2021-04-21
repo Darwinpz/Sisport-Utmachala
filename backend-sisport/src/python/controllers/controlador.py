@@ -353,3 +353,4 @@ def uploadRefuerzo(request, lista_extensions):
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
         return jsonify({"message":{"tipo":"refuerzo","mensaje":"refuerzo guardado"}}),200
+

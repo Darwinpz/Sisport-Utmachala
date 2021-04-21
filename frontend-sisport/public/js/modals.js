@@ -112,7 +112,7 @@ $('#subir').on('show.bs.modal', function (event) {
     modal.find('.modal-size').text('Tamaño max: ' + size + ' mb')
     modal.find('.modal-type').text('Formato: "' + type + '"')
 
-    myDropzone.options.url = "http://190.155.140.58:4555/upload/" + tipo;
+    myDropzone.options.url = "http://localhost:4555/upload/" + tipo;
     myDropzone.options.maxFiles = cantidad;
     myDropzone.options.maxFilesize = size;
     myDropzone.options.acceptedFiles = type;
@@ -149,15 +149,37 @@ $('#diario').on('show.bs.modal', function (event) {
     const jwt = localStorage.getItem("jwt")
     const asig_codigo = document.getElementById("asig_codigo").innerText
     const peri_codigo = document.getElementById("peri_codigo").innerText
+    const per_tipo = document.getElementById("per_tipo").innerText
+
+    var data = { "asig_codigo": asig_codigo, "peri_codigo": peri_codigo, "num_diario": numero }
+
+    if (per_tipo !== "ESTUDIANTE") {
+
+        data["est_codigo"] = document.getElementById("est_codigo").innerText
+
+        var footer = document.getElementById("footer-diario");
+
+        if (footer) {
+            footer.remove()
+        }
+
+        document.getElementById("tema").disabled = true;
+        document.getElementById("contenidos").disabled = true;
+        document.getElementById("objetivos").disabled = true;
+        document.getElementById("actividades").disabled = true;
+        document.getElementById("estrategias").disabled = true;
+        document.getElementById("resumen").disabled = true;
+        document.getElementById("preg1").disabled = true;
+        document.getElementById("preg2").disabled = true;
+        document.getElementById("preg3").disabled = true;
+        document.getElementById("preg4").disabled = true;
+
+    }
 
     $.ajax({
 
-        url: 'http://190.155.140.58:80/api/portafolio/getdiario',
-        data: {
-            "asig_codigo": asig_codigo,
-            "peri_codigo": peri_codigo,
-            "num_diario": numero
-        },
+        url: 'http://localhost/api/portafolio/getdiario',
+        data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt
         },
@@ -199,10 +221,20 @@ $('#archivo').on('show.bs.modal', function (event) {
     var titulo = button.data('titulo')
     var nombre_archivo = button.data('nombre')
     var modal = $(this)
-
+    const per_tipo = document.getElementById("per_tipo").innerText
     modal.find('.modal-title').text('ARCHIVO DE ' + titulo)
 
     modal.find('.modal-nombre_archivo').text(nombre_archivo)
+
+    if (per_tipo !== "ESTUDIANTE") {
+
+        var btn_eliminar = document.getElementById("btn_eliminar_archivo")
+
+        if(btn_eliminar){
+            btn_eliminar.remove()
+        }
+
+    }
 
 
 })
@@ -214,14 +246,29 @@ $('#informe').on('show.bs.modal', function () {
     const jwt = localStorage.getItem("jwt")
     const asig_codigo = document.getElementById("asig_codigo").innerText
     const peri_codigo = document.getElementById("peri_codigo").innerText
+    const per_tipo = document.getElementById("per_tipo").innerText
+    const informe_contenido = document.getElementById("informe_contenido")
+
+    var data = { "asig_codigo": asig_codigo, "peri_codigo": peri_codigo }
+
+    if (per_tipo !== "ESTUDIANTE") {
+
+        data["est_codigo"] = document.getElementById("est_codigo").innerText
+
+        var footer = document.getElementById("footer-informe");
+
+        if (footer) {
+            footer.remove()
+        }
+
+        informe_contenido.disabled = true;
+
+    }
 
     $.ajax({
 
-        url: 'http://190.155.140.58:80/api/portafolio/getinforme',
-        data: {
-            "asig_codigo": asig_codigo,
-            "peri_codigo": peri_codigo
-        },
+        url: 'http://localhost/api/portafolio/getinforme',
+        data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt
         },
@@ -230,7 +277,7 @@ $('#informe').on('show.bs.modal', function () {
 
             const { contenido } = data.message
 
-            document.getElementById("informe_contenido").value = contenido
+            informe_contenido.value = contenido
 
         }
         ,
@@ -252,14 +299,30 @@ $('#expectativas').on('show.bs.modal', function () {
     const jwt = localStorage.getItem("jwt")
     const asig_codigo = document.getElementById("asig_codigo").innerText
     const peri_codigo = document.getElementById("peri_codigo").innerText
+    const per_tipo = document.getElementById("per_tipo").innerText
+
+    const expectativas_contenido = document.getElementById("expectativas_contenido")
+
+    var data = { "asig_codigo": asig_codigo, "peri_codigo": peri_codigo }
+
+    if (per_tipo !== "ESTUDIANTE") {
+
+        data["est_codigo"] = document.getElementById("est_codigo").innerText
+
+        var footer = document.getElementById("footer-expectativas");
+
+        if (footer) {
+            footer.remove()
+        }
+
+        expectativas_contenido.disabled = true;
+
+    }
 
     $.ajax({
 
-        url: 'http://190.155.140.58:80/api/portafolio/getexpectativas',
-        data: {
-            "asig_codigo": asig_codigo,
-            "peri_codigo": peri_codigo
-        },
+        url: 'http://localhost/api/portafolio/getexpectativas',
+        data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt
         },
@@ -268,7 +331,7 @@ $('#expectativas').on('show.bs.modal', function () {
 
             const { contenido } = data.message
 
-            document.getElementById("expectativas_contenido").value = contenido
+            expectativas_contenido.value = contenido
 
         }
         ,

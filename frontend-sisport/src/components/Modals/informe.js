@@ -42,7 +42,7 @@ export default function Informe() {
                         </div>
 
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer" id="footer-informe">
                         {isLoading && <strong>Guardando cambios...</strong>}
                         {!isLoading && <strong>Guardado</strong>}
                         <button type="button" onClick={() => handleSubmit()} className="btn btn-success">Guardar Cambios</button>
