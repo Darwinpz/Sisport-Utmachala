@@ -94,4 +94,4 @@ def archivo_pesado(e):
     return jsonify({"message":"peso de archivo sobrepasado. Maximo 3MB"}), 413
 
 if __name__ == '__main__':
-    app.run(port=4555, debug=True)
+    app.run(port=4555, host='0.0.0.0', debug=True)
