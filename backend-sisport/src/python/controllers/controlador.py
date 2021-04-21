@@ -45,7 +45,7 @@ def uploadSyllabus(request, lista_extensions):
     except FileNotFoundError:
         return jsonify({"message":"portafolio no encontrado"}),500
     else:
-        return jsonify({"message":"syllabus guardado"}),200
+        return jsonify({"message":{"tipo":"syllabus","mensaje":"Syllabus guardada"}}),200
 
 
 def uploadEvaluacion(request, lista_extensions):
