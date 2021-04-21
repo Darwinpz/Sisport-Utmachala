@@ -48,13 +48,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
-                                        perfil.per_tipo !== "ESTUDIANTE" &&
-                                        " ESTUDIANTE"
+                                        perfil.per_tipo !== "ESTUDIANTE" && portafolio.estudiante.per_nombre
 
                                     }
                                 </h4>
 
                             )
+
 
                         }
 
@@ -95,8 +95,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                 {
                                                     portafolio.map(({ portafolio_data }) =>
                                                         <p key="est_codigo" style={{ display: "none" }} id="est_codigo">{portafolio_data.datos_informativos.cod_estudiante}</p>
+                                                        
                                                     )
                                                 }
+                                                
                                                 {
                                                     portafolio.map(({ nombre_esquema }) =>
                                                         <p style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
