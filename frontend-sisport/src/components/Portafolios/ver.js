@@ -61,11 +61,20 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             cedula = est_cedula.innerText
         }
 
-        generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+        var estructura = {
 
-            generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+            per_nombre: portafolio[0].estudiante.per_nombre,
+            asig_nombre = portafolio[0].estructura.nombre_asignatura,
+            sem_nombre = portafolio[0].extras.sem_nombre,
+            docente = portafolio[0].estructura.nombre_docente,
+            peri_nombre = portafolio[0].extras.peri_nombre,
+        }
 
-                generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: portafolio[0].elementos_curriculares.expectativas.contenido }).then(() => {
+
+            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, contenido: portafolio[0].informe_final.contenido }).then(() => {
+
+                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, diarios: portafolio[0].elementos_curriculares.apuntes }).then(() => {
 
                     downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
 
@@ -81,14 +90,14 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                 }).catch(() => {
 
-                    setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
+                    setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
 
                 })
 
 
             }).catch(() => {
 
-                setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
+                setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
 
             })
 

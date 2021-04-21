@@ -19,8 +19,10 @@ def generar_diario(request):
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
+		diarios = json_req['diarios']
+		estructura = json_req['estructura']
 
-		docente = "WILMER RIVAS"
+		docente = estructura.docente
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
 
@@ -217,6 +219,8 @@ def generar_informe(request):
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
+		contenido = json_req['contenido']
+		estructura = json_req['estructura']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 						'/Portafolios/'+per_cedula+'/3. Informe final/')
@@ -225,12 +229,12 @@ def generar_informe(request):
 			os.makedirs(ruta_carpeta)
 		
 
-		per_nombre = "Jorge Leonardo González Córdova"
-		asig_nombre = "PROGRAMACIÓN VI"
-		sem_nombre = "OCTAVO SEMESTRE A"
-		docente = "ING. JOOFRE HONORES TAPIA"
-		peri_nombre = "2021E2"
-		informe="este es el contenido del informe"
+		per_nombre = estructura.per_nombre
+		asig_nombre = estructura.asig_nombre
+		sem_nombre = estructura.sem_nombre
+		docente = estructura.docente
+		peri_nombre = estructura.peri_nombre
+		informe= contenido
 
 
 		crear_informe(ruta_carpeta+'Informe final.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, informe)
@@ -255,6 +259,8 @@ def generar_expectativas(request):
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
+		contenido = json_req['contenido']
+		estructura = json_req['estructura']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/b. Expectativas/')
 
@@ -264,13 +270,13 @@ def generar_expectativas(request):
 		lista_expectativas = []
 		
 
-		per_nombre = "Jorge Leonardo González Córdova"
-		asig_nombre = "PROGRAMACIÓN VI"
-		sem_nombre = "OCTAVO SEMESTRE A"
-		docente = "ING. JOOFRE HONORES TAPIA"
-		peri_nombre = "2021E2"
+		per_nombre = estructura.per_nombre
+		asig_nombre = estructura.asig_nombre
+		sem_nombre = estructura.sem_nombre
+		docente = estructura.docente
+		peri_nombre = estructura.peri_nombre
 
-		expectativas=["expectativa1\nexpectativa2\nexpectativa3"]
+		expectativas=[contenido]
 		
 		for i in range(len(expectativas.split("\n"))):
 
