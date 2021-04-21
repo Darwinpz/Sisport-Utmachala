@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sisport_app/src/resources/expectativas.dart';
 import 'package:sisport_app/src/resources/informefinal.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +31,14 @@ class treeState extends State<tree> {
   String codigo = "";
   String tipo="";
 
+  var esquema_abreviatura="";
+  var abreviaturas="";
+  String car_abreviatura="";
+  String fac_abreviatura="";
+  String asig_identificador="";
+  String est_cedula="";
+  String url="";
+
   var syllabus="";
   var asistencia="";
 
@@ -37,7 +49,6 @@ class treeState extends State<tree> {
   List<Note2> _notes5 = List<Note2>();
   List<Note2> _notes6 = List<Note2>();
   List<Note2> _notes7 = List<Note2>();
-  List<Note2> _notes8 = List<Note2>();
   List<Note2> _notes9 = List<Note2>();
   List<Note2> _notes10 = List<Note2>();
   List<Note2> _notes11 = List<Note2>();
@@ -445,8 +456,83 @@ class treeState extends State<tree> {
 
     setState(() {
       Map<String, dynamic> datos = json.decode(response.body);
-      syllabus=datos['message'][0]['estructura']['syllabus'].toString();
+      syllabus=datos['message'][0]['portafolio_data']
+          ['elementos_curriculares']['syllabus']['nombre_archivo'].toString();
     });
+  }
+
+  Future getEsquema() async{
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+      codigo = preferences.getString('codigo');
+      tipo=preferences.getString('tipo');
+    });
+
+    Map data = {
+      'asig_codigo': widget.asig_codigo,
+      'peri_codigo': widget.peri_codigo,
+      'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
+    };
+
+    http.Response response = await http.post(
+        'http://190.155.140.58:80/api/portafolio/find',
+        body: data,
+        headers: {"Authorization": "bearer " + token});
+
+    var datos = json.decode(response.body);
+     setState(() {
+      esquema_abreviatura=(datos['message'][0]['nombre_esquema'].toString());
+      abreviaturas= esquema_abreviatura;
+      fac_abreviatura=abreviaturas.toString().split(".")[0];
+      car_abreviatura=(abreviaturas.toString().split(".")[1]);
+      asig_identificador=(datos['message'][0]['estructura']['identificador'].toString());
+      est_cedula=(datos['message'][0]['estudiante']['per_cedula'].toString());
+     });
+  }
+
+  Future getUrlFile(String tipo_archivo, nombre_archivo) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+      codigo = preferences.getString('codigo');
+      tipo=preferences.getString('tipo');
+    });
+
+    Map<String, dynamic> data = {
+      'fac_abreviatura':fac_abreviatura,
+      'car_abreviatura':car_abreviatura,
+      'asig_abreviatura':asig_identificador,
+      'per_cedula':est_cedula,
+      'tipo_archivo': tipo_archivo,
+      'nombre_archivo':nombre_archivo
+    };
+
+    http.Response response = await http.post(
+        'http://190.155.140.58:4555/download/archivo',
+        body: json.encode(data), headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json',"Authorization":"bearer "+token});
+
+    debugPrint("asi se envia: "+data.toString());
+
+    var datos = json.decode(response.body);
+
+    if(response.statusCode==200){
+      setState(() {
+        url=datos['message'].toString();
+      });
+    }else{
+      Fluttertoast.showToast(
+          msg: "Error al descargar archivo",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -508,16 +594,12 @@ class treeState extends State<tree> {
       });
     });
     buscarsyllabus();
-    
+    getEsquema();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    // buscararchivos buscarArchivos= new buscararchivos();
-    // buscarArchivos.buscar(token, codigo, tipo, widget.asig_codigo, widget.peri_codigo, widget.per_codigo, "carpeta");
-    // debugPrint("esto devuelve: "+resultado.toString());
 
     return Scaffold(
         appBar: tipo=="ESTUDIANTE"? AppBar(title: Text(widget.asig_nombre, style: TextStyle(fontSize: 14),)):AppBar(title: Column(children: [
@@ -550,7 +632,7 @@ class treeState extends State<tree> {
               children: <Widget>[
                 ListTile(
                   title: Text(
-                    'Biografia'
+                  "", 
                   ),leading: Icon(Icons.menu_book_outlined),
                 )
               ],
@@ -572,6 +654,16 @@ class treeState extends State<tree> {
                    ListTile(
                       title: Text(syllabus),
                        leading: Icon(Icons.menu_book_outlined),
+                       onTap: ()async{
+                        getUrlFile('syllabus', syllabus);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                           final id = await FlutterDownloader.enqueue(url: "https://www.bignerdranch.com/documents/objective-c-prereading-assignment.pdf", fileName: syllabus, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     )
                   ],
                 ),
@@ -611,7 +703,16 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes2[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        getUrlFile('evaluaciones', _notes2[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                           final id = await FlutterDownloader.enqueue(url: Uri.encodeFull(url), fileName: _notes2[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes2.length,)
 

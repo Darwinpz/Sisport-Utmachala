@@ -37,6 +37,9 @@ dependencies:
   firebase_core: ^0.7.0
   flutter_local_notifications: ^4.0.0
   intl: ^0.15.7
+  flutter_downloader: ^1.4.4
+  path_provider: ^1.6.10
+  permission_handler: ^5.0.1
 
 
 dev_dependencies:
