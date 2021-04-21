@@ -143,7 +143,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                     const estudiante = await pool.query("SELECT per_cedula, per_nombre,per_apellido FROM persona where per_codigo=$1", [per_codigo]);
 
-                    res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema: nombre_esquema, portafolio_data: portafolio[0], estudiante: estudiante.rows }] });
+                    res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema: nombre_esquema, portafolio_data: portafolio[0], estudiante: estudiante.rows[0] }] });
 
                 } else {
 
