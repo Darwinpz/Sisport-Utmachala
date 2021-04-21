@@ -7,9 +7,9 @@ import portafolioService from 'services/portafolio'
 export default function Archivos() {
 
 
-    const {error, setERROR} = useState("")
-
     const {descargarArchivo,eliminarArchivo} = archivosPythonService({})
+
+    const [error, setError] = useState("");
 
     const EliminarSubmit = () => {
 
@@ -35,18 +35,18 @@ export default function Archivos() {
 
             }).catch(()=>{
                 
-                setERROR("Error al eliminar el registro del archivo, contacte con el coordinador o intente de nuevo")
+                setError("Error al eliminar el registro del archivo, contacte con el coordinador o intente de nuevo")
 
             })
 
         }).catch(()=>{
 
-            setERROR("Error al eliminar el archivo, contacte con el coordinador o intente de nuevo")
+            setError("Error al eliminar el archivo, contacte con el coordinador o intente de nuevo")
 
         })
 
     }
-
+    
     const DescargarSubmit = () => {
 
         
@@ -66,7 +66,7 @@ export default function Archivos() {
 
         }).catch(()=>{
 
-            setERROR("Error al descargar el archivo")
+            setError("Error al descargar el archivo")
 
         })
 
