@@ -27,7 +27,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
     const [, navigate] = useLocation()
 
-    const { error, setError } = useState("")
+    const [error, setError] = useState("");
 
     useEffect(() => {
         if (!isLogged) {
