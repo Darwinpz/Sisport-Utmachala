@@ -3,9 +3,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
-uploadAutonomo, uploadRefuerzo, eliminarArchivo, descargarPortafolio
+uploadAutonomo, uploadRefuerzo, eliminarArchivo, descargarPortafolio, uploadBiografia
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
-from controllers.archivos import generar_diario, eliminarArchivo, descargarPortafolio, descargarArchivo, generar_informe
+from controllers.archivos import generar_diario, eliminarArchivo, descargarPortafolio, descargarArchivo, generar_informe, generar_expectativas
 
 app = Flask(__name__,static_folder='./resources')
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -69,6 +69,10 @@ def autonomo():
 def refuerzo():
     return uploadRefuerzo(request, app.config['EXTENSIONS_INTRA_EXTRA'])
 
+@app.route('/upload/biografia', methods=['POST'])
+def biografia():
+    return uploadBiografia(request, app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS'])
+
 @app.route('/create/facultad', methods=['POST'])
 def facultad():
     return crearFacultad(request)
@@ -92,6 +96,10 @@ def diario():
 @app.route('/generate/informe', methods=['POST'])
 def informe():
     return generar_informe(request)
+
+@app.route('/generate/expectativas', methods=['POST'])
+def expectativas():
+    return generar_expectativas(request)
 
 @app.route('/delete/archivo', methods=['POST'])
 def archivo():
