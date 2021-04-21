@@ -57,14 +57,14 @@ export default function Archivos() {
         var per_cedula = document.getElementById("per_cedula").innerText
         var tipo_archivo = document.getElementById("tipo_archivo").innerText
         var nombre_archivo = document.getElementById("archivo_nombre").innerText
-        var est_cedula = document.getElementById("est_cedula").innerText
+        var est_cedula = document.getElementById("est_cedula")
 
 
         var cedula = per_cedula
 
         if(est_cedula){
 
-            cedula = est_cedula
+            cedula = est_cedula.innerText
         }
 
         descargarArchivo({fac_abreviatura,car_abreviatura,asig_abreviatura:identificador+"-"+peri_codigo,per_cedula:cedula,tipo_archivo,nombre_archivo}).then((url)=>{
