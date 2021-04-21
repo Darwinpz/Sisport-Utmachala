@@ -169,7 +169,7 @@ def descargarArchivo(request):
 
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
 
 		if(tipo_archivo=='syllabus'):
