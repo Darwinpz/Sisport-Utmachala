@@ -1,6 +1,8 @@
 from flask import jsonify
 import os
 from controllers.persona import guardarEstudiantes
+import shutil
+from shutil import rmtree
 
 def uploadEstudiante(request, lista_extensions):
     if request.method == 'POST':
@@ -354,3 +356,76 @@ def uploadRefuerzo(request, lista_extensions):
     else:
         return jsonify({"message":{"tipo":"refuerzo","mensaje":"refuerzo guardado"}}),200
 
+
+def eliminarArchivo(request):
+	
+    try:
+        json_req = request.json
+        fac_abreviatura = json_req['fac_abreviatura']
+        car_abreviatura = json_req['car_abreviatura']
+        asig_abreviatura = json_req['asig_abreviatura']
+        per_cedula = json_req['per_cedula']
+        tipo_archivo=json_req['tipo_archivo']
+        nombre_archivo=json_req['nombre_archivo']
+        
+        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura + 'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+        
+        if(tipo_archivo=='syllabus'):
+            ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
+        elif(tipo_archivo=='expectativas'):
+            ruta_archivo=(ruta+"b) Expectativas del curso/"+nombre_archivo)
+        elif(tipo_archivo=='evaluaciones'):
+            ruta_archivo=(ruta+"d) Evaluaciones/"+nombre_archivo)
+        elif(tipo_archivo=='investigaciones'):
+            ruta_archivo=(ruta+"e) Investigaciones/"+nombre_archivo)
+        elif(tipo_archivo=='actividades'):
+            ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
+        elif(tipo_archivo=='proyectos'):
+            ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
+        elif(tipo_archivo=='estudios'):
+            ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
+        elif(tipo_archivo=='planteamientos'):
+            ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
+        elif(tipo_archivo=='asistencia'):
+            ruta_archivo=(ruta+"j) Registro de asistencia/"+nombre_archivo)
+        elif(tipo_archivo=='observaciones'):
+            ruta_archivo=(ruta+"k) Registro de observaciones/"+nombre_archivo)
+        elif(tipo_archivo=='intraclases'):
+            ruta_archivo=(ruta+"l) Tareas intraclases/"+nombre_archivo)
+        elif(tipo_archivo=='autonomos'):
+            ruta_archivo=(ruta+"m) Tareas autónomas/"+nombre_archivo)
+        elif(tipo_archivo=='refuerzo'):
+            ruta_archivo=(ruta+"n) Tareas de refuerzo/"+nombre_archivo)
+        os.remove(ruta_archivo)
+    
+    except OSError:
+        
+        return jsonify({"message":"error al borrar diario"}),500
+    
+    else:
+        
+        return jsonify({"message":"archivo borrado"}),200
+
+def descargarPortafolio(request):
+	
+    try:
+        
+        json_req = request.json
+        fac_abreviatura = json_req['fac_abreviatura']
+        car_abreviatura = json_req['car_abreviatura']
+        asig_abreviatura = json_req['asig_abreviatura']
+        per_cedula = json_req['per_cedula']
+        tipo_archivo=json_req['tipo_archivo']
+        nombre_archivo=json_req['nombre_archivo']
+        
+        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'Portafolios/'+per_cedula+'/')
+        archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
+        ruta_archivo=ruta+per_cedula+".zip"
+        shutil.move(ruta_archivo, ruta)
+    
+    except OSError:
+        
+        return jsonify({"message":"error al descargar portafolio"}),500
+    else:
+        
+        return jsonify({"message": ruta_archivo}),200
