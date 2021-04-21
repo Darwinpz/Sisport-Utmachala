@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 
-import descargasPythonService from 'services/python/archivos'
+import archivosPythonService from 'services/python/archivos'
 import portafolioService from 'services/portafolio'
 
 export default function Archivos() {
@@ -9,6 +9,7 @@ export default function Archivos() {
 
     const {error, setERROR} = useState("")
 
+    const {descargarArchivo,eliminarArchivo} = archivosPythonService({})
 
     const EliminarSubmit = () => {
 
@@ -21,9 +22,9 @@ export default function Archivos() {
         var nombre_archivo = document.getElementById("archivo_nombre").innerText
         var asig_codigo = document.getElementById("asig_codigo").innerText
 
-        const {eliminarArchivo} = descargasPythonService()
+        const jwt = localStorage.getItem("jwt")
 
-        const {removefiles} = portafolioService()
+        const {removefiles} = portafolioService({jwt})
 
 
         eliminarArchivo({fac_abreviatura,car_abreviatura,asig_abreviatura:identificador+"-"+peri_codigo,per_cedula,tipo_archivo,nombre_archivo}).then(()=>{
@@ -56,8 +57,6 @@ export default function Archivos() {
         var per_cedula = document.getElementById("per_cedula").innerText
         var tipo_archivo = document.getElementById("tipo_archivo").innerText
         var nombre_archivo = document.getElementById("archivo_nombre").innerText
-
-        const {descargarArchivo} = descargasPythonService()
 
 
         descargarArchivo({fac_abreviatura,car_abreviatura,asig_abreviatura:identificador+"-"+peri_codigo,per_cedula,tipo_archivo,nombre_archivo}).then((url)=>{
