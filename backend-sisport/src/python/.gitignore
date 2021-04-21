@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-.resources/
+resources
 
 # C extensions
 *.so

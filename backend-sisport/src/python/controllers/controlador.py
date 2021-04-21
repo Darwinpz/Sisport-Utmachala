@@ -39,6 +39,8 @@ def uploadSyllabus(request, lista_extensions):
                     file_ext = os.path.splitext(f.filename)[1]
                     if file_ext not in lista_extensions:
                         return jsonify({"message":"error en el tipo de archivo"}),415
+                    for g in os.listdir(ruta):
+                        os.remove(os.path.join(ruta,g))
                     f.save(os.path.join(ruta, f.filename))     
             else:
                 return jsonify({"message":"cantidad de archivos sobrepasado. Maximo 1"}),500
@@ -239,6 +241,8 @@ def uploadAsistencia(request, lista_extensions):
                     file_ext = os.path.splitext(f.filename)[1]
                     if file_ext not in lista_extensions:
                         return jsonify({"message":"error en el tipo de archivo"}),415
+                    for g in os.listdir(ruta):
+                        os.remove(os.path.join(ruta,g))
                     f.save(os.path.join(ruta, f.filename))     
             else:
                 return jsonify({"message":"cantidad de archivos sobrepasado. Maximo 1"}),500
