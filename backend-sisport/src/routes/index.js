@@ -118,6 +118,7 @@ module.exports = (app) => {
     app.post('/api/portafolio/getexpectativas',validarToken, portafolio.getExpectativas)
     app.post('/api/portafolio/expectativas',validarToken, portafolio.updateExpectativas)
     app.post('/api/portafolio/uploadfiles',validarToken, portafolio.uploadfiles)
+    app.post('/api/portafolio/removefiles',validarToken, portafolio.removefiles)
     app.post('/api/portafolio/find', validarToken, portafolio.find)
 
 
