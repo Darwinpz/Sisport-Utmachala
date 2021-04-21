@@ -64,10 +64,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
         var estructura = {
 
             per_nombre: portafolio[0].estudiante.per_nombre,
-            asig_nombre = portafolio[0].estructura.nombre_asignatura,
-            sem_nombre = portafolio[0].extras.sem_nombre,
-            docente = portafolio[0].estructura.nombre_docente,
-            peri_nombre = portafolio[0].extras.peri_nombre,
+            asig_nombre : portafolio[0].estructura.nombre_asignatura,
+            sem_nombre : portafolio[0].extras.sem_nombre,
+            docente : portafolio[0].estructura.nombre_docente,
+            peri_nombre : portafolio[0].extras.peri_nombre,
         }
 
         generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: portafolio[0].elementos_curriculares.expectativas.contenido }).then(() => {
