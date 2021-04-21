@@ -3,7 +3,7 @@ const ENDPOINT = process.env.REACT_APP_SERVER_PYTHON + "/generate"
 export default function Generar() {
 
 
-    const generarDiario = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula }) => {
+    const generarDiario = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, diarios }) => {
 
         return fetch(ENDPOINT + "/diario", {
             method: 'POST',
@@ -12,7 +12,7 @@ export default function Generar() {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula })
+            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, diarios })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
@@ -24,7 +24,7 @@ export default function Generar() {
 
     }
 
-    const generarInforme = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula }) => {
+    const generarInforme = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, contenido }) => {
 
         return fetch(ENDPOINT + "/informe", {
             method: 'POST',
@@ -33,7 +33,7 @@ export default function Generar() {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula })
+            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, contenido })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
@@ -45,7 +45,7 @@ export default function Generar() {
 
     }
 
-    const generarExpectativas = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula }) => {
+    const generarExpectativas = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, contenido }) => {
 
         return fetch(ENDPOINT + "/expectativas", {
             method: 'POST',
@@ -54,7 +54,7 @@ export default function Generar() {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula })
+            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula,estructura, contenido })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
