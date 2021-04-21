@@ -152,7 +152,7 @@ def descargarPortafolio(request):
 		
 	else:
 			
-		return jsonify({"message": ruta_archivo}),200
+		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 
 
 def descargarArchivo(request):
