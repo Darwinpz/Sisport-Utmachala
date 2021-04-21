@@ -5,7 +5,7 @@ from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEval
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
 uploadAutonomo, uploadRefuerzo, eliminarArchivo, descargarPortafolio
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
-from controllers.diarios import generar_diario, eliminarArchivo, descargarPortafolio
+from controllers.archivos import generar_diario, eliminarArchivo, descargarPortafolio, descargarArchivo, generar_informe
 
 app = Flask(__name__,static_folder='./resources')
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -89,6 +89,10 @@ def portafolio():
 def diario():
     return generar_diario(request)
 
+@app.route('/generate/informe', methods=['POST'])
+def informe():
+    return generar_informe(request)
+
 @app.route('/delete/archivo', methods=['POST'])
 def archivo():
     return eliminarArchivo(request)
@@ -96,6 +100,11 @@ def archivo():
 @app.route('/download/portafolio', methods=['POST'])
 def downloadportafolio():
     return descargarPortafolio(request)
+
+@app.route('/download/archivo', methods=['POST'])
+def downloadarchivo():
+    return descargarArchivo(request)
+
 
 @app.errorhandler(413)
 def archivo_pesado(e):

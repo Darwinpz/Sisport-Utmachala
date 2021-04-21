@@ -1,7 +1,10 @@
 import errno
 import os
 from flask import jsonify
+import shutil
+from shutil import rmtree
 from controllers.generardiario import crear_diario
+from controllers.generar_informe import crear_informe
 
 
 def generar_diario(request):
@@ -72,10 +75,6 @@ def generar_diario(request):
 		return jsonify({"message":"diario generado"}),200
 
 
-    # for diario in lugar:
-
-    # archivo_zip = shutil.make_archive("media/"+cod_port+"/diarios","zip",base_dir=ruta_carpeta)
-
 def eliminarArchivo(request):
 
 	 try:
@@ -128,9 +127,6 @@ def eliminarArchivo(request):
 		return jsonify({"message":"archivo borrado"}),200
 
 
-import shutil
-from shutil import rmtree
-
 def descargarPortafolio(request):
 	try:
         
@@ -139,8 +135,6 @@ def descargarPortafolio(request):
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
-		tipo_archivo=json_req['tipo_archivo']
-		nombre_archivo=json_req['nombre_archivo']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 						'Portafolios/'+per_cedula+'/')
@@ -157,4 +151,100 @@ def descargarPortafolio(request):
 	else:
 			
 		return jsonify({"message": ruta_archivo}),200
-	
+
+
+def descargarArchivo(request):
+	try:
+        
+        json_req = request.json
+        fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_abreviatura']
+		per_cedula = json_req['per_cedula']
+		tipo_archivo=json_req['tipo_archivo']
+		nombre_archivo=json_req['nombre_archivo']
+
+
+		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
+						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+
+
+		if(tipo_archivo=='syllabus'):
+			ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
+		elif(tipo_archivo=='expectativas'):
+			ruta_archivo=(ruta+"b) Expectativas del curso/"+nombre_archivo)
+		elif(tipo_archivo=='evaluaciones'):
+			ruta_archivo=(ruta+"d) Evaluaciones/"+nombre_archivo)
+		elif(tipo_archivo=='investigaciones'):
+			ruta_archivo=(ruta+"e) Investigaciones/"+nombre_archivo)
+		elif(tipo_archivo=='actividades'):
+			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
+		elif(tipo_archivo=='proyectos'):
+			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
+		elif(tipo_archivo=='estudios'):
+			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
+		elif(tipo_archivo=='planteamientos'):
+			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
+		elif(tipo_archivo=='asistencia'):
+			ruta_archivo=(ruta+"j) Registro de asistencia/"+nombre_archivo)
+		elif(tipo_archivo=='observaciones'):
+			ruta_archivo=(ruta+"k) Registro de observaciones/"+nombre_archivo)
+		elif(tipo_archivo=='intraclases'):
+			ruta_archivo=(ruta+"l) Tareas intraclases/"+nombre_archivo)
+		elif(tipo_archivo=='autonomos'):
+			ruta_archivo=(ruta+"m) Tareas autónomas/"+nombre_archivo)
+		elif(tipo_archivo=='refuerzo'):
+			ruta_archivo=(ruta+"n) Tareas de refuerzo/"+nombre_archivo)
+			
+	except OSError:
+			
+		return jsonify({"message":"error al descargar archivo"}),500
+		
+	else:
+			
+		return jsonify({"message": ruta_archivo}),200
+
+
+def generar_informe(request):
+
+    #lugar = arbol_json["elementos_curriculares"]["diarios"]
+
+	try:
+        
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_abreviatura']
+		per_cedula = json_req['per_cedula']
+
+		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
+						'Portafolios/'+per_cedula+'/3. Informe final/')
+
+		if not os.path.isdir(ruta_carpeta):
+			os.makedirs(ruta_carpeta)
+
+		lista_expectativas = []
+		
+
+		per_nombre = "Jorge Leonardo González Córdova"
+		asig_nombre = "PROGRAMACIÓN VI"
+		sem_nombre = "OCTAVO SEMESTRE A"
+		docente = "ING. JOOFRE HONORES TAPIA"
+		peri_nombre = "2021E2"
+
+		expectativas=["expectativa1\nexpectativa2\nexpectativa3"]
+		
+		for i in range(len(expectativas.split("\n"))):
+
+			lista_expectativas.append(expectativas.split("\n")[i].replace("\r", ""))
+
+
+		crear_informe(ruta_carpeta+'Informe final.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, lista_expectativas)
+		
+	except OSError:
+			
+		return jsonify({"message":"error al generar informe"}),500
+		
+	else:
+			
+		return jsonify({"message":"informe final generado"}),200
