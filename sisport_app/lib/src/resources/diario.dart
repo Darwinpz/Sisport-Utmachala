@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../drawer.dart' as slideBar;
+import 'package:sisport_app/src/views/Inicio.dart';
+import 'package:intl/intl.dart';
+import 'drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
-import 'package:sisport_app/Inicio.dart';
 import 'dart:convert';
 
 class Diario extends StatefulWidget {
@@ -39,6 +40,11 @@ class _DiarioState extends State<Diario> {
   String preg2D="";
   String preg3D="";
   String preg4D="";
+  String periodo_inicio;
+  String periodo_fin;
+  String replaced_inicio;
+  String replaced_fin;
+
 
 
   Future obtenerDocente()async{
@@ -63,15 +69,18 @@ class _DiarioState extends State<Diario> {
         headers: {"Authorization": "bearer " + token});
 
     Map<String, dynamic> datos = json.decode(response.body);
-    // debugPrint("Diario numero: "+(int.parse(widget.num_clase)-1).toString());
-    // debugPrint("tema: "+datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][0]['tema'].toString());
+    //debugPrint("resultado: "+datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'].toString());
     
     setState(() {
        docente =(datos['message'][0]['estructura']['nombre_docente']);
+       periodo_inicio=(datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['periodo_inicio']);
+       replaced_inicio = periodo_inicio.replaceFirst(RegExp('T05:00:00.000Z'), ''); 
+       periodo_fin=(datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['periodo_fin']);
+       replaced_fin = periodo_fin.replaceFirst(RegExp('T05:00:00.000Z'), ''); 
        temaD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['tema'];
        contenidosD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['contenidos'];
        objetivosD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['objetivos'];
-       actividadesD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['activiades'];
+       actividadesD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['actividades'];
        estrategiasD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['estrategias'];
        resumenD=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['resumen'];
        preg1D=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['preg1'];
@@ -114,13 +123,6 @@ class _DiarioState extends State<Diario> {
         body: data,
         headers: {"Authorization": "bearer " + token});
 
-
-    Map<String, dynamic>datos=jsonDecode(response.body);
-    debugPrint("aber: "+datos.toString());
-    debugPrint("status: "+response.statusCode.toString());
-    debugPrint("tema: "+tema);
-    
-
     if(response.statusCode==200){
       Fluttertoast.showToast(
           msg: "Diario guardado exitosamente",
@@ -130,6 +132,7 @@ class _DiarioState extends State<Diario> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
     }else{
       Fluttertoast.showToast(
           msg: "Error al guardar datos del diario",
@@ -139,6 +142,7 @@ class _DiarioState extends State<Diario> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.pop(context);
     }
 
 
@@ -154,15 +158,25 @@ class _DiarioState extends State<Diario> {
   @override
   Widget build(BuildContext context) {
     TextEditingController tema = TextEditingController();
+    tema.text=temaD;
     TextEditingController contenidos = TextEditingController();
+    contenidos.text=contenidosD;
     TextEditingController objetivos = TextEditingController();
+    objetivos.text=objetivosD;
     TextEditingController actividades = TextEditingController();
+    actividades.text=actividadesD;
     TextEditingController estrategias = TextEditingController();
+    estrategias.text=estrategiasD;
     TextEditingController resumen = TextEditingController();
+    resumen.text=resumenD;
     TextEditingController preg1 = TextEditingController();
+    preg1.text=preg1D;
     TextEditingController preg2 = TextEditingController();
+    preg2.text=preg2D;
     TextEditingController preg3 = TextEditingController();
+    preg3.text=preg3D;
     TextEditingController preg4 = TextEditingController();
+    preg4.text=preg4D;
     
     return Scaffold(
       appBar: AppBar(title: Column(children: [
@@ -214,7 +228,7 @@ class _DiarioState extends State<Diario> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                     decoration: InputDecoration(
-                        hintText: '',
+                        hintText: replaced_inicio.toString()+" al "+replaced_fin.toString(),
                         filled: true,
                         enabled: false,
                         fillColor: Colors.white,
@@ -292,7 +306,6 @@ class _DiarioState extends State<Diario> {
                 child: TextField(
                   controller: tema,
                     decoration: InputDecoration(
-                        hintText: temaD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -324,7 +337,6 @@ class _DiarioState extends State<Diario> {
                   controller: contenidos,
                     maxLines: 8,
                     decoration: InputDecoration(
-                        hintText: contenidosD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -357,7 +369,6 @@ class _DiarioState extends State<Diario> {
                   controller: objetivos,
                     maxLines: 2,
                     decoration: InputDecoration(
-                        hintText: objetivosD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -390,7 +401,6 @@ class _DiarioState extends State<Diario> {
                   controller: actividades,
                     maxLines: 8,
                     decoration: InputDecoration(
-                        hintText: actividadesD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -423,7 +433,6 @@ class _DiarioState extends State<Diario> {
                   controller: estrategias,
                     maxLines: 8,
                     decoration: InputDecoration(
-                        hintText: estrategiasD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -456,7 +465,6 @@ class _DiarioState extends State<Diario> {
                   controller: resumen,
                     maxLines: 20,
                     decoration: InputDecoration(
-                        hintText: resumenD,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -489,7 +497,6 @@ class _DiarioState extends State<Diario> {
                   controller: preg1,
                     maxLines: 2,
                     decoration: InputDecoration(
-                        hintText: preg1D,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -522,7 +529,6 @@ class _DiarioState extends State<Diario> {
                   controller: preg2,
                     maxLines: 2,
                     decoration: InputDecoration(
-                        hintText: preg2D,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -555,7 +561,6 @@ class _DiarioState extends State<Diario> {
                   controller: preg3,
                     maxLines: 2,
                     decoration: InputDecoration(
-                        hintText: preg3D,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -588,7 +593,6 @@ class _DiarioState extends State<Diario> {
                   controller: preg4,
                     maxLines: 2,
                     decoration: InputDecoration(
-                        hintText: preg4D,
                         filled: true,
                         enabled: true,
                         fillColor: Colors.white,
@@ -614,8 +618,7 @@ class _DiarioState extends State<Diario> {
                   new Center(
                     child: MaterialButton(
                       color: Colors.green,
-                      onPressed: () {guardarDiario(tema.text, contenidos.text, objetivos.text, actividades.text, estrategias.text, resumen.text, preg1.text, preg2.text, preg3.text, preg4.text);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));},
+                      onPressed: () {guardarDiario(tema.text, contenidos.text, objetivos.text, actividades.text, estrategias.text, resumen.text, preg1.text, preg2.text, preg3.text, preg4.text);},
                       height: 50,
                       minWidth: 400,
                       shape: RoundedRectangleBorder(

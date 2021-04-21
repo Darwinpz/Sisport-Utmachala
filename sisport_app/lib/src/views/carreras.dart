@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sisport_app/src/views/asignaturas.dart';
 import 'dart:convert';
-import 'asignaturas.dart';
 
 class Carreras extends StatefulWidget {
   @override
@@ -85,7 +85,7 @@ class _CarrerasState extends State<Carreras> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  MyRecord(_notes[index].car_nombre), //pasa el nombre
+                      builder: (context) =>  asignaturas(_notes[index].car_nombre), //pasa el nombre
                     ));
               },
             ),

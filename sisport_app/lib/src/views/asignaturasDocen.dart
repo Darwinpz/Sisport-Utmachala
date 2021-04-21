@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'drawer.dart' as slideBar;
+import 'package:sisport_app/src/views/matriculados.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import './Estructura/tree.dart';
-import './Estructura/treeDocen.dart';
 import 'Inicio.dart';
 
 
-class asignaturasDocen extends StatefulWidget {
+class asignaturasdocente extends StatefulWidget {
 
 
   @override
-  asignaturasDocenState createState() => asignaturasDocenState();
+  asignaturasdocenteState createState() => asignaturasdocenteState();
 }
 
-class asignaturasDocenState extends State<asignaturasDocen> {
+class asignaturasdocenteState extends State<asignaturasdocente> {
 
    String token="";
    String tipo="";
@@ -282,7 +280,7 @@ class asignaturasDocenState extends State<asignaturasDocen> {
                         children: <Widget>[
 
                           _notes[index].asig_est_estado?FlatButton(
-                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>treeDocen(_notes[index].asig_nombre, (_notes[index].asig_codigo).toString(), (_notes[index].peri_codigo).toString())))},   
+                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>matriculados(_notes[index].asig_nombre, (_notes[index].asig_codigo).toString(), (_notes[index].peri_codigo).toString())))},   
                                   child: Text('Ver portafolios')): FlatButton(
                                   onPressed: () => { clavecontroller.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "")},   
                                   child: Text('Asignar clave'))

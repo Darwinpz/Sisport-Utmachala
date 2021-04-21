@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'drawer.dart' as slideBar;
+import '../resources/drawer.dart' as slideBar;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import './Estructura/tree.dart';
-import './Estructura/treeDocen.dart';
+import '../resources/tree.dart';
 import 'Inicio.dart';
 
 
-class MyRecord extends StatefulWidget {
-  final String recordName;
-  const MyRecord(this.recordName);
+class asignaturas extends StatefulWidget {
+  final String car_nombre;
+  const asignaturas(this.car_nombre);
 
   @override
-  MyRecordState createState() => MyRecordState();
+  asignaturasState createState() => asignaturasState();
 }
 
-class MyRecordState extends State<MyRecord> {
+class asignaturasState extends State<asignaturas> {
 
    String token="";
    String tipo="";
@@ -34,7 +33,7 @@ class MyRecordState extends State<MyRecord> {
       codigo=preferences.getString('codigo');
     });
 
-    Map data = {'car_nombre': widget.recordName};
+    Map data = {'car_nombre': widget.car_nombre};
     
     var url = 'http://190.155.140.58:80/api/asignatura/buscar';
     var response = await http.post(url, body: data, headers: {"Authorization":"bearer "+token});
@@ -178,7 +177,7 @@ class MyRecordState extends State<MyRecord> {
                           _notes[index].estado?_notes[index].matriculado==false ? FlatButton(
                                   onPressed: () => { _textFieldController.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre)},   
                                   child: Text('Matricularse')) : FlatButton(
-                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente)))},   
+                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "")))},   
                                   child: Text('Ver portafolio')) :FlatButton(
                                   onPressed: () => { },   
                                   child: Text('Asignatura no activada'))

@@ -6,11 +6,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:sisport_app/Estructura/treeAlumDocen.dart';
 import 'dart:convert';
-import 'drawer.dart' as slideBar;
-import './Estructura/tree.dart';
-import './Estructura/treeDocen.dart';
+import '../resources/drawer.dart' as slideBar;
+import '../resources/tree.dart';
+import 'matriculados.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -115,7 +114,7 @@ class _InicioState extends State<Inicio> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente)))
+                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "")))
                                     },
                                 child: Text('Ver portafolio'))
                             : FlatButton(
@@ -124,7 +123,7 @@ class _InicioState extends State<Inicio> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => treeDocen(
+                                              builder: (context) => matriculados(
                                                   _notes[index].asig_nombre,
                                                   (_notes[index].asig_codigo)
                                                       .toString(),

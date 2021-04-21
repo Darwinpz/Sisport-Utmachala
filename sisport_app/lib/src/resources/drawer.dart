@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sisport_app/main.dart';
-import 'Matriculacion.dart';
-import 'Inicio.dart';
+import '../controllers/matriculacion.dart';
+import '../views/Inicio.dart';
 
 class MyDrawer extends StatefulWidget {
   @override
@@ -50,12 +50,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    
-    
-    
-    
-    Drawer(
+    return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
       // space to fit everything.
@@ -105,7 +100,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   context, MaterialPageRoute(builder: (context) => Inicio()));
             },
           ),
-          if(tipo=="DOCENTE" || tipo=="COORDINADOR")
+          if (tipo == "DOCENTE" || tipo == "COORDINADOR")
             ListTile(
               leading: Icon(
                 Icons.vpn_key_outlined,
@@ -121,7 +116,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     MaterialPageRoute(builder: (context) => Matriculacion()));
               },
             ),
-          if(tipo=="ESTUDIANTE")
+          if (tipo == "ESTUDIANTE")
             ListTile(
               leading: Icon(
                 Icons.library_add_outlined,
@@ -154,7 +149,6 @@ class _MyDrawerState extends State<MyDrawer> {
           ),
         ],
       ),
-      
     );
   }
 }
