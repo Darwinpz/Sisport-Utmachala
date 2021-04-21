@@ -15,7 +15,7 @@ def shade_cells(cells, shade):
         tcVAlign.set(qn("w:fill"), shade)
         tcPr.append(tcVAlign)
 
-def crear_informe(ruta_destino,estudiante,asignatura,curso,profesor,periodo, lista_expectativas):
+def crear_expectativas(ruta_destino,estudiante,asignatura,curso,profesor,periodo, lista_expectativas):
 
 	document = Document()
 
