@@ -5,6 +5,7 @@ import shutil
 from shutil import rmtree
 from controllers.generardiario import crear_diario
 from controllers.generarexpectativas import crear_expectativas
+from controllers.generarinforme import crear_informe
 
 
 def generar_diario(request):
@@ -222,8 +223,6 @@ def generar_informe(request):
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
-
-		lista_expectativas = []
 		
 
 		per_nombre = "Jorge Leonardo González Córdova"
@@ -231,15 +230,10 @@ def generar_informe(request):
 		sem_nombre = "OCTAVO SEMESTRE A"
 		docente = "ING. JOOFRE HONORES TAPIA"
 		peri_nombre = "2021E2"
-
-		expectativas=["expectativa1\nexpectativa2\nexpectativa3"]
-		
-		for i in range(len(expectativas.split("\n"))):
-
-			lista_expectativas.append(expectativas.split("\n")[i].replace("\r", ""))
+		informe="este es el contenido del informe"
 
 
-		crear_informe(ruta_carpeta+'Informe final.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, lista_expectativas)
+		crear_informe(ruta_carpeta+'Informe final.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, informe)
 		
 	except OSError:
 			
