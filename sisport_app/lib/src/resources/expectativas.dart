@@ -6,25 +6,25 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../resources/drawer.dart' as slideBar;
 import 'dart:convert';
 
-class informefinal extends StatefulWidget {
+class expectativas extends StatefulWidget {
   final String asig_codigo;
   final String peri_codigo;
   final String per_codigo;
   final String asig_nombre;
 
-  const informefinal(this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre);
+  const expectativas(this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre);
 
   @override
-  _informefinalState createState() => _informefinalState();
+  _expectativasState createState() => _expectativasState();
 }
 
-class _informefinalState extends State<informefinal> {
+class _expectativasState extends State<expectativas> {
   String tipo = "";
   String codigo = "";
   String token="";
   String contenido="";
 
-  Future guardarinforme(String contenido) async {
+  Future guardarexpectativas(String contenido) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       tipo = preferences.getString('tipo');
@@ -34,14 +34,15 @@ class _informefinalState extends State<informefinal> {
 
     Map data ={'asig_codigo':widget.asig_codigo, 'peri_codigo':widget.peri_codigo, 'contenido':contenido};
 
+
      http.Response response = await http.post(
-        'http://190.155.140.58:80/api/portafolio/informe',
+        'http://190.155.140.58:80/api/portafolio/expectativas',
         body: data,
         headers: {"Authorization": "bearer " + token});
 
     if(response.statusCode==200){
       Fluttertoast.showToast(
-          msg: "Informe final guardado exitosamente",
+          msg: "Expectativas guardadas exitosamente",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
@@ -51,7 +52,7 @@ class _informefinalState extends State<informefinal> {
        Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
     }else{
       Fluttertoast.showToast(
-          msg: "Error al guardar informe final",
+          msg: "Error al guardar expectativas",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIos: 1,
@@ -88,7 +89,7 @@ class _informefinalState extends State<informefinal> {
     //debugPrint("tema: "+datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
     
     setState(() {
-       contenido =(datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
+       contenido =(datos['message'][0]['portafolio_data']['elementos_curriculares']['expectativas']['contenido'].toString());
              
     });
 
@@ -111,7 +112,7 @@ class _informefinalState extends State<informefinal> {
           widget.asig_nombre, style: TextStyle(fontSize: 14),
         ),
         GestureDetector(
-          child: Text("Informe final", style: TextStyle(fontSize: 12),),
+          child: Text("Expectativas del curso", style: TextStyle(fontSize: 12),),
           onTap: () {
             
           },
@@ -127,7 +128,7 @@ class _informefinalState extends State<informefinal> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
                 child: Text(
-                  "REDACCIÓN DE EXPERIENCIAS DURANTE EL CURSO: ",
+                  "REDACCIÓN DE LAS EXPECTATIVAS AL INICIAR EL CURSO: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.left,
                 ),
@@ -163,7 +164,7 @@ class _informefinalState extends State<informefinal> {
                   new Center(
                     child: MaterialButton(
                       color: Colors.green,
-                      onPressed: () {guardarinforme(contenidocontroller.text);},
+                      onPressed: () {guardarexpectativas(contenidocontroller.text);},
                       height: 50,
                       minWidth: 400,
                       shape: RoundedRectangleBorder(
