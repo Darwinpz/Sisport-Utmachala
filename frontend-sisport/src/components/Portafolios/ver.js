@@ -69,12 +69,14 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             docente : portafolio[0].estructura.nombre_docente,
             peri_nombre : portafolio[0].extras.peri_nombre,
         }
+        
+        var data_portafolio = portafolio[0].portafolio_data
 
-        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: portafolio[0].elementos_curriculares.expectativas.contenido }).then(() => {
+        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
 
-            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, contenido: portafolio[0].informe_final.contenido }).then(() => {
+            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
 
-                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, diarios: portafolio[0].elementos_curriculares.apuntes }).then(() => {
+                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
 
                     downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
 
