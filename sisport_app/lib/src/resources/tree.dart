@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sisport_app/src/resources/expectativas.dart';
 import 'package:sisport_app/src/resources/informefinal.dart';
 import 'drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
@@ -41,7 +42,6 @@ class treeState extends State<tree> {
   List<Note2> _notes10 = List<Note2>();
   List<Note2> _notes11 = List<Note2>();
   List<Note2> _notes12 = List<Note2>();
-  List<Note2> _notes13 = List<Note2>();
 
 
   Future<List<Note>> buscarPortafolio() async {
@@ -265,7 +265,7 @@ class treeState extends State<tree> {
     return notes7;
   }
 
-  Future<List<Note2>> buscarasistencia() async {
+  Future buscarasistencia() async {
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -285,16 +285,14 @@ class treeState extends State<tree> {
         body: data,
         headers: {"Authorization": "bearer " + token});
 
-    var notes8 = List<Note2>();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> datos = json.decode(response.body);
-      for (var dato in datos['message'][0]['portafolio_data']
-          ['elementos_curriculares']['asistencia']) {
-        notes8.add(Note2.fromJson(dato));
-      }
-    }
-    return notes8;
+    Map<String, dynamic> datos = json.decode(response.body);
+    setState(() {
+      asistencia=datos['message'][0]['portafolio_data']
+          ['elementos_curriculares']['asistencia']['nombre_archivo'].toString();
+    });
+
+  
   }
 
   Future<List<Note2>> buscarobservaciones() async {
@@ -488,11 +486,7 @@ class treeState extends State<tree> {
         _notes7.addAll(value);
       });
     });
-    buscarasistencia().then((value) {
-      setState(() {
-        _notes8.addAll(value);
-      });
-    });
+    buscarasistencia();
     buscarobservaciones().then((value) {
       setState(() {
         _notes9.addAll(value);
@@ -554,20 +548,10 @@ class treeState extends State<tree> {
                 ),
               ),
               children: <Widget>[
-                ExpansionTile(
-                  title: Text(
-                    'Sub title',
-                  ),
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('data'),
-                    )
-                  ],
-                ),
                 ListTile(
                   title: Text(
-                    'data'
-                  ),
+                    'Biografia'
+                  ),leading: Icon(Icons.menu_book_outlined),
                 )
               ],
             ),
@@ -596,7 +580,11 @@ class treeState extends State<tree> {
                     'b) Expectativas',
                   ),
                   children: <Widget>[
-                     
+                     ListTile(
+                       title: Text("Expectativas"),
+                       leading: Icon(Icons.menu_book_outlined),
+                       onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>expectativas(widget.asig_codigo, widget.peri_codigo, widget.per_codigo, widget.asig_nombre)));},
+                     )
                   ],
                 ),
                 ExpansionTile(
@@ -705,13 +693,10 @@ class treeState extends State<tree> {
                     'j) Registro de asistencia',
                   ),
                   children: <Widget>[
-                    ListView.builder(physics: NeverScrollableScrollPhysics(), scrollDirection: Axis.vertical, shrinkWrap: true,itemBuilder: (context, index){
-                      return ListTile(
-                      title: Text(_notes8[index].nombre_archivo),
+                    ListTile(
+                      title:Text(asistencia),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
-                    );
-                    },  itemCount: _notes8.length,)
+                    )
                   ],
                 ),
                 ExpansionTile(
@@ -791,6 +776,16 @@ class treeState extends State<tree> {
                 )
               ],
             ),
+            MaterialButton(
+                      color: Colors.green,
+                      onPressed: () {},
+                      height: 50,
+                      minWidth: 400,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0)),
+                      child: Text('Descargar portafolio',
+                          style: TextStyle(color: Colors.white, fontSize: 17)),
+                    ),
           ],
         ),
       ),
