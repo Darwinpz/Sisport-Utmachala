@@ -36,36 +36,36 @@ def generar_diario(request):
 
 		for diario in diarios:
 			
-			num_diario = diario.num_diario
-			periodo = diario.periodo_inicio.split("T")[0]+" al "+ diario.periodo_fin.split("T")[0]
-			tiempo = diario.tiempo
-			fecha = diario.fecha
-			tema = diario.tema
-			resumen = diario.resumen
+			num_diario = diario["num_diario"]
+			periodo = diario["periodo_inicio"].split("T")[0]+" al "+ diario["periodo_fin"].split("T")[0]
+			tiempo = diario["tiempo"]
+			fecha = diario["fecha"]
+			tema = diario["tema"]
+			resumen = diario["resumen"]
 			
-			estrategias = diario.estrategias
+			estrategias = diario["estrategias"]
 			
 			for i in range(len(estrategias.split("\n"))):
 
 				lista_estrategias.append(estrategias.split("\n")[i].replace("\r", ""))
 
-			contenidos = diario.contenidos
+			contenidos = diario["contenidos"]
 
 			for i in range(len(contenidos.split("\n"))):
 
 				lista_contenidos.append(contenidos.split("\n")[i].replace("\r", ""))
 
-			actividades = diario.actividades
+			actividades = diario["actividades"]
 
 			for i in range(len(actividades.split("\n"))):
 
 				lista_actividades.append(actividades.split("\n")[i].replace("\r", ""))
 
-			objetivo = diario.objetivos
-			reflexion1 = diario.preg1
-			reflexion2 = diario.preg2
-			reflexion3 = diario.preg3
-			reflexion4 = diario.preg4
+			objetivo = diario["objetivos"]
+			reflexion1 = diario["preg1"]
+			reflexion2 = diario["preg2"]
+			reflexion3 = diario["preg3"]
+			reflexion4 = diario["preg4"]
 
 			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
 		
