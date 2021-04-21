@@ -46,16 +46,9 @@ var myDropzone = new Dropzone("#myDropzone", {
 
             const { tipo } = response.message
 
-            var url = "http://190.155.140.58/api/portafolio/uploadfiles";
-
-            if(tipo=="syllabus"){
-
-                url = "http://190.155.140.58/api/portafolio/addsyllabus"
-            }
-
             $.ajax({
 
-                url: url,
+                url: "http://190.155.140.58/api/portafolio/uploadfiles",
                 data: {
                     "asig_codigo": asig_codigo,
                     "peri_codigo": peri_codigo,

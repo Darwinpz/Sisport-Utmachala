@@ -15,7 +15,6 @@ EstructuraCtrl.add = (nombre) => {
                 cod_asignatura: {type: String},
                 periodo: {type: String},
                 nombre_asignatura: {type: String},
-                syllabus: {type: String},
                 contenidos: [],
                 cod_docente: {type: String},
                 nombre_docente: {type:String},
