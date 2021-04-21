@@ -103,7 +103,7 @@ def eliminarArchivo(request):
 			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
 		elif(tipo_archivo=='proyectos'):
 			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
-		elif(tipo_archivo=='estudios'):
+		elif(tipo_archivo=='casos_estudios'):
 			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
 		elif(tipo_archivo=='planteamientos'):
 			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
@@ -171,7 +171,6 @@ def descargarArchivo(request):
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
-
 		if(tipo_archivo=='syllabus'):
 			ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
 		elif(tipo_archivo=='expectativas'):
@@ -184,7 +183,7 @@ def descargarArchivo(request):
 			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
 		elif(tipo_archivo=='proyectos'):
 			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
-		elif(tipo_archivo=='estudios'):
+		elif(tipo_archivo=='casos_estudio'):
 			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
 		elif(tipo_archivo=='planteamientos'):
 			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
@@ -204,7 +203,7 @@ def descargarArchivo(request):
 		return jsonify({"message":"error al descargar archivo"}),500
 		
 	else:
-			
+
 		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 
 
