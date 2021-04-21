@@ -120,7 +120,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         portafolio.map(({ estructura }) =>
 
                                                                             estructura.syllabus &&
-                                                                            <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={estructura.syllabus}>{estructura.syllabus}</a></li>
+                                                                            <li key="syllabus"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={estructura.syllabus}>{estructura.syllabus}</a></li>
 
                                                                         )
 
@@ -354,7 +354,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
                                                                                     portafolio_data.elementos_curriculares.asistencia.nombre_archivo &&
-                                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre={portafolio_data.elementos_curriculares.asistencia.nombre_archivo}>{portafolio_data.elementos_curriculares.asistencia.nombre_archivo}</a></li>
+                                                                                    <li key="asistencia"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre={portafolio_data.elementos_curriculares.asistencia.nombre_archivo}>{portafolio_data.elementos_curriculares.asistencia.nombre_archivo}</a></li>
 
                                                                                 }
 
