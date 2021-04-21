@@ -23,7 +23,7 @@ def generar_diario(request):
 		docente = "WILMER RIVAS"
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/c) Apuntes de clase/')
+						'Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
@@ -92,31 +92,31 @@ def eliminarArchivo(request):
 						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
 		if(tipo_archivo=='syllabus'):
-			ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
+			ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
 		elif(tipo_archivo=='expectativas'):
-			ruta_archivo=(ruta+"b) Expectativas del curso/"+nombre_archivo)
+			ruta_archivo=(ruta+"b. Expectativas del curso/"+nombre_archivo)
 		elif(tipo_archivo=='evaluaciones'):
-			ruta_archivo=(ruta+"d) Evaluaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"d. Evaluaciones/"+nombre_archivo)
 		elif(tipo_archivo=='investigaciones'):
-			ruta_archivo=(ruta+"e) Investigaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"e. Investigaciones/"+nombre_archivo)
 		elif(tipo_archivo=='actividades'):
-			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
+			ruta_archivo=(ruta+"f. Actividades de experimentación/"+nombre_archivo)
 		elif(tipo_archivo=='proyectos'):
-			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
+			ruta_archivo=(ruta+"g. Proyectos/"+nombre_archivo)
 		elif(tipo_archivo=='estudios'):
-			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
+			ruta_archivo=(ruta+"h. Estudios de caso/"+nombre_archivo)
 		elif(tipo_archivo=='planteamientos'):
-			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
+			ruta_archivo=(ruta+"i. Planteamiento de problemas/"+nombre_archivo)
 		elif(tipo_archivo=='asistencia'):
-			ruta_archivo=(ruta+"j) Registro de asistencia/"+nombre_archivo)
+			ruta_archivo=(ruta+"j. Registro de asistencia/"+nombre_archivo)
 		elif(tipo_archivo=='observaciones'):
-			ruta_archivo=(ruta+"k) Registro de observaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"k. Registro de observaciones/"+nombre_archivo)
 		elif(tipo_archivo=='intraclases'):
-			ruta_archivo=(ruta+"l) Tareas intraclases/"+nombre_archivo)
+			ruta_archivo=(ruta+"l. Tareas intraclases/"+nombre_archivo)
 		elif(tipo_archivo=='autonomos'):
-			ruta_archivo=(ruta+"m) Tareas autónomas/"+nombre_archivo)
+			ruta_archivo=(ruta+"m. Tareas autónomas/"+nombre_archivo)
 		elif(tipo_archivo=='refuerzo'):
-			ruta_archivo=(ruta+"n) Tareas de refuerzo/"+nombre_archivo)
+			ruta_archivo=(ruta+"n. Tareas de refuerzo/"+nombre_archivo)
 		os.remove(ruta_archivo)
 			
 	except OSError:
@@ -171,31 +171,31 @@ def descargarArchivo(request):
 
 
 		if(tipo_archivo=='syllabus'):
-			ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
+			ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
 		elif(tipo_archivo=='expectativas'):
-			ruta_archivo=(ruta+"b) Expectativas del curso/"+nombre_archivo)
+			ruta_archivo=(ruta+"b. Expectativas del curso/"+nombre_archivo)
 		elif(tipo_archivo=='evaluaciones'):
-			ruta_archivo=(ruta+"d) Evaluaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"d. Evaluaciones/"+nombre_archivo)
 		elif(tipo_archivo=='investigaciones'):
-			ruta_archivo=(ruta+"e) Investigaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"e. Investigaciones/"+nombre_archivo)
 		elif(tipo_archivo=='actividades'):
-			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
+			ruta_archivo=(ruta+"f. Actividades de experimentación/"+nombre_archivo)
 		elif(tipo_archivo=='proyectos'):
-			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
+			ruta_archivo=(ruta+"g. Proyectos/"+nombre_archivo)
 		elif(tipo_archivo=='estudios'):
-			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
+			ruta_archivo=(ruta+"h. Estudios de caso/"+nombre_archivo)
 		elif(tipo_archivo=='planteamientos'):
-			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
+			ruta_archivo=(ruta+"i. Planteamiento de problemas/"+nombre_archivo)
 		elif(tipo_archivo=='asistencia'):
-			ruta_archivo=(ruta+"j) Registro de asistencia/"+nombre_archivo)
+			ruta_archivo=(ruta+"j. Registro de asistencia/"+nombre_archivo)
 		elif(tipo_archivo=='observaciones'):
-			ruta_archivo=(ruta+"k) Registro de observaciones/"+nombre_archivo)
+			ruta_archivo=(ruta+"k. Registro de observaciones/"+nombre_archivo)
 		elif(tipo_archivo=='intraclases'):
-			ruta_archivo=(ruta+"l) Tareas intraclases/"+nombre_archivo)
+			ruta_archivo=(ruta+"l. Tareas intraclases/"+nombre_archivo)
 		elif(tipo_archivo=='autonomos'):
-			ruta_archivo=(ruta+"m) Tareas autónomas/"+nombre_archivo)
+			ruta_archivo=(ruta+"m. Tareas autónomas/"+nombre_archivo)
 		elif(tipo_archivo=='refuerzo'):
-			ruta_archivo=(ruta+"n) Tareas de refuerzo/"+nombre_archivo)
+			ruta_archivo=(ruta+"n. Tareas de refuerzo/"+nombre_archivo)
 			
 	except OSError:
 			
@@ -257,7 +257,7 @@ def generar_expectativas(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/b) Expectativas/')
+						'Portafolios/'+per_cedula+'/2. Elementos curriculares/b. Expectativas/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
