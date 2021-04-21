@@ -32,7 +32,7 @@ def uploadSyllabus(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/a) Syllabus/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/a. Syllabus/')
 
             if len(archivos)==1:
                 for f in request.files.getlist('file'):
@@ -62,7 +62,7 @@ def uploadEvaluacion(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/d) Evaluaciones/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/d. Evaluaciones/')
 
             if len(archivos)<=7:
                 
@@ -92,7 +92,7 @@ def uploadInvestigacion(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/e) Investigaciones/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/e. Investigaciones/')
             
             
             if len(archivos)<=7:
@@ -122,7 +122,7 @@ def uploadActividad(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/f) Actividades de experimentación/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/f. Actividades de experimentación/')
             
             if len(archivos)<=7:
                 for f in request.files.getlist('file'):
@@ -150,7 +150,7 @@ def uploadProyecto(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/g) Proyectos/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/g. Proyectos/')
             
             if len(archivos)<=2:
                 for f in request.files.getlist('file'):
@@ -178,7 +178,7 @@ def uploadCasoEstudio(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/h) Estudios de caso/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/h. Estudios de caso/')
             
             if len(archivos)<=7:
                 for f in request.files.getlist('file'):
@@ -206,7 +206,7 @@ def uploadPlanteamiento(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/i) Planteamiento de problemas/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/i. Planteamiento de problemas/')
 
             
             if len(archivos)<=7:
@@ -234,7 +234,7 @@ def uploadAsistencia(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/j) Registro de asistencia/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/j. Registro de asistencia/')
             
             if len(archivos)==1:
                 for f in request.files.getlist('file'):
@@ -263,7 +263,7 @@ def uploadObservacion(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/k) Registro de observaciones/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/k. Registro de observaciones/')
             
             if len(archivos)<=3:
                 for f in request.files.getlist('file'):
@@ -290,7 +290,7 @@ def uploadIntraclase(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/l) Tareas intraclases/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/l. Tareas intraclases/')
             
 
             if len(archivos)<=25:
@@ -318,7 +318,7 @@ def uploadAutonomo(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/m) Tareas autónomas/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/m. Tareas autónomas/')
             
             if len(archivos)<=25:
                 for f in request.files.getlist('file'):
@@ -345,7 +345,7 @@ def uploadRefuerzo(request, lista_extensions):
             asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
             per_cedula= seperator.join(request.values.getlist('per_cedula'))
             
-            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/n) Tareas de refuerzo/')
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/2. Elementos curriculares/n. Tareas de refuerzo/')
             
             if len(archivos)<=7:
                 for f in request.files.getlist('file'):
@@ -404,31 +404,31 @@ def eliminarArchivo(request):
         ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura + '/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
         
         if(tipo_archivo=='syllabus'):
-            ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
+            ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
         elif(tipo_archivo=='expectativas'):
-            ruta_archivo=(ruta+"b) Expectativas del curso/"+nombre_archivo)
+            ruta_archivo=(ruta+"b. Expectativas del curso/"+nombre_archivo)
         elif(tipo_archivo=='evaluaciones'):
-            ruta_archivo=(ruta+"d) Evaluaciones/"+nombre_archivo)
+            ruta_archivo=(ruta+"d. Evaluaciones/"+nombre_archivo)
         elif(tipo_archivo=='investigaciones'):
-            ruta_archivo=(ruta+"e) Investigaciones/"+nombre_archivo)
+            ruta_archivo=(ruta+"e. Investigaciones/"+nombre_archivo)
         elif(tipo_archivo=='actividades'):
-            ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
+            ruta_archivo=(ruta+"f. Actividades de experimentación/"+nombre_archivo)
         elif(tipo_archivo=='proyectos'):
-            ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
+            ruta_archivo=(ruta+"g. Proyectos/"+nombre_archivo)
         elif(tipo_archivo=='estudios'):
-            ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
+            ruta_archivo=(ruta+"h. Estudios de caso/"+nombre_archivo)
         elif(tipo_archivo=='planteamientos'):
-            ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
+            ruta_archivo=(ruta+"i. Planteamiento de problemas/"+nombre_archivo)
         elif(tipo_archivo=='asistencia'):
-            ruta_archivo=(ruta+"j) Registro de asistencia/"+nombre_archivo)
+            ruta_archivo=(ruta+"j. Registro de asistencia/"+nombre_archivo)
         elif(tipo_archivo=='observaciones'):
-            ruta_archivo=(ruta+"k) Registro de observaciones/"+nombre_archivo)
+            ruta_archivo=(ruta+"k. Registro de observaciones/"+nombre_archivo)
         elif(tipo_archivo=='intraclases'):
-            ruta_archivo=(ruta+"l) Tareas intraclases/"+nombre_archivo)
+            ruta_archivo=(ruta+"l. Tareas intraclases/"+nombre_archivo)
         elif(tipo_archivo=='autonomos'):
-            ruta_archivo=(ruta+"m) Tareas autónomas/"+nombre_archivo)
+            ruta_archivo=(ruta+"m. Tareas autónomas/"+nombre_archivo)
         elif(tipo_archivo=='refuerzo'):
-            ruta_archivo=(ruta+"n) Tareas de refuerzo/"+nombre_archivo)
+            ruta_archivo=(ruta+"n. Tareas de refuerzo/"+nombre_archivo)
         os.remove(ruta_archivo)
     
     except OSError:
