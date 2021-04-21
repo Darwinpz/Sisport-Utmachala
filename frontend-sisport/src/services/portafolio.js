@@ -130,7 +130,7 @@ export default function Portafolio({ jwt }) {
 
     const removefiles = async ({asig_codigo, peri_codigo, tipo, nombre_archivo })=>{
 
-        return fetch(ENDPOINT+"/remove", {
+        return fetch(ENDPOINT+"/removefiles", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

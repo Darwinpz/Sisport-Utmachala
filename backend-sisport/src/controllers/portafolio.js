@@ -754,7 +754,7 @@ PortafolioCtrl.removefiles = async (req, res, next) => {
 
                     }else{
 
-                        portafolio.elementos_curriculares[tipo] = portafolio.elementos_curriculares[tipo].filter(portafolio => portafolio.elementos_curriculares[tipo].nombre_archivo != nombre_archivo)
+                        portafolio.elementos_curriculares[tipo] = portafolio.elementos_curriculares[tipo].filter(portafolio => portafolio.nombre_archivo != nombre_archivo)
 
                     }
 

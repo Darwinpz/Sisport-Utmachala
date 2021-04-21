@@ -103,7 +103,7 @@ def eliminarArchivo(request):
 			ruta_archivo=(ruta+"f) Actividades de experimentación/"+nombre_archivo)
 		elif(tipo_archivo=='proyectos'):
 			ruta_archivo=(ruta+"g) Proyectos/"+nombre_archivo)
-		elif(tipo_archivo=='casos_estudios'):
+		elif(tipo_archivo=='casos_estudio'):
 			ruta_archivo=(ruta+"h) Estudios de caso/"+nombre_archivo)
 		elif(tipo_archivo=='planteamientos'):
 			ruta_archivo=(ruta+"i) Planteamiento de problemas/"+nombre_archivo)
