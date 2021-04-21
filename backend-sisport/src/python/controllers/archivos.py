@@ -4,7 +4,7 @@ from flask import jsonify
 import shutil
 from shutil import rmtree
 from controllers.generardiario import crear_diario
-from controllers.generar_informe import crear_informe
+from controllers.generarexpectativas import crear_expectativas
 
 
 def generar_diario(request):
@@ -248,3 +248,48 @@ def generar_informe(request):
 	else:
 			
 		return jsonify({"message":"informe final generado"}),200
+
+
+def generar_expectativas(request):
+
+    #lugar = arbol_json["elementos_curriculares"]["diarios"]
+
+	try:
+        
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_abreviatura']
+		per_cedula = json_req['per_cedula']
+
+		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
+						'Portafolios/'+per_cedula+'/2. Elementos curriculares/b) Expectativas/')
+
+		if not os.path.isdir(ruta_carpeta):
+			os.makedirs(ruta_carpeta)
+
+		lista_expectativas = []
+		
+
+		per_nombre = "Jorge Leonardo González Córdova"
+		asig_nombre = "PROGRAMACIÓN VI"
+		sem_nombre = "OCTAVO SEMESTRE A"
+		docente = "ING. JOOFRE HONORES TAPIA"
+		peri_nombre = "2021E2"
+
+		expectativas=["expectativa1\nexpectativa2\nexpectativa3"]
+		
+		for i in range(len(expectativas.split("\n"))):
+
+			lista_expectativas.append(expectativas.split("\n")[i].replace("\r", ""))
+
+
+		crear_expectativas(ruta_carpeta+'Expectativas.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, lista_expectativas)
+		
+	except OSError:
+			
+		return jsonify({"message":"error al generar expectativas"}),500
+		
+	else:
+			
+		return jsonify({"message":"expectativas generado"}),200
