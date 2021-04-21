@@ -7,12 +7,14 @@ import '../resources/drawer.dart' as slideBar;
 import 'dart:convert';
 
 class expectativas extends StatefulWidget {
+  
   final String asig_codigo;
   final String peri_codigo;
   final String per_codigo;
   final String asig_nombre;
 
-  const expectativas(this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre);
+  const expectativas(
+      this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre);
 
   @override
   _expectativasState createState() => _expectativasState();
@@ -21,26 +23,29 @@ class expectativas extends StatefulWidget {
 class _expectativasState extends State<expectativas> {
   String tipo = "";
   String codigo = "";
-  String token="";
-  String contenido="";
+  String token = "";
+  String contenido = "";
 
   Future guardarexpectativas(String contenido) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       tipo = preferences.getString('tipo');
       codigo = preferences.getString('codigo');
-      token= preferences.getString('token');
+      token = preferences.getString('token');
     });
 
-    Map data ={'asig_codigo':widget.asig_codigo, 'peri_codigo':widget.peri_codigo, 'contenido':contenido};
+    Map data = {
+      'asig_codigo': widget.asig_codigo,
+      'peri_codigo': widget.peri_codigo,
+      'contenido': contenido
+    };
 
-
-     http.Response response = await http.post(
+    http.Response response = await http.post(
         'http://190.155.140.58:80/api/portafolio/expectativas',
         body: data,
         headers: {"Authorization": "bearer " + token});
 
-    if(response.statusCode==200){
+    if (response.statusCode == 200) {
       Fluttertoast.showToast(
           msg: "Expectativas guardadas exitosamente",
           toastLength: Toast.LENGTH_SHORT,
@@ -49,8 +54,9 @@ class _expectativasState extends State<expectativas> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
-       Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
-    }else{
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Inicio()));
+    } else {
       Fluttertoast.showToast(
           msg: "Error al guardar expectativas",
           toastLength: Toast.LENGTH_SHORT,
@@ -59,24 +65,22 @@ class _expectativasState extends State<expectativas> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-       Navigator.pop(context);
+      Navigator.pop(context);
     }
-
   }
 
-  Future obtenerDatos()async{
-
+  Future obtenerDatos() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       tipo = preferences.getString('tipo');
-      token=preferences.getString('token');
-      codigo=preferences.getString('codigo');
+      token = preferences.getString('token');
+      codigo = preferences.getString('codigo');
     });
 
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
-      'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
+      'per_codigo': tipo == "ESTUDIANTE" ? codigo : widget.per_codigo
     };
 
     http.Response response = await http.post(
@@ -87,13 +91,12 @@ class _expectativasState extends State<expectativas> {
     Map<String, dynamic> datos = json.decode(response.body);
     //debugPrint(widget.asig_codigo+" "+widget.peri_codigo+" "+widget.per_codigo);
     //debugPrint("tema: "+datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
-    
+
     setState(() {
-       contenido =(datos['message'][0]['portafolio_data']['elementos_curriculares']['expectativas']['contenido'].toString());
-             
+      contenido = (datos['message'][0]['portafolio_data']
+              ['elementos_curriculares']['expectativas']['contenido']
+          .toString());
     });
-
-
   }
 
   @override
@@ -104,18 +107,22 @@ class _expectativasState extends State<expectativas> {
 
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
     TextEditingController contenidocontroller = TextEditingController();
-    contenidocontroller.text=contenido;
+    contenidocontroller.text = contenido;
     return Scaffold(
-      appBar: AppBar(title: Column(children: [
+      appBar: AppBar(
+          title: Column(children: [
         Text(
-          widget.asig_nombre, style: TextStyle(fontSize: 14),
+          widget.asig_nombre,
+          style: TextStyle(fontSize: 14),
         ),
         GestureDetector(
-          child: Text("Expectativas del curso", style: TextStyle(fontSize: 12),),
-          onTap: () {
-            
-          },
+          child: Text(
+            "Expectativas del curso",
+            style: TextStyle(fontSize: 12),
+          ),
+          onTap: () {},
         )
       ])),
       drawer: slideBar.MyDrawer(),
@@ -133,48 +140,53 @@ class _expectativasState extends State<expectativas> {
                   textAlign: TextAlign.left,
                 ),
               ),
-              tipo=="ESTUDIANTE"?
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: contenidocontroller,
-                  maxLines: 25,
-                    decoration: InputDecoration(
-                        filled: true,
-                        enabled: true,
-                        fillColor: Colors.white,
-                        border: new OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.7)))),
-              ):Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: contenidocontroller,
-                  maxLines: 25,
-                    decoration: InputDecoration(
-                        filled: true,
-                        enabled: false,
-                        fillColor: Colors.white,
-                        border: new OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.7)))),
-              ),
-              if (tipo=='ESTUDIANTE') Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Center(
-                    child: MaterialButton(
-                      color: Colors.green,
-                      onPressed: () {guardarexpectativas(contenidocontroller.text);},
-                      height: 50,
-                      minWidth: 400,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
-                      child: Text('Guardar',
-                          style: TextStyle(color: Colors.white, fontSize: 17)),
+              tipo == "ESTUDIANTE"
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                          controller: contenidocontroller,
+                          maxLines: 25,
+                          decoration: InputDecoration(
+                              filled: true,
+                              enabled: true,
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.7)))),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                          controller: contenidocontroller,
+                          maxLines: 25,
+                          decoration: InputDecoration(
+                              filled: true,
+                              enabled: false,
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.7)))),
                     ),
-                  )
-                ],
-              )
+              if (tipo == 'ESTUDIANTE')
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Center(
+                      child: MaterialButton(
+                        color: Colors.green,
+                        onPressed: () {
+                          guardarexpectativas(contenidocontroller.text);
+                        },
+                        height: 50,
+                        minWidth: 400,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),
+                        child: Text('Guardar',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 17)),
+                      ),
+                    )
+                  ],
+                )
             ],
           )
         ],
