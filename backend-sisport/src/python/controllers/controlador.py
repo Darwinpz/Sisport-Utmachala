@@ -401,7 +401,7 @@ def eliminarArchivo(request):
         tipo_archivo=json_req['tipo_archivo']
         nombre_archivo=json_req['nombre_archivo']
         
-        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura + 'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura + '/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
         
         if(tipo_archivo=='syllabus'):
             ruta_archivo=(ruta+"a) Syllabus/"+nombre_archivo)
@@ -451,7 +451,7 @@ def descargarPortafolio(request):
         tipo_archivo=json_req['tipo_archivo']
         nombre_archivo=json_req['nombre_archivo']
         
-        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'Portafolios/'+per_cedula+'/')
+        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/')
         archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
         ruta_archivo=ruta+per_cedula+".zip"
         shutil.move(ruta_archivo, ruta)
