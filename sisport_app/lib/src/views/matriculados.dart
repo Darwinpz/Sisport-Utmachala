@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import '../drawer.dart' as slideBar;
+import 'package:sisport_app/src/resources/tree.dart';
+import '../resources/drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'treeAlumDocen.dart';
-import 'diario.dart';
 
-class treeDocen extends StatefulWidget {
+class matriculados extends StatefulWidget {
 
   final String asig_nombre;
   final String asig_codigo;
   final String peri_codigo;
-  const treeDocen(this.asig_nombre, this.asig_codigo, this.peri_codigo);
+  const matriculados(this.asig_nombre, this.asig_codigo, this.peri_codigo);
 
   @override
-  treeDocenState createState() => treeDocenState();
+  matriculadosState createState() => matriculadosState();
 }
 
-class treeDocenState extends State<treeDocen> {
+class matriculadosState extends State<matriculados> {
 
   String token="";
   List<Note> _notes = List<Note>();
@@ -88,8 +87,8 @@ class treeDocenState extends State<treeDocen> {
                                   onPressed: () => { Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => treeAlumDocen(
-                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, _notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido)))},   
+                                              builder: (context) => tree(
+                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, "",_notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido)))},   
                                   child: Text('Ver portafolio'))
                         ],
                       )

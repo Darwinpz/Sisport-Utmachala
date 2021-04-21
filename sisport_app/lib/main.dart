@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-import 'Inicio.dart';
+import 'src/views/Inicio.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

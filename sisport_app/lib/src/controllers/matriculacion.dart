@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'drawer.dart' as slideBar;
-import 'carreras.dart';
-import 'asignaturasDocen.dart';
+import 'package:sisport_app/src/views/asignaturasDocen.dart';
+import '../resources/drawer.dart' as slideBar;
+import '../views/carreras.dart';
 
 class Matriculacion extends StatefulWidget {
   @override
@@ -32,7 +32,7 @@ class _MatriculacionState extends State<Matriculacion> {
     return Scaffold(
       appBar: tipo=="ESTUDIANTE"? AppBar(title: Text("Matriculación")):AppBar(title: Text("Asignación de claves")),
       drawer: slideBar.MyDrawer(),
-      body: tipo=="ESTUDIANTE"?Carreras() : asignaturasDocen()
+      body: tipo=="ESTUDIANTE"?Carreras() : asignaturasdocente()
         
       );
       
