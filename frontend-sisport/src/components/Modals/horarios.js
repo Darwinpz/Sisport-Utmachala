@@ -2,6 +2,8 @@
 //import useHORARIOS from "hooks/useHorario";
 import React, { useState } from "react";
 import horarioService from 'services/horarios'
+import estructuraService from 'services/estructura'
+import usePerfil from 'hooks/usePerfil'
 
 export default function Horarios() {
 
@@ -48,6 +50,9 @@ export default function Horarios() {
 
     const [error, setError] = useState("");
 
+    const { perfil } = usePerfil()
+
+
     const HorarioSubmit = () => {
 
         const arreglo = [
@@ -88,16 +93,36 @@ export default function Horarios() {
 
         if (horas.length > 0) {
 
-            if (horas.length > 6) {
+            if (horas.length <= 6) {
 
                 var asig_codigo = document.getElementById("asig_codigo").innerText
                 var peri_codigo = document.getElementById("peri_codigo").innerText
+                var clave = document.getElementById("clave").value
+
                 const jwt = window.localStorage.getItem("jwt")
 
-                horarioService({ arreglo, asig_codigo, peri_codigo, jwt })
+                horarioService({ arreglo:horas, asig_codigo, peri_codigo, jwt })
                     .then(() => {
 
-                        window.location.reload()
+                        if (perfil.per_tipo === "DOCENTE") {
+                            
+                            if(clave.trim() !== ""){
+
+                                estructuraService({ asig_codigo, peri_codigo, clave,jwt })
+                                .then(() => {
+
+                                    window.location.reload()
+
+                                }).catch(() => {
+                                    setError("No se puede crear la estructura")
+                                })
+
+                            }else{
+                                setError("La clave no puede estar vacía")
+                            }
+
+                        }
+
 
                     })
                     .catch(() => {
@@ -111,7 +136,7 @@ export default function Horarios() {
 
             }
 
-        }else{
+        } else {
             setError("Ingresa al menos 1 hora")
         }
 

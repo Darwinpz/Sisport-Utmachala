@@ -85,11 +85,17 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <p style={{ display: "none" }} id="identificador">{estructura.identificador}</p>
                                                             <p style={{ display: "none" }} id="per_cedula">{perfil.per_cedula}</p>
+                                                            <p style={{ display: "none" }} id="per_tipo">{perfil.per_tipo}</p>
 
                                                         </div>
                                                     )
 
 
+                                                }
+                                                {
+                                                    portafolio.map(({ portafolio_data }) =>
+                                                        <p key="est_codigo" style={{ display: "none" }} id="est_codigo">{portafolio_data.datos_informativos.cod_estudiante}</p>
+                                                    )
                                                 }
                                                 {
                                                     portafolio.map(({ nombre_esquema }) =>
@@ -160,6 +166,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                     {
 
                                                                         portafolio.map(({ portafolio_data }) =>
+
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
                                                                                     portafolio_data.elementos_curriculares.evaluaciones.map(({ nombre_archivo }) =>
@@ -173,9 +180,14 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         )
 
                                                                     }
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="evaluaciones" data-titulo="EVALUACIONES" data-cant="3" data-size="2" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</a></li>
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="evaluaciones" data-titulo="EVALUACIONES" data-cant="3" data-size="2" data-type=".pdf, .doc, .docx, .xls, .xlsx, .zip, .rar">Subir</a></li>
+
+                                                                    }
+
 
                                                                 </ul>
                                                             </li>
@@ -200,8 +212,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="investigaciones" data-titulo="INVESTIGACIONES" data-cant="5" data-size="3" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="investigaciones" data-titulo="INVESTIGACIONES" data-cant="5" data-size="3" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
@@ -224,8 +240,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         )
 
                                                                     }
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="actividades" data-titulo="ACTIVIDADES DE EXPERIMENTACIÓN" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="actividades" data-titulo="ACTIVIDADES DE EXPERIMENTACIÓN" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
@@ -250,8 +270,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="proyectos" data-titulo="PROYECTOS" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="proyectos" data-titulo="PROYECTOS" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
@@ -276,8 +300,12 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="casos_estudio" data-titulo="ESTUDIOS DE CASO" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="casos_estudio" data-titulo="ESTUDIOS DE CASO" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
@@ -300,9 +328,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         )
 
                                                                     }
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="planteamientos" data-titulo="PLANTEAMIENTO DE PROBLEMAS" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="planteamientos" data-titulo="PLANTEAMIENTO DE PROBLEMAS" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+                                                                    }
+
 
                                                                 </ul>
                                                             </li>
@@ -324,8 +356,15 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-cant="1" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx">Subir Asistencia</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-cant="1" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx">Subir</a></li>
+
+
+                                                                    }
+
 
                                                                 </ul>
                                                             </li>
@@ -349,8 +388,15 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         )
 
                                                                     }
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="observaciones" data-titulo="REGISTRO DE OBSERVACIONES" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="observaciones" data-titulo="REGISTRO DE OBSERVACIONES" data-cant="3" data-size="2" data-parametro="archivos" data-type=".pdf, .doc, .docx, .zip, .rar">Subir</a></li>
+
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
@@ -375,8 +421,15 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="intraclases" data-titulo="TAREAS INTRACLASES" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                    {
+
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="intraclases" data-titulo="TAREAS INTRACLASES" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+
+
+                                                                    }
+
 
                                                                 </ul>
                                                             </li>
@@ -401,13 +454,17 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                                     }
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="autonomos" data-titulo="TAREAS AUTÓNOMAS" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="autonomos" data-titulo="TAREAS AUTÓNOMAS" data-cant="5" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+
+                                                                    }
 
                                                                 </ul>
                                                             </li>
 
-                                                            <li><Link to="#" >n) Tareas de Refuerzo</Link>
+                                                            <li><Link to="#" >n) Tareas de refuerzo</Link>
                                                                 <ul>
                                                                     {
 
@@ -425,9 +482,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         )
 
                                                                     }
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="refuerzo" data-titulo="TAREAS DE REFUERZO" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
 
-                                                                    <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
-                                                                        data-target="#subir" data-tipo="refuerzo" data-titulo="TAREAS DE REFUERZO" data-cant="3" data-size="3" data-parametro="archivos" data-type=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .zip, .rar">Subir</a></li>
+                                                                    }
+
 
                                                                 </ul>
                                                             </li>

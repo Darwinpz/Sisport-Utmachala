@@ -171,7 +171,7 @@ export default function Diario() {
                 
                     <p className="modal-diario" style={{display:"none"}} id="num_diario"></p>
 
-                    <div className="modal-footer">
+                    <div className="modal-footer" id="footer-diario">
                     {isLoading && <strong>Guardando cambios...</strong>}
                     {!isLoading && <strong>Guardado</strong>}
                         <button type="button" onClick={()=>handleSubmit()} className="btn btn-success">Guardar Cambios</button>

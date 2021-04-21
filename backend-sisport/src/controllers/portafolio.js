@@ -172,7 +172,7 @@ PortafolioCtrl.getDiario = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo, num_diario } = req.body
+                const { asig_codigo, peri_codigo, num_diario, est_codigo } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -184,8 +184,18 @@ PortafolioCtrl.getDiario = async (req, res, next) => {
 
                 if (busqueda) {
 
-                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+                    var portafolio = []
 
+                    if(est_codigo){
+                        
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
+
+                    }else{
+                      
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                    }
+                    
                     const diario = portafolio.elementos_curriculares.apuntes[num_diario - 1]
 
                     res.status(200).json({ "message": diario });
@@ -228,7 +238,7 @@ PortafolioCtrl.getinforme = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo } = req.body
+                const { asig_codigo, peri_codigo, est_codigo } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -240,7 +250,16 @@ PortafolioCtrl.getinforme = async (req, res, next) => {
 
                 if (busqueda) {
 
-                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+                    var portafolio = []
+
+                    if(est_codigo){
+
+                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
+
+                    }else{
+                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                    }
 
                     const informe = portafolio.informe_final
 
@@ -285,7 +304,7 @@ PortafolioCtrl.updateInforme = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo,contenido } = req.body
+                const { asig_codigo, peri_codigo, contenido } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -303,7 +322,7 @@ PortafolioCtrl.updateInforme = async (req, res, next) => {
 
                         if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
 
-                            portafolio.informe_final = {contenido:contenido}
+                            portafolio.informe_final = { contenido: contenido }
 
                             break;
                         }
@@ -359,7 +378,7 @@ PortafolioCtrl.getExpectativas = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo } = req.body
+                const { asig_codigo, peri_codigo, est_codigo } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -371,7 +390,16 @@ PortafolioCtrl.getExpectativas = async (req, res, next) => {
 
                 if (busqueda) {
 
-                    const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+                    var portafolio = [];
+
+                    if (est_codigo) {
+
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
+
+                    } else {
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+
+                    }
 
                     const expectativas = portafolio.elementos_curriculares.expectativas
 
@@ -416,7 +444,7 @@ PortafolioCtrl.updateExpectativas = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo,contenido } = req.body
+                const { asig_codigo, peri_codigo, contenido } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -434,7 +462,7 @@ PortafolioCtrl.updateExpectativas = async (req, res, next) => {
 
                         if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
 
-                            portafolio.elementos_curriculares.expectativas = {contenido:contenido}
+                            portafolio.elementos_curriculares.expectativas = { contenido: contenido }
 
                             break;
                         }
@@ -510,7 +538,7 @@ PortafolioCtrl.uploadfiles = async (req, res, next) => {
 
                         if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
 
-                            portafolio.elementos_curriculares[tipo].push({nombre_archivo:nombre_archivo})
+                            portafolio.elementos_curriculares[tipo].push({ nombre_archivo: nombre_archivo })
 
                             break;
                         }
@@ -641,7 +669,7 @@ function portafolio(per_codigo, diarios) {
 
         elementos_curriculares: {
 
-            expectativas: {contenido:""},
+            expectativas: { contenido: "" },
             apuntes: diarios,
             evaluaciones: [],
             investigaciones: [],
@@ -657,7 +685,7 @@ function portafolio(per_codigo, diarios) {
 
         },
 
-        informe_final: {contenido:""}
+        informe_final: { contenido: "" }
 
     }
 

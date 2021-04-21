@@ -26,7 +26,7 @@ export default function Archivos() {
                             <div className="col-lg-6 col-md-12 col-sm-12 ">
 
                                 <a type="button" className="btn btn-block btn-success modal-ruta" href="#" >Descargar</a>
-                                <button type="button" className="btn btn-block btn-danger">Eliminar</button>
+                                <button type="button" id="btn_eliminar_archivo" className="btn btn-block btn-danger">Eliminar</button>
 
                             </div>
 
