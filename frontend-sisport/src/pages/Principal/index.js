@@ -9,6 +9,7 @@ export default function PrincipalPage({params}) {
 
     const { asignaturas} = useAsignaturas({car_nombre:decodeURI(car_nombre)})
 
+
     return (
         <>
             <div className="row">

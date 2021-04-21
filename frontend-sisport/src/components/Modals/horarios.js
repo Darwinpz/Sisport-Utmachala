@@ -2,6 +2,9 @@
 //import useHORARIOS from "hooks/useHorario";
 import React, { useState } from "react";
 import horarioService from 'services/horarios'
+import estructuraService from 'services/estructura'
+import usePerfil from 'hooks/usePerfil'
+import asignaturaPythonService from 'services/python/asignatura'
 
 export default function Horarios() {
 
@@ -48,6 +51,9 @@ export default function Horarios() {
 
     const [error, setError] = useState("");
 
+    const { perfil } = usePerfil()
+
+
     const HorarioSubmit = () => {
 
         const arreglo = [
@@ -88,20 +94,61 @@ export default function Horarios() {
 
         if (horas.length > 0) {
 
-            if (horas.length > 6) {
+            if (horas.length <= 6) {
 
                 var asig_codigo = document.getElementById("asig_codigo").innerText
                 var peri_codigo = document.getElementById("peri_codigo").innerText
+                var clave = document.getElementById("clave_"+asig_codigo+"_"+peri_codigo).value
+                var identificador = document.getElementById("asig_identificador").innerText
+                var fac_nombre = document.getElementById("fac_abreviatura").innerText
+                var car_nombre = document.getElementById("car_abreviatura").innerText
+
                 const jwt = window.localStorage.getItem("jwt")
 
-                horarioService({ arreglo, asig_codigo, peri_codigo, jwt })
+                const {addEstructura, removeEstructura} = estructuraService({jwt})
+
+                horarioService({ arreglo: horas, asig_codigo, peri_codigo, jwt })
                     .then(() => {
 
-                        window.location.reload()
+                        if (perfil.per_tipo === "DOCENTE") {
+
+                            if (clave.trim() !== "") {
+
+                                addEstructura({ asig_codigo, peri_codigo, clave, jwt })
+                                    .then(() => {
+
+                                        asignaturaPythonService({fac_nombre:fac_nombre,car_nombre:car_nombre,asig_identificador:identificador+"-"+peri_codigo}).then(()=>{
+
+                                            window.location.reload()
+
+                                        }).catch(()=>{
+
+                                            removeEstructura({asig_codigo,peri_codigo}).then(()=>{
+
+                                            }).catch(()=>{
+
+                                                setError("No se puede eliminar la estructura, contacte con el coordinador o intente de nuevo")
+
+                                            })
+
+                                            setError("No se puede crear las carpetas, contacte con el coordinador o intente de nuevo")
+
+                                        })
+
+                                    }).catch(() => {
+                                        setError("No se puede crear la estructura, contacte con el coordinador o intente de nuevo")
+                                    })
+
+                            } else {
+                                setError("La clave no puede estar vacía")
+                            }
+
+                        }
+
 
                     })
                     .catch(() => {
-                        setError("No se puede guardar, revisa el horario")
+                        setError("No se puede guardar, revisa el horario, contacte con el coordinador o intente de nuevo")
                     })
 
 
@@ -111,7 +158,7 @@ export default function Horarios() {
 
             }
 
-        }else{
+        } else {
             setError("Ingresa al menos 1 hora")
         }
 
@@ -207,6 +254,11 @@ export default function Horarios() {
                     <div className="modal-footer">
                         {error && <strong>{error}</strong>}
                         <button type="button" onClick={() => HorarioSubmit()} className="btn btn-success">Guardar Horario</button>
+                        <p style={{ display: "none" }} id="asig_codigo" className="modal-asig_codigo"></p>
+                        <p style={{ display: "none" }} id="peri_codigo" className="modal-peri_codigo"></p>
+                        <p style={{ display: "none" }} id="asig_identificador" className="modal-identificador"></p>
+                        <p style={{ display: "none" }} id="fac_abreviatura" className="modal-facultad"></p>
+                        <p style={{ display: "none" }} id="car_abreviatura" className="modal-carrera"></p>
 
                     </div>
                 </div>

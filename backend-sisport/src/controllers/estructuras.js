@@ -78,6 +78,54 @@ EstructuraCtrl.add = async (req, res, next) => {
 }
 
 
+
+EstructuraCtrl.remove = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const { asig_codigo, peri_codigo } = req.body;
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                await busqueda.remove();
+
+                await pool.query("UPDATE asignatura_estado set asig_est_estado=$1  where asig_est_asig_codigo=$2 and asig_est_peri_codigo=$3 ", [false, asig_codigo, peri_codigo]);
+
+                res.status(200).json({ "message": "Estructura Eliminada" });
+
+            }
+        })
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        console.log(err)
+        next(err);
+
+    }
+
+
+}
+
+
 function total_semanas(fecha_inicio, fecha_fin) {
 
     var inicio = new Date(fecha_inicio);

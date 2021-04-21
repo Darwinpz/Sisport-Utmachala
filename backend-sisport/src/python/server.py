@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
-uploadAutonomo, uploadRefuerzo
+uploadAutonomo, uploadRefuerzo, eliminarArchivo, descargarPortafolio
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
 from controllers.diarios import generar_diario, eliminarArchivo, descargarPortafolio
 
@@ -41,7 +41,7 @@ def actividad():
 def proyecto():
     return uploadProyecto(request, app.config['EXTENSIONS_OTROS'])
 
-@app.route('/upload/estudios', methods=['POST'])
+@app.route('/upload/casos_estudio', methods=['POST'])
 def caso_estudio():
     return uploadCasoEstudio(request, app.config['EXTENSIONS_OTROS'])
 
@@ -94,12 +94,13 @@ def archivo():
     return eliminarArchivo(request)
 
 @app.route('/download/portafolio', methods=['POST'])
-def portafolio():
+def downloadportafolio():
     return descargarPortafolio(request)
 
 @app.errorhandler(413)
 def archivo_pesado(e):
     return jsonify({"message":"peso de archivo sobrepasado. Maximo 3MB"}), 413
 
+
 if __name__ == '__main__':
-    app.run(port=4555, debug=True)
+    app.run(port=4555, host='0.0.0.0', debug=True)
