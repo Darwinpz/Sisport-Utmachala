@@ -44,21 +44,25 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                     <div className="card-header text-center">
 
                         {
-                            portafolio.map(({ estructura }) =>
+                            portafolio.map(({ estructura, estudiante }) =>
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
-                                        perfil.per_tipo !== "ESTUDIANTE" && portafolio.estudiante.per_nombre
+                                        perfil.per_tipo !== "ESTUDIANTE" && 
+                                        
+                                        <>
+                                            {" "+estudiante.per_nombre+" "+estudiante.per_apellido}
+                                            <p style={{ display: "none" }} id="est_cedula">{estudiante.per_cedula}</p>
+                                        </>
 
                                     }
                                 </h4>
 
                             )
-
+                                
+                                    
 
                         }
-
-
                     </div>
 
                     <div className="card-body">
