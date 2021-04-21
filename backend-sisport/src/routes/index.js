@@ -105,9 +105,11 @@ module.exports = (app) => {
 
     //RUTAS DE ESTRUCTURA DE LA ASIGNATURA (NOSQL)
     app.post('/api/estructura/add', validarToken, estructura.add)
+    app.post('/api/estructura/remove', validarToken, estructura.remove)
 
     //RUTAS DEL PORTAFOLIO
     app.post('/api/portafolio/add', validarToken, portafolio.add)
+    app.post('/api/portafolio/remove', validarToken, portafolio.remove)
     app.post('/api/portafolio/getdiario',validarToken, portafolio.getDiario)
     app.post('/api/portafolio/diario',validarToken, portafolio.updateDiario)
     app.post('/api/portafolio/getinforme',validarToken, portafolio.getinforme)

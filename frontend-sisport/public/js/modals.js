@@ -48,7 +48,7 @@ var myDropzone = new Dropzone("#myDropzone", {
 
             $.ajax({
 
-                url: 'http://190.155.140.58:80/api/portafolio/uploadfiles',
+                url: 'http://190.155.140.58/api/portafolio/uploadfiles',
                 data: {
                     "asig_codigo": asig_codigo,
                     "peri_codigo": peri_codigo,
@@ -112,7 +112,7 @@ $('#subir').on('show.bs.modal', function (event) {
     modal.find('.modal-size').text('Tamaño max: ' + size + ' mb')
     modal.find('.modal-type').text('Formato: "' + type + '"')
 
-    myDropzone.options.url = "http://localhost:4555/upload/" + tipo;
+    myDropzone.options.url = "http://190.155.140.58:4555/upload/" + tipo;
     myDropzone.options.maxFiles = cantidad;
     myDropzone.options.maxFilesize = size;
     myDropzone.options.acceptedFiles = type;
@@ -178,7 +178,7 @@ $('#diario').on('show.bs.modal', function (event) {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getdiario',
+        url: 'http://190.155.140.58/api/portafolio/getdiario',
         data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt
@@ -267,7 +267,7 @@ $('#informe').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getinforme',
+        url: 'http://190.155.140.58/api/portafolio/getinforme',
         data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt
@@ -321,7 +321,7 @@ $('#expectativas').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://localhost/api/portafolio/getexpectativas',
+        url: 'http://190.155.140.58/api/portafolio/getexpectativas',
         data: data,
         headers: {
             'Authorization': 'Bearer ' + jwt

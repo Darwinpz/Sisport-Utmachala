@@ -28,9 +28,9 @@ PerAsigCtrl.all = async (req, res, next) => {
 
                 //const personas_asignaturas = await pool.query("SELECT *FROM persona_asignatura as per_as, asignatura as asig, semestre as sem where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and per_as.per_codigo = $1 ", [per_codigo]);
 
-                const personas_asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, asig.asig_identificador, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente, sem.sem_codigo, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, asig_estado.asig_est_estado"
-                    + " FROM persona_asignatura as per_as, asignatura as asig, semestre as sem , vi_docente_asignaturas as vi, persona as per, periodo as peri, asignatura_estado as asig_estado"
-                    + " where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and vi.asig_codigo = asig.asig_codigo and peri.peri_codigo =vi.peri_codigo"
+                const personas_asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, asig.asig_identificador, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente, sem.sem_codigo, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, asig_estado.asig_est_estado,  fac.fac_abreviatura, car.car_abreviatura"
+                    + " FROM persona_asignatura as per_as, asignatura as asig, semestre as sem , vi_docente_asignaturas as vi, persona as per, periodo as peri, asignatura_estado as asig_estado, carrera as car, facultad as fac"
+                    + " where per_as.asig_codigo = asig.asig_codigo and sem.sem_codigo = asig.sem_codigo and vi.asig_codigo = asig.asig_codigo and peri.peri_codigo =vi.peri_codigo and car.car_codigo = sem.car_codigo and fac.fac_codigo = car.fac_codigo"
                     +" and asig_estado.asig_est_peri_codigo = peri.peri_codigo and  asig.asig_codigo=asig_estado.asig_est_asig_codigo  and per.per_codigo = vi.per_codigo and per_as.per_codigo = $1 ", [per_codigo]);
 
                 var arreglo = []

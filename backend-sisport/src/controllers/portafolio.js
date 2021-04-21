@@ -155,6 +155,68 @@ PortafolioCtrl.find = async (req, res, next) => {
 }
 
 
+PortafolioCtrl.remove = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const { asig_codigo, peri_codigo, per_codigo } = req.body
+
+                const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
+
+                const nombre_esquema = carrera_facultad.rows[0].fac_abreviatura + "." + carrera_facultad.rows[0].car_abreviatura + "." + "esqs"
+
+                const esquema = EstructuraSchema.add(nombre_esquema)
+
+                const busqueda = await esquema.findOne({ 'generales.cod_asignatura': asig_codigo, 'generales.periodo': peri_codigo });
+
+                if (busqueda) {
+
+
+                    const portafolio = busqueda.portafolios.filter(portafolio => portafolio.datos_informativos.cod_estudiante != per_codigo)
+
+                    busqueda.portafolios = []
+
+                    busqueda.portafolios = portafolio
+
+                    await busqueda.save()
+
+                    await pool.query("DELETE FROM public.persona_asignatura  where per_codigo=$1 and asig_codigo=$2 and peri_codigo=$3", [per_codigo, asig_codigo, peri_codigo]);
+
+                    res.status(200).json({ "message": "Portafolio Eliminado" });
+
+                }else{
+
+                    res.status(400).json({ "message": "No existe el portafolio" });
+
+                }
+
+
+            }
+        })
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+
+}
+
+
 PortafolioCtrl.getDiario = async (req, res, next) => {
 
     var err = new Error();
@@ -186,16 +248,16 @@ PortafolioCtrl.getDiario = async (req, res, next) => {
 
                     var portafolio = []
 
-                    if(est_codigo){
-                        
+                    if (est_codigo) {
+
                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
 
-                    }else{
-                      
+                    } else {
+
                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
                     }
-                    
+
                     const diario = portafolio.elementos_curriculares.apuntes[num_diario - 1]
 
                     res.status(200).json({ "message": diario });
@@ -252,12 +314,12 @@ PortafolioCtrl.getinforme = async (req, res, next) => {
 
                     var portafolio = []
 
-                    if(est_codigo){
+                    if (est_codigo) {
 
-                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == est_codigo)
 
-                    }else{
-                         portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
+                    } else {
+                        portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
 
                     }
 

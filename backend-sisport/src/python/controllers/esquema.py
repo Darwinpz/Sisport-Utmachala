@@ -48,13 +48,15 @@ def crearAsignatura(request):
         car_nombre= json_req['car_nombre']
         asig_identificador=json_req['asig_identificador']
         
-        path=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador)
+        path=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+"/")
         
-        os.mkdir(path)
-        os.mkdir(path+'/Portafolios')
+        if not os.path.isdir(path):
+            os.makedirs(path)
         
-    except OSError:
+        os.mkdir(path+'Portafolios')
         
+    except OSError as e:
+        print(e.strerror)
         return jsonify({"message":"error al crear asignatura"}),500
 
     else:
