@@ -120,11 +120,18 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                         portafolio.map(({ estructura }) =>
 
                                                                             estructura.syllabus &&
-                                                                            <li key={estructura.syllabus}><a style={{ cursor: "pointer" }} href="#" >{estructura.syllabus}</a></li>
+                                                                            <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={estructura.syllabus}>{estructura.syllabus}</a></li>
 
                                                                         )
 
                                                                     }
+                                                                    {
+                                                                        perfil.per_tipo === "ESTUDIANTE" &&
+                                                                        <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                            data-target="#subir" data-tipo="syllabus" data-titulo="SYLLABUS" data-cant="1" data-size="2" data-type=".pdf, .doc, .docx">Subir</a></li>
+
+                                                                    }
+
                                                                 </ul>
                                                             </li>
 
@@ -347,7 +354,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
                                                                                     portafolio_data.elementos_curriculares.asistencia.nombre_archivo &&
-                                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre="Asistencia.docx">Asistencia</a></li>
+                                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre={portafolio_data.elementos_curriculares.asistencia.nombre_archivo}>{portafolio_data.elementos_curriculares.asistencia.nombre_archivo}</a></li>
 
                                                                                 }
 

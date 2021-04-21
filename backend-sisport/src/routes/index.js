@@ -110,6 +110,7 @@ module.exports = (app) => {
     //RUTAS DEL PORTAFOLIO
     app.post('/api/portafolio/add', validarToken, portafolio.add)
     app.post('/api/portafolio/remove', validarToken, portafolio.remove)
+    app.post('/api/portafolio/addsyllabus', validarToken, portafolio.uploadSyllabus)
     app.post('/api/portafolio/getdiario',validarToken, portafolio.getDiario)
     app.post('/api/portafolio/diario',validarToken, portafolio.updateDiario)
     app.post('/api/portafolio/getinforme',validarToken, portafolio.getinforme)
