@@ -78,10 +78,10 @@ def generar_diario(request):
 
 def eliminarArchivo(request):
 
-	 try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
@@ -129,10 +129,11 @@ def eliminarArchivo(request):
 
 
 def descargarPortafolio(request):
+	
 	try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
@@ -155,10 +156,11 @@ def descargarPortafolio(request):
 
 
 def descargarArchivo(request):
+	
 	try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
