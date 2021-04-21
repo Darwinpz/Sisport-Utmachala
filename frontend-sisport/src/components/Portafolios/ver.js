@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link } from 'wouter'
 import useScript from 'hooks/useScript'
@@ -12,6 +12,8 @@ import Diario from "components/Modals/diario"
 import Archivos from "components/Modals/archivos"
 import Expectativas from "components/Modals/expectativas"
 import Informe from "components/Modals/informe"
+import generarPythonServices from "services/python/generar"
+import portafolioPythonServices from "services/python/portafolio"
 
 import './index.css'
 
@@ -25,6 +27,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
     const [, navigate] = useLocation()
 
+    const [error, setError] = useState("");
+
     useEffect(() => {
         if (!isLogged) {
             navigate("/login")
@@ -36,6 +40,68 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
     useScript("/js/modals.js")
 
 
+    const { generarInforme, generarDiario, generarExpectativas } = generarPythonServices()
+
+    const { downloadPortafolio } = portafolioPythonServices()
+
+    const descargarSubmit = () => {
+
+
+        var peri_codigo = document.getElementById("peri_codigo").innerText
+        var identificador = document.getElementById("identificador").innerText
+        var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
+        var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
+        var per_cedula = document.getElementById("per_cedula").innerText
+        var est_cedula = document.getElementById("est_cedula")
+
+        var cedula = per_cedula
+
+        if (est_cedula) {
+
+            cedula = est_cedula.innerText
+        }
+
+        generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+
+            generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+
+                generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
+
+                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
+
+                        var win = window.open(url, '_blank');
+                        win.focus();
+
+                    }).catch(() => {
+
+                        setError("No se puede comprimir el portafolio, contacte con el coordinador o intente de nuevo")
+
+                    })
+
+
+                }).catch(() => {
+
+                    setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
+
+                })
+
+
+            }).catch(() => {
+
+                setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
+
+            })
+
+        }).catch(() => {
+
+            setError("No se puede generar el informe, contacte con el coordinador o intente de nuevo")
+
+        })
+
+
+    }
+
+
     return (
 
         <>
@@ -44,21 +110,25 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                     <div className="card-header text-center">
 
                         {
-                            portafolio.map(({ estructura }) =>
+                            portafolio.map(({ estructura, estudiante }) =>
 
                                 <h4 key={estructura.cod_asignatura}>PORTAFOLIO DE {estructura.nombre_asignatura}:
                                     {
                                         perfil.per_tipo !== "ESTUDIANTE" &&
-                                        " ESTUDIANTE"
+
+                                        <>
+                                            {" " + estudiante.per_nombre + " " + estudiante.per_apellido}
+                                            <p style={{ display: "none" }} id="est_cedula">{estudiante.per_cedula}</p>
+                                        </>
 
                                     }
                                 </h4>
 
                             )
 
+
+
                         }
-
-
                     </div>
 
                     <div className="card-body">
@@ -95,8 +165,10 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                 {
                                                     portafolio.map(({ portafolio_data }) =>
                                                         <p key="est_codigo" style={{ display: "none" }} id="est_codigo">{portafolio_data.datos_informativos.cod_estudiante}</p>
+
                                                     )
                                                 }
+
                                                 {
                                                     portafolio.map(({ nombre_esquema }) =>
                                                         <p style={{ display: "none" }} key={nombre_esquema} id="esquema">{nombre_esquema}</p>
@@ -116,15 +188,22 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                                             <li><Link to="#" >a) Syllabus</Link>
                                                                 <ul>
+
                                                                     {
-                                                                        portafolio.map(({ estructura }) =>
 
-                                                                            estructura.syllabus &&
-                                                                            <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={estructura.syllabus}>{estructura.syllabus}</a></li>
+                                                                        portafolio.map(({ portafolio_data }) =>
+                                                                            <div key={portafolio_data.datos_informativos.cod_estudiante}>
+                                                                                {
+                                                                                    portafolio_data.elementos_curriculares.syllabus.nombre_archivo &&
+                                                                                    <li key="asistencia"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="syllabus" data-titulo="SYLLABUS ACADÉMICO" data-nombre={portafolio_data.elementos_curriculares.syllabus.nombre_archivo}>{portafolio_data.elementos_curriculares.syllabus.nombre_archivo}</a></li>
 
+                                                                                }
+
+                                                                            </div>
                                                                         )
 
                                                                     }
+
                                                                     {
                                                                         perfil.per_tipo === "ESTUDIANTE" &&
                                                                         <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
@@ -354,7 +433,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                             <div key={portafolio_data.datos_informativos.cod_estudiante}>
                                                                                 {
                                                                                     portafolio_data.elementos_curriculares.asistencia.nombre_archivo &&
-                                                                                    <li><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre={portafolio_data.elementos_curriculares.asistencia.nombre_archivo}>{portafolio_data.elementos_curriculares.asistencia.nombre_archivo}</a></li>
+                                                                                    <li key="asistencia"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="asistencia" data-titulo="REGISTRO DE ASISTENCIA" data-nombre={portafolio_data.elementos_curriculares.asistencia.nombre_archivo}>{portafolio_data.elementos_curriculares.asistencia.nombre_archivo}</a></li>
 
                                                                                 }
 
@@ -519,7 +598,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                                         <div className="col">
 
-                                            <button type="button" className="btn btn-success m-2">DESCARGAR PORTAFOLIO</button>
+                                            <button type="button" className="btn btn-success m-2" onClick={() => descargarSubmit()} >DESCARGAR PORTAFOLIO</button>
                                             {
                                                 perfil.per_tipo === "COORDINADOR" &&
                                                 <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
@@ -530,7 +609,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
 
                                     </div>
-
+                                    {error && <strong className="m-2">{error}</strong>}
                                 </div>
 
                             </div>

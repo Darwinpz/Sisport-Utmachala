@@ -46,16 +46,9 @@ var myDropzone = new Dropzone("#myDropzone", {
 
             const { tipo } = response.message
 
-            var url = "http://190.155.140.58/api/portafolio/uploadfiles";
-
-            if(tipo=="syllabus"){
-
-                url = "http://190.155.140.58/api/portafolio/addsyllabus"
-            }
-
             $.ajax({
 
-                url: url,
+                url: "http://190.155.140.58/api/portafolio/uploadfiles",
                 data: {
                     "asig_codigo": asig_codigo,
                     "peri_codigo": peri_codigo,
@@ -227,11 +220,18 @@ $('#archivo').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var titulo = button.data('titulo')
     var nombre_archivo = button.data('nombre')
+
+    var tipo_archivo = button.data('tipo')
+
     var modal = $(this)
     const per_tipo = document.getElementById("per_tipo").innerText
     modal.find('.modal-title').text('ARCHIVO DE ' + titulo)
 
     modal.find('.modal-nombre_archivo').text(nombre_archivo)
+
+    modal.find('.modal-archivo_nombre').text(nombre_archivo)
+    modal.find('.modal-tipo_archivo').text(tipo_archivo)
+    
 
     if (per_tipo !== "ESTUDIANTE") {
 
@@ -242,6 +242,8 @@ $('#archivo').on('show.bs.modal', function (event) {
         }
 
     }
+
+
 
 
 })

@@ -10,9 +10,11 @@ export default function useAsignaturas({car_nombre}) {
     //const jwt = window.sessionStorage.getItem("jwt")
     const jwt = localStorage.getItem("jwt")
 
+    const {buscar} = asignaturasService({jwt})
+
     useEffect(function () {
         setLoading(true)
-        asignaturasService({car_nombre,jwt})
+        buscar({car_nombre})
             .then(asig => {
                 setASIGNATURAS(asig)
                 setLoading(false)

@@ -22,8 +22,7 @@ def generar_diario(request):
 
 		docente = "WILMER RIVAS"
 
-		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
+		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
@@ -78,10 +77,10 @@ def generar_diario(request):
 
 def eliminarArchivo(request):
 
-	 try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
@@ -89,7 +88,7 @@ def eliminarArchivo(request):
 		nombre_archivo=json_req['nombre_archivo']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
 		if(tipo_archivo=='syllabus'):
 			ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
@@ -129,16 +128,17 @@ def eliminarArchivo(request):
 
 
 def descargarPortafolio(request):
+	
 	try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/')
+						'/Portafolios/'+per_cedula+'/')
 		
 		
 		archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
@@ -151,14 +151,15 @@ def descargarPortafolio(request):
 		
 	else:
 			
-		return jsonify({"message": ruta_archivo}),200
+		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 
 
 def descargarArchivo(request):
+	
 	try:
-        
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
@@ -167,8 +168,7 @@ def descargarArchivo(request):
 
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/')
-
+						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
 		if(tipo_archivo=='syllabus'):
 			ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
@@ -202,8 +202,8 @@ def descargarArchivo(request):
 		return jsonify({"message":"error al descargar archivo"}),500
 		
 	else:
-			
-		return jsonify({"message": ruta_archivo}),200
+
+		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 
 
 def generar_informe(request):
@@ -219,7 +219,7 @@ def generar_informe(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/3. Informe final/')
+						'/Portafolios/'+per_cedula+'/3. Informe final/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
@@ -256,8 +256,7 @@ def generar_expectativas(request):
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
 
-		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'Portafolios/'+per_cedula+'/2. Elementos curriculares/b. Expectativas/')
+		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/b. Expectativas/')
 
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)

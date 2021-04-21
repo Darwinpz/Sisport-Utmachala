@@ -47,7 +47,6 @@ EstructuraCtrl.add = async (req, res, next) => {
                 estructuraModel.generales.cod_asignatura = asig_codigo;
                 estructuraModel.generales.periodo = peri_codigo;
                 estructuraModel.generales.nombre_asignatura = asignatura.rows[0].asig_nombre;
-                estructuraModel.generales.syllabus = "";
                 estructuraModel.generales.contenidos = [];
                 estructuraModel.generales.cod_docente = docente_codigo;
                 estructuraModel.generales.nombre_docente = nombre_docente;

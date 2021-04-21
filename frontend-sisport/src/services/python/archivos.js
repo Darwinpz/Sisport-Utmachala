@@ -1,17 +1,17 @@
 const ENDPOINT = process.env.REACT_APP_SERVER_PYTHON
 
-export default function Portafolio() {
+export default function Archivos({}) {
+    
+    const descargarArchivo = async ({fac_abreviatura, car_abreviatura, asig_abreviatura,per_cedula,tipo_archivo,nombre_archivo}) => {
 
-    const crearPortafolio = async ({ fac_nombre, car_nombre, asig_identificador, per_cedula }) => {
-
-        return fetch(ENDPOINT + "/create/portafolio", {
+        return fetch(ENDPOINT+"/download/archivo", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_nombre, car_nombre, asig_identificador, per_cedula })
+            body: JSON.stringify({fac_abreviatura, car_abreviatura, asig_abreviatura,per_cedula,tipo_archivo,nombre_archivo})
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
@@ -20,19 +20,19 @@ export default function Portafolio() {
             return message
         })
 
-
+        
     }
 
-    const downloadPortafolio = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula }) => {
-
-        return fetch(ENDPOINT + "/download/portafolio", {
+    const eliminarArchivo = async ({fac_abreviatura, car_abreviatura, asig_abreviatura,per_cedula,tipo_archivo,nombre_archivo}) => {
+        
+        return fetch(ENDPOINT+"/delete/archivo", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula })
+            body: JSON.stringify({fac_abreviatura, car_abreviatura, asig_abreviatura,per_cedula,tipo_archivo,nombre_archivo})
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
@@ -40,13 +40,14 @@ export default function Portafolio() {
             const { message } = res
             return message
         })
+
 
     }
 
     return {
-        crearPortafolio,
-        downloadPortafolio
+        descargarArchivo,
+        eliminarArchivo
     }
-
+    
 
 }
