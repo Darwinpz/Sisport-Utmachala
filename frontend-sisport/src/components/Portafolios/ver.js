@@ -56,18 +56,18 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
         var cedula = per_cedula
 
-        if(est_cedula){
+        if (est_cedula) {
 
             cedula = est_cedula.innerText
         }
 
-        generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura:identificador+"-"+peri_codigo, per_cedula:cedula }).then(() => {
+        generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
 
-            generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura:identificador+"-"+peri_codigo, per_cedula:cedula }).then(() => {
+            generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
 
-                generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura:identificador+"-"+peri_codigo, per_cedula:cedula }).then(() => {
+                generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then(() => {
 
-                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura:identificador+"-"+peri_codigo, per_cedula:cedula }).then((url) => {
+                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
 
                         var win = window.open(url, '_blank');
                         win.focus();
@@ -597,7 +597,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                     <div className="row">
 
                                         <div className="col">
-                                            {error && <strong>{error}</strong>}
+
                                             <button type="button" className="btn btn-success m-2" onClick={() => descargarSubmit()} >DESCARGAR PORTAFOLIO</button>
                                             {
                                                 perfil.per_tipo === "COORDINADOR" &&
@@ -609,7 +609,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
 
                                     </div>
-
+                                    {error && <strong className="m-2">{error}</strong>}
                                 </div>
 
                             </div>

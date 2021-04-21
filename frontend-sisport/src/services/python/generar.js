@@ -26,7 +26,7 @@ export default function Generar() {
 
     const generarInforme = async ({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula }) => {
 
-        return fetch(ENDPOINT + "/inforne", {
+        return fetch(ENDPOINT + "/informe", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
