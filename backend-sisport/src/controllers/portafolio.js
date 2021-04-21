@@ -747,14 +747,14 @@ PortafolioCtrl.removefiles = async (req, res, next) => {
 
                     
                     const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
-
+                    
                     if (tipo == "asistencia"){
 
                         portafolio.elementos_curriculares[tipo].nombre_archivo = ""
 
                     }else{
 
-                        portafolio = portafolio.elementos_curriculares[tipo].filter(portafolio => portafolio.elementos_curriculares[tipo].nombre_archivo != nombre_archivo)
+                        portafolio.elementos_curriculares[tipo] = portafolio.elementos_curriculares[tipo].filter(portafolio => portafolio.elementos_curriculares[tipo].nombre_archivo != nombre_archivo)
 
                     }
 
