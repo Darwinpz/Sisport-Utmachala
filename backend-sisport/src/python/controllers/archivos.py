@@ -33,48 +33,49 @@ def generar_diario(request):
 		lista_contenidos = []
 		lista_actividades = []
 
-		cod_diario = diario.__str__()
 
-		num_diario = "1"
-		periodo = "2020-2021"
-		tiempo = "2 horas"
-		fecha = "27/04/2021"
-		tema = "este es un tema"
-		resumen = "este es un resumen"
+		for diario in diarios:
+			
+			num_diario = diario.num_diario
+			periodo = diario.periodo_inicio.split("T")[0]+" al "+ diario.periodo_fin.split("T")[0]
+			tiempo = diario.tiempo
+			fecha = diario.fecha
+			tema = diario.tema
+			resumen = diario.resumen
+			
+			estrategias = diario.estrategias
+			
+			for i in range(len(estrategias.split("\n"))):
 
-		estrategias = ["estrategia 1\nestrategia2\nestrategia3"]
-		
-		for i in range(len(estrategias.split("\n"))):
+				lista_estrategias.append(estrategias.split("\n")[i].replace("\r", ""))
 
-			lista_estrategias.append(estrategias.split("\n")[i].replace("\r", ""))
+			contenidos = diario.contenidos
 
-			contenidos = ["contenido1\ncontenido2\contenido3"]
+			for i in range(len(contenidos.split("\n"))):
 
-		for i in range(len(contenidos.split("\n"))):
+				lista_contenidos.append(contenidos.split("\n")[i].replace("\r", ""))
 
-			lista_contenidos.append(contenidos.split("\n")[i].replace("\r", ""))
+			actividades = diario.actividades
 
-			actividades = ["actividad1\nactividad2\nactividad3"]
+			for i in range(len(actividades.split("\n"))):
 
-		for i in range(len(actividades.split("\n"))):
+				lista_actividades.append(actividades.split("\n")[i].replace("\r", ""))
 
-			lista_actividades.append(actividades.split("\n")[i].replace("\r", ""))
+			objetivo = diario.objetivos
+			reflexion1 = diario.preg1
+			reflexion2 = diario.preg2
+			reflexion3 = diario.preg3
+			reflexion4 = diario.preg4
 
-		objetivo = "este es un objetivo"
-		reflexion1 = "porque si"
-		reflexion2 = "porque si"
-		reflexion3 = "porque si"
-		reflexion4 = "porque si"
-
-		crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+cod_diario+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
+			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
 		
 	except OSError:
 			
-		return jsonify({"message":"error al generar diario"}),500
+		return jsonify({"message":"error al generar los diarios"}),500
 		
 	else:
 			
-		return jsonify({"message":"diario generado"}),200
+		return jsonify({"message":"diarios generados"}),200
 
 
 def eliminarArchivo(request):
