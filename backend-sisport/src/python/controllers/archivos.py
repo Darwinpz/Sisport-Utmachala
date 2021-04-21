@@ -22,7 +22,7 @@ def generar_diario(request):
 		diarios = json_req['diarios']
 		estructura = json_req['estructura']
 
-		docente = estructura.docente
+		docente = estructura["docente"]
 
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
 
@@ -229,11 +229,12 @@ def generar_informe(request):
 			os.makedirs(ruta_carpeta)
 		
 
-		per_nombre = estructura.per_nombre
-		asig_nombre = estructura.asig_nombre
-		sem_nombre = estructura.sem_nombre
-		docente = estructura.docente
-		peri_nombre = estructura.peri_nombre
+		per_nombre = estructura["per_nombre"]
+		asig_nombre = estructura["asig_nombre"]
+		sem_nombre = estructura["sem_nombre"]
+		docente = estructura["docente"]
+		peri_nombre = estructura["peri_nombre"]
+
 		informe= contenido
 
 
@@ -269,19 +270,21 @@ def generar_expectativas(request):
 
 		lista_expectativas = []
 		
+		per_nombre = estructura["per_nombre"]
+		asig_nombre = estructura["asig_nombre"]
+		sem_nombre = estructura["sem_nombre"]
+		docente = estructura["docente"]
+		peri_nombre = estructura["peri_nombre"]
 
-		per_nombre = estructura.per_nombre
-		asig_nombre = estructura.asig_nombre
-		sem_nombre = estructura.sem_nombre
-		docente = estructura.docente
-		peri_nombre = estructura.peri_nombre
+		expectativas= contenido 
 
-		expectativas=[contenido]
+		if expectativas !="":
 		
-		for i in range(len(expectativas.split("\n"))):
+			for i in range(len(expectativas.split("\n"))):
 
-			lista_expectativas.append(expectativas.split("\n")[i].replace("\r", ""))
-
+				lista_expectativas.append(expectativas.split("\n")[i].replace("\r", ""))
+		else:
+			lista_expectativas.append(expectativas)
 
 		crear_expectativas(ruta_carpeta+'Expectativas.docx',per_nombre,asig_nombre,sem_nombre,docente,peri_nombre, lista_expectativas)
 		
