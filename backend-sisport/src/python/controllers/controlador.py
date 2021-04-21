@@ -361,6 +361,35 @@ def uploadRefuerzo(request, lista_extensions):
         return jsonify({"message":{"tipo":"refuerzo","mensaje":"refuerzo guardado"}}),200
 
 
+def uploadBiografia(request, lista_extensions):
+    try:
+        if request.method == 'POST':
+            archivos=request.files.getlist('file')
+            
+            seperator=''
+            fac_nombre= seperator.join(request.values.getlist('fac_nombre'))
+            car_nombre= seperator.join(request.values.getlist('car_nombre'))
+            asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
+            per_cedula= seperator.join(request.values.getlist('per_cedula'))
+            
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/1. Datos informativos/')
+
+            if len(archivos)==1:
+                for f in request.files.getlist('file'):
+                    file_ext = os.path.splitext(f.filename)[1]
+                    if file_ext not in lista_extensions:
+                        return jsonify({"message":"error en el tipo de archivo"}),415
+                    for g in os.listdir(ruta):
+                        os.remove(os.path.join(ruta,g))
+                    f.save(os.path.join(ruta, f.filename))     
+            else:
+                return jsonify({"message":"cantidad de archivos sobrepasado. Maximo 1"}),500
+    except FileNotFoundError:
+        return jsonify({"message":"portafolio no encontrado"}),500
+    else:
+        return jsonify({"message":{"tipo":"biografia","mensaje":"Biografia guardada"}}),200
+
+
 def eliminarArchivo(request):
 	
     try:
