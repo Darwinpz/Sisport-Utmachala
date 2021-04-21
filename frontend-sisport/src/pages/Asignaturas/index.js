@@ -1,5 +1,7 @@
 import React from 'react'
 
+import VERasignaturas from "components/Coordinacion/asignaturas"
+
 export default function AsignaturasPage() {
     return (
         <>
@@ -25,32 +27,7 @@ export default function AsignaturasPage() {
 
                         <div className="card-body">
 
-                            <div className="table-responsive " style={{marginTop:"auto"}}>
-                                <table id="table_products" width="100%" cellSpacing="0" className="table table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Cedula</th>
-                                            <th scope="col">Nombre</th>
-                                            <th scope="col">Apellido</th>
-                                            <th scope="col">Correo</th>
-                                            <th scope="col">Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <th>0705463420</th>
-                                            <td>Darwin Josue</td>
-                                            <td>Pilaloa Zea</td>
-                                            <td>dpilaloa1@utmachala.edu.ec</td>
-                                            <td><a type="button" href="/estudiantes/editar/?id=" className="btn btn-primary"><i className="fas fa-eye"></i></a></td>
-                        
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
+                            <VERasignaturas/>
 
                         </div>
 

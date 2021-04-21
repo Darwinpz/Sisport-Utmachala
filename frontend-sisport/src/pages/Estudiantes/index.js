@@ -1,6 +1,6 @@
 import React from 'react'
 
-import VERestudiantes from "components/Users/estudiantes"
+import VERestudiantes from "components/Coordinacion/estudiantes"
 
 export default function EstudiantesPage() {
     return (

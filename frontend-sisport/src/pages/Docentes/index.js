@@ -1,6 +1,6 @@
 import React from 'react'
 
-import VERdocentes from "components/Users/docentes"
+import VERdocentes from "components/Coordinacion/docentes"
 
 export default function DocentesPage() {
     return (
