@@ -63,7 +63,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
         var estructura = {
 
-            per_nombre: portafolio[0].estudiante.per_nombre,
+            per_nombre: portafolio[0].estudiante.per_nombre+" "+portafolio[0].estudiante.per_apellido,
             asig_nombre : portafolio[0].estructura.nombre_asignatura,
             sem_nombre : portafolio[0].extras.sem_nombre,
             docente : portafolio[0].estructura.nombre_docente,
