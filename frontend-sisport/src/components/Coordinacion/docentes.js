@@ -43,6 +43,7 @@ export default function VERdocentes() {
                         <thead>
                             <tr>
                                 <th scope="col">Cedula</th>
+                                <th scope="col">Título</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Apellido</th>
                                 <th scope="col">Correo</th>
@@ -53,10 +54,11 @@ export default function VERdocentes() {
                         </tfoot>
                         <tbody>
                             {
-                                data.map(({ per_codigo, per_cedula, per_nombre, per_apellido, per_correo }) =>
+                                data.map(({ per_codigo, per_cedula,per_titulo, per_nombre, per_apellido, per_correo }) =>
 
                                     <tr key={per_codigo}>
                                         <th>{per_cedula}</th>
+                                        <td>{per_titulo}</td>
                                         <td>{per_nombre}</td>
                                         <td>{per_apellido}</td>
                                         <td>{per_correo}</td>
