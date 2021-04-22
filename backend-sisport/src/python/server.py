@@ -26,7 +26,7 @@ def docente():
     return uploadDocente(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/asignatura', methods=['POST'])
-def asignatura():
+def uploadasignatura():
     return uploadAsignatura(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/syllabus', methods=['POST'])
