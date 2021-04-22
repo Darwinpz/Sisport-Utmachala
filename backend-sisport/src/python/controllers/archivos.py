@@ -180,7 +180,9 @@ def descargarArchivo(request):
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 						'/Portafolios/'+per_cedula+'/2. Elementos curriculares/')
 
-		if(tipo_archivo=='syllabus'):
+		if(tipo_archivo=='informativos'):
+			ruta_archivo=('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+"/1. Datos informativos/"+nombre_archivo)
+		elif(tipo_archivo=='syllabus'):
 			ruta_archivo=(ruta+"a. Syllabus/"+nombre_archivo)
 		elif(tipo_archivo=='expectativas'):
 			ruta_archivo=(ruta+"b. Expectativas del curso/"+nombre_archivo)
