@@ -11,7 +11,8 @@ AsignaturaCtrl.all = async (req, res, next) => {
 
     try {
 
-        const asignaturas = await pool.query("SELECT *FROM asignatura as asig, semestre as sem, carrera as car, facultad as fac where asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo");
+        const asignaturas = await pool.query("SELECT *FROM asignatura as asig, semestre as sem, carrera as car, facultad as fac, periodo_semestre as peri_sem, periodo as peri"
+        +" where asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo and sem.sem_codigo = peri_sem.sem_codigo and peri.peri_codigo = peri_sem.peri_codigo");
 
         res.status(200).json({ "message": asignaturas.rows });
 
@@ -122,17 +123,53 @@ AsignaturaCtrl.buscar = async (req, res, next) => {
 /*
     * Inserta a la BD una Asignatura
 */
-AsignaturaCtrl.add = async (req, res, next) => {
+AsignaturaCtrl. add = async (req, res, next) => {
 
     var err = new Error();
 
     try {
 
-        const { asig_nombre, sem_codigo } = req.body;
+        const { asig_nombre, sem_codigo, asig_identificador } = req.body;
 
-        await pool.query("INSERT INTO asignatura (asig_nombre, sem_codigo) values($1,$2)", [asig_nombre, sem_codigo]);
 
-        res.status(200).json({ "message": "Asignatura Agregada" });
+        await pool.query("INSERT INTO public.asignatura (asig_nombre, sem_codigo, asig_identificador) values($1,$2,$3)", [asig_nombre, sem_codigo,asig_identificador]);
+
+        var max = await pool.query("SELECT MAX(asig_codigo) FROM public.asignatura");
+
+
+        res.status(200).json({ "message": max.rows[0].max });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+
+        console.log(err.message)
+        err.status = 500;
+        next(err);
+
+    }
+
+
+}
+
+
+
+
+/*
+    * Inserta el estado de la asignatura a la bd
+*/
+AsignaturaCtrl.addestado = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+        const { asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado  } = req.body;
+
+        await pool.query("INSERT INTO asignatura_estado (asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado) values($1,$2,$3)", [asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado ]);
+
+        res.status(200).json({ "message": "Estado de asignatura Agregada" });
 
 
     } catch (e) {
@@ -145,6 +182,7 @@ AsignaturaCtrl.add = async (req, res, next) => {
 
 
 }
+
 
 /*
     * Edita una Asignatura de la BD

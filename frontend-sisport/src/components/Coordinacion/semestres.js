@@ -45,6 +45,7 @@ export default function VERsemestres() {
                             <tr>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Paralelo</th>
+                                <th scope="col">Periodo</th>
                                 <th scope="col">Carrera</th>
                                 <th scope="col">Facultad</th>
                                 <th scope="col">Opciones</th>
@@ -54,11 +55,12 @@ export default function VERsemestres() {
                         </tfoot>
                         <tbody>
                             {
-                                data.map(({ sem_codigo, sem_nombre, sem_paralelo, car_nombre, fac_nombre }) =>
+                                data.map(({ sem_codigo, sem_nombre, sem_paralelo,peri_nombre, car_nombre, fac_nombre }) =>
 
                                     <tr key={sem_codigo}>
                                         <td>{sem_nombre}</td>
                                         <td>{sem_paralelo}</td>
+                                        <td>{peri_nombre}</td>
                                         <td>{car_nombre}</td>
                                         <td>{fac_nombre}</td>
                                         <td ><a type="button" href={`/semestres/editar/${sem_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>

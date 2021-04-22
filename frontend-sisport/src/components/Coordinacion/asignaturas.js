@@ -44,7 +44,7 @@ export default function VERasignaturas() {
                                 <th scope="col">Asignatura</th>
                                 <th scope="col">Semestre</th>
                                 <th scope="col">Carrera</th>
-                                <th scope="col">Facultad</th>
+                                <th scope="col">Periodo</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>
@@ -52,14 +52,14 @@ export default function VERasignaturas() {
                         </tfoot>
                         <tbody>
                             {
-                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre, sem_nombre, car_nombre, fac_nombre }) =>
+                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre, sem_nombre,sem_paralelo, peri_nombre, car_nombre }) =>
 
                                     <tr key={asig_codigo}>
                                         <td>{asig_identificador}</td>
                                         <td>{asig_nombre}</td>
-                                        <td>{sem_nombre}</td>
+                                        <td>{sem_nombre} {sem_paralelo}</td>
                                         <td>{car_nombre}</td>
-                                        <td>{fac_nombre}</td>
+                                        <td>{peri_nombre}</td>
                                         <td><a type="button" href={`/asignaturas/editar/${asig_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
                                         <a type="button" href={`/asignaturas/eliminar/${asig_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
 

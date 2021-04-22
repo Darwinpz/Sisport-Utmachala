@@ -61,7 +61,7 @@ export default function Asignaturas({ asignaturas }) {
 
             <div className="row align-items-center">
                 {
-                    asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, peri_nombre, peri_codigo, docente, matriculado, estado, fac_abreviatura, car_abreviatura }) =>
+                    asignaturas.map(({ asig_codigo, asig_nombre,sem_codigo, sem_nombre, sem_paralelo, asig_identificador, peri_nombre, peri_codigo, docente, matriculado, estado, fac_abreviatura, car_abreviatura }) =>
                         <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
                             <div className="card border-primary">
@@ -101,7 +101,7 @@ export default function Asignaturas({ asignaturas }) {
                                     {
                                         matriculado &&
                                         <>
-                                            <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
+                                            <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${sem_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
 
                                         </>
                                     }

@@ -11,7 +11,7 @@ PeriodoCtrl.all = async (req, res, next) => {
 
     try {
 
-        const periodos = await pool.query("SELECT *FROM periodo as peri, semestre as sem, carrera as car, facultad as fac where peri.sem_codigo = sem.sem_codigo and car.car_codigo = sem.sem_codigo and car.fac_codigo = fac.fac_codigo");
+        const periodos = await pool.query("SELECT *FROM periodo ");
 
         res.status(200).json({ "message": periodos.rows });
 
@@ -73,6 +73,7 @@ PeriodoCtrl.add = async (req, res, next) => {
     } catch (e) {
 
         err.message = e.message;
+        console.log(err.message)
         err.status = 500;
         next(err);
 

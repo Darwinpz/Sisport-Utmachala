@@ -48,9 +48,6 @@ export default function VERperiodos() {
                                 <th scope="col">Abreviatura</th>
                                 <th scope="col">Fecha inicial</th>
                                 <th scope="col">Fecha final</th>
-                                <th scope="col">Semestre</th>
-                                <th scope="col">Carrera</th>
-                                <th scope="col">Facultad</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Opciones</th>
                             </tr>
@@ -59,15 +56,12 @@ export default function VERperiodos() {
                         </tfoot>
                         <tbody>
                             {
-                                data.map(({ peri_codigo, peri_nombre, peri_fecha_inicial, peri_fecha_final, peri_estado, sem_nombre, sem_paralelo, car_nombre, fac_nombre }) =>
+                                data.map(({ peri_codigo, peri_nombre, peri_fecha_inicial, peri_fecha_final, peri_estado }) =>
 
                                     <tr key={peri_codigo}>
                                         <td>{peri_nombre}</td>
                                         <td>{peri_fecha_inicial.split("T")[0]}</td>
                                         <td>{peri_fecha_final.split("T")[0]}</td>
-                                        <td>{sem_nombre} {sem_paralelo}</td>
-                                        <td>{car_nombre}</td>
-                                        <td>{fac_nombre}</td>
                                         <td>{peri_estado}</td>
                                         <td><a type="button" href={`/periodos/editar/${peri_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
                                         <a type="button" href={`/periodos/eliminar/${peri_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>

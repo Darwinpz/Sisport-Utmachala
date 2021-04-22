@@ -3,7 +3,7 @@ const ENDPOINT = process.env.REACT_APP_SERVER + '/api/semestre'
 export default function Semestres({ jwt }) {
 
 
-    const all = async ({}) => {
+    const all = async ({ }) => {
 
         return fetch(ENDPOINT, {
             method: 'GET',
@@ -24,9 +24,9 @@ export default function Semestres({ jwt }) {
     }
 
 
-    const add = async ({sem_nombre, sem_paralelo, car_codigo}) => {
+    const add = async ({ sem_nombre, sem_paralelo, car_codigo }) => {
 
-        return fetch(ENDPOINT+"/add", {
+        return fetch(ENDPOINT + "/add", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -34,7 +34,7 @@ export default function Semestres({ jwt }) {
                 'Access-Control-Allow-Origin': true,
                 'Authorization': "Bearer " + jwt
             },
-            body: JSON.stringify({sem_nombre, sem_paralelo, car_codigo})
+            body: JSON.stringify({ sem_nombre, sem_paralelo, car_codigo })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
@@ -46,10 +46,35 @@ export default function Semestres({ jwt }) {
 
     }
 
-    return{
+
+    const addsemestre_periodo = async ({ sem_codigo, peri_codigo }) => {
+
+        return fetch(ENDPOINT + "/addsemestre_periodo", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer " + jwt
+            },
+            body: JSON.stringify({ sem_codigo, peri_codigo })
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+
+            return message
+        })
+
+    }
+
+    return {
 
         all,
-        add
+        add,
+        addsemestre_periodo
+
 
     }
 

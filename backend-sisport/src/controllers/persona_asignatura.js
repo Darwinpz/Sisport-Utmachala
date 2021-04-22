@@ -139,7 +139,7 @@ PerAsigCtrl.add = async (req, res, next) => {
 
     try {
 
-        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
 
             if (err) {
 
@@ -147,9 +147,8 @@ PerAsigCtrl.add = async (req, res, next) => {
 
             } else {
 
-                const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo } = req.body;
+                const { per_codigo, asig_codigo, peri_codigo } = req.body;
 
                 await pool.query("INSERT INTO public.persona_asignatura (per_codigo, asig_codigo, peri_codigo) values($1,$2,$3)", [per_codigo, asig_codigo, peri_codigo]);
 

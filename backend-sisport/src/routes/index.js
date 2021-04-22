@@ -48,6 +48,7 @@ module.exports = (app) => {
     //RUTAS DE LOS SEMESTRES
     app.get('/api/semestre', validarToken, semestre.all);
     app.post('/api/semestre/add', validarToken, semestre.add);
+    app.post('/api/semestre/addsemestre_periodo', validarToken, semestre.addsemestre_periodo);
     app.put('/api/semestre/put', validarToken, semestre.put);
     app.delete('/api/semestre/delete', validarToken, semestre.delete);
     app.get('/api/semestre/:id', validarToken, semestre.find);
@@ -86,15 +87,15 @@ module.exports = (app) => {
     //RUTAS DE LAS PERSONAS_ASIGNATURAS
     app.get('/api/persona_asignatura', validarToken, persona_asignatura.all);
     app.post('/api/persona_asignatura/matriculados', validarToken, persona_asignatura.matriculadosxasignaturas);
-    app.get('/api/persona_asignatura/:id', validarToken, persona_asignatura.find);
     app.post('/api/persona_asignatura/add', validarToken, persona_asignatura.add);
     app.put('/api/persona_asignatura/put', validarToken, persona_asignatura.put);
     app.delete('/api/persona_asignatura/delete', validarToken, persona_asignatura.delete);
-
+    app.get('/api/persona_asignatura/:id', validarToken, persona_asignatura.find);
 
     //RUTAS DE LAS ASIGNATURAS
     app.get('/api/asignatura', validarToken, asignatura.all);
     app.post('/api/asignatura/buscar', validarToken, asignatura.buscar);
+    app.post('/api/asignatura/addestado', validarToken, asignatura.addestado);
     app.post('/api/asignatura/add', validarToken, asignatura.add);
     app.put('/api/asignatura/put', validarToken, asignatura.put);
     app.delete('/api/asignatura/delete', validarToken, asignatura.delete);

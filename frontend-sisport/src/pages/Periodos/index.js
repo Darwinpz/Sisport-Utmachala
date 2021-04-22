@@ -29,7 +29,7 @@ export default function PeriodosPage() {
 
                             <div className="card" style={{ backgroundColor: "transparent", border: "none" }}>
 
-                                <button type="button" className="btn btn-success" data-toggle="modal" data-target="#periodo">Asignar Periodo</button>
+                                <button type="button" className="btn btn-success" data-toggle="modal" data-target="#periodo">Crear Periodo</button>
 
                             </div>
 
