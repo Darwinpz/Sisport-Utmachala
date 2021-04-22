@@ -1,0 +1,3 @@
+$('#datetimepickerInicio').datetimepicker();
+
+$('#datetimepickerFin').datetimepicker();

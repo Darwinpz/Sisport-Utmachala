@@ -47,10 +47,10 @@ module.exports = (app) => {
 
     //RUTAS DE LOS SEMESTRES
     app.get('/api/semestre', validarToken, semestre.all);
-    app.get('/api/semestre/:id', validarToken, semestre.find);
     app.post('/api/semestre/add', validarToken, semestre.add);
     app.put('/api/semestre/put', validarToken, semestre.put);
     app.delete('/api/semestre/delete', validarToken, semestre.delete);
+    app.get('/api/semestre/:id', validarToken, semestre.find);
 
     //RUTAS DE LOS PERIODOS
     app.get('/api/periodo', validarToken, periodo.all);

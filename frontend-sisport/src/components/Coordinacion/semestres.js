@@ -1,22 +1,24 @@
 
 import React, { useEffect, useState } from "react";
 
-import asignaturaService from 'services/asignaturas'
+import semestreService from 'services/semestres'
 
-export default function VERasignaturas() {
+export default function VERsemestres() {
 
-    const [asignaturas, setAsignaturas] = useState("")
+
+    const [data, setData] = useState("")
 
     const jwt = localStorage.getItem("jwt")
 
-    const { all } = asignaturaService({ jwt })
+    const { all } = semestreService({ jwt })
+
 
     useEffect(() => {
 
-        all()
-            .then(asig => {
+        all({})
+            .then(sem => {
 
-                setAsignaturas(asig)
+                setData(sem)
 
                 const script = document.createElement('script');
 
@@ -30,19 +32,19 @@ export default function VERasignaturas() {
 
             })
 
-    }, [jwt, setAsignaturas])
+
+    }, [jwt, setData])
 
     return (
 
         <>
-            {asignaturas &&
+            {data &&
                 <div className="table-responsive " style={{ marginTop: "auto" }}>
-                    <table id="table_estudiantes" width="100%" cellSpacing="0" className="table table-hover ">
+                    <table id="table_semestres" width="100%" cellSpacing="0" className="table table-hover ">
                         <thead>
                             <tr>
-                                <th scope="col">Identificador</th>
-                                <th scope="col">Asignatura</th>
-                                <th scope="col">Semestre</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Paralelo</th>
                                 <th scope="col">Carrera</th>
                                 <th scope="col">Facultad</th>
                                 <th scope="col">Opciones</th>
@@ -52,16 +54,15 @@ export default function VERasignaturas() {
                         </tfoot>
                         <tbody>
                             {
-                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre, sem_nombre, car_nombre, fac_nombre }) =>
+                                data.map(({ sem_codigo, sem_nombre, sem_paralelo, car_nombre, fac_nombre }) =>
 
-                                    <tr key={asig_codigo}>
-                                        <td>{asig_identificador}</td>
-                                        <td>{asig_nombre}</td>
+                                    <tr key={sem_codigo}>
                                         <td>{sem_nombre}</td>
+                                        <td>{sem_paralelo}</td>
                                         <td>{car_nombre}</td>
                                         <td>{fac_nombre}</td>
-                                        <td><a type="button" href={`/asignaturas/editar/${asig_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
-                                        <a type="button" href={`/asignaturas/eliminar/${asig_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
+                                        <td ><a type="button" href={`/semestres/editar/${sem_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                        <a type="button" href={`/semestres/eliminar/${sem_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
 
                                     </tr>
 
