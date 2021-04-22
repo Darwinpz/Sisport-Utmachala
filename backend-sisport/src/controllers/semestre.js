@@ -10,7 +10,7 @@ SemestreCtrl.all = async (req, res, next) => {
 
     try {
 
-        const semestres = await pool.query("SELECT *FROM semestre");
+        const semestres = await pool.query("SELECT *FROM semestre as sem, carrera as car, facultad as fac where sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo");
 
         res.status(200).json({ "message": semestres.rows });
 
@@ -62,7 +62,7 @@ SemestreCtrl.add = async (req, res, next) => {
 
         const { sem_nombre, sem_paralelo, car_codigo } = req.body;
 
-        await pool.query("INSERT INTO semestre (sem_nombre, sem_paralelo, car_codigo)" +
+        await pool.query("INSERT INTO public.semestre (sem_nombre, sem_paralelo, car_codigo)" +
             " values($1,$2,$3)", [sem_nombre, sem_paralelo, car_codigo]);
 
         res.status(200).json({ "message": "Semestre agregada" });
@@ -71,6 +71,7 @@ SemestreCtrl.add = async (req, res, next) => {
     } catch (e) {
 
         err.message = e.message;
+        console.log(err.message)
         err.status = 500;
         next(err);
 

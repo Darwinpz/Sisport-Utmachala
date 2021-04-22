@@ -11,7 +11,7 @@ AsignaturaCtrl.all = async (req, res, next) => {
 
     try {
 
-        const asignaturas = await pool.query("SELECT *FROM asignatura");
+        const asignaturas = await pool.query("SELECT *FROM asignatura as asig, semestre as sem, carrera as car, facultad as fac where asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo");
 
         res.status(200).json({ "message": asignaturas.rows });
 
