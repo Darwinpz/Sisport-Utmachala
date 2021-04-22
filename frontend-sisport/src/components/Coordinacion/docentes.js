@@ -14,7 +14,7 @@ export default function VERdocentes() {
 
     useEffect(() => {
 
-        usuarios({ rol: "DOCENTE", jwt })
+        usuarios({ rol: "DOCENTE" })
             .then(docentes => {
 
                 setData(docentes)
@@ -62,7 +62,9 @@ export default function VERdocentes() {
                                         <td>{per_nombre}</td>
                                         <td>{per_apellido}</td>
                                         <td>{per_correo}</td>
-                                        <td><a type="button" href={`/docentes/editar/${per_codigo}`} className="btn btn-primary"><i className="fas fa-eye"></i></a></td>
+                                        <td><a type="button" href={`/docentes/editar/${per_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                        <a type="button" href={`/docentes/eliminar/${per_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a>
+                                        </td>
 
                                     </tr>
 
