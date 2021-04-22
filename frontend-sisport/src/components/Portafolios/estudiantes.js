@@ -3,9 +3,9 @@ import React from "react";
 
 import useMatriculados from 'hooks/useMatriculados'
 
-export default function Portafolios({asig_codigo,peri_codigo}) {
+export default function Portafolios({asig_codigo,peri_codigo,sem_codigo}) {
     
-    const { matriculados } = useMatriculados({asig_codigo,peri_codigo})
+    const { matriculados } = useMatriculados({asig_codigo,peri_codigo,sem_codigo})
 
     return (
 
@@ -34,7 +34,7 @@ export default function Portafolios({asig_codigo,peri_codigo}) {
                                 </div>
                                 <div className="card-body" >
 
-                                    <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${per_codigo}`} >Ver Portafolio</a>
+                                    <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${sem_codigo}/${per_codigo}`} >Ver Portafolio</a>
 
 
                                 </div>

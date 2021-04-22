@@ -17,13 +17,13 @@ import portafolioPythonServices from "services/python/portafolio"
 
 import './index.css'
 
-export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
+export default function VerPortafolio({ asig_codigo, peri_codigo,sem_codigo, per_codigo }) {
 
     const { isLogged } = useUser()
 
     const { perfil } = usePerfil()
 
-    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo, per_codigo })
+    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo,sem_codigo, per_codigo })
 
     const [, navigate] = useLocation()
 

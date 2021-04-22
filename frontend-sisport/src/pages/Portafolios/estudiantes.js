@@ -5,7 +5,7 @@ import Portafolios from 'components/Portafolios/estudiantes'
 
 export default function PortafoliosEstudiantesPage({params}) {
 
-    const {asig_codigo, peri_codigo} = params
+    const {asig_codigo, peri_codigo,sem_codigo} = params
 
     return (
         <>
@@ -24,7 +24,7 @@ export default function PortafoliosEstudiantesPage({params}) {
 
                         <div className="card-body">
 
-                            <Portafolios asig_codigo={asig_codigo} peri_codigo={peri_codigo}/>
+                            <Portafolios asig_codigo={asig_codigo} peri_codigo={peri_codigo} sem_codigo={sem_codigo}/>
 
                         </div>
 

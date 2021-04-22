@@ -81,10 +81,10 @@ PerAsigCtrl.matriculadosxasignaturas = async (req, res, next) => {
 
             } else {
 
-                const { asig_codigo, peri_codigo } = req.body;
+                const { asig_codigo, peri_codigo,sem_codigo } = req.body;
 
-                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per WHERE "
-                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE' and per_asig.asig_codigo=$1 and per_asig.peri_codigo=$2  ", [asig_codigo, peri_codigo]);
+                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per, periodo_semestre as per_sem WHERE "
+                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE' and per_sem.peri_codigo = per_asig.peri_codigo and per_asig.asig_codigo=$1 and per_asig.peri_codigo=$2 and per_sem.sem_codigo=$3 ", [asig_codigo, peri_codigo, sem_codigo]);
 
                 const resultado = persona_asignaturas.rows;
 

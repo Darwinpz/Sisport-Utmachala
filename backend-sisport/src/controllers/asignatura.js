@@ -77,10 +77,11 @@ AsignaturaCtrl.buscar = async (req, res, next) => {
 
                 const activados = await pool.query("SELECT *from asignatura_estado")
 
-                const asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, peri.peri_nombre, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente, car.car_abreviatura, asig.asig_identificador, fac.fac_abreviatura,"
+                const asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_nombre,sem.sem_codigo, sem.sem_nombre, sem.sem_paralelo, peri.peri_codigo, peri.peri_nombre, (per.per_titulo ||' '|| per.per_nombre || ' ' || per.per_apellido) as docente, car.car_abreviatura, asig.asig_identificador, fac.fac_abreviatura,"
                     + " CASE WHEN (select bool(est_asig.asig_codigo) from persona_asignatura as est_asig where est_asig.per_codigo=$1 and est_asig.asig_codigo = asig.asig_codigo) THEN true ELSE false END AS matriculado"
                     + " FROM asignatura as asig,semestre as sem,carrera as car, vi_docente_asignaturas as vi, persona as per, periodo as peri, facultad as fac"
-                    + " WHERE asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and vi.peri_codigo = peri.peri_codigo and per.per_codigo = vi.per_codigo and sem.car_codigo = car.car_codigo and car.fac_codigo = fac.fac_codigo and car.car_nombre=$2", [per_codigo, car_nombre]);
+                    + " WHERE asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and vi.peri_codigo = peri.peri_codigo and per.per_codigo = vi.per_codigo"
+                    +" and sem.car_codigo = car.car_codigo and car.fac_codigo = fac.fac_codigo and car.car_nombre=$2", [per_codigo, car_nombre]);
 
                 asignaturas.rows.forEach(asignatura => {
 

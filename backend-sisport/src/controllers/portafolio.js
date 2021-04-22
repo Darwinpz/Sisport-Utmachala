@@ -126,7 +126,7 @@ PortafolioCtrl.find = async (req, res, next) => {
 
             } else {
 
-                const { asig_codigo, peri_codigo, per_codigo } = req.body
+                const { asig_codigo, peri_codigo,sem_codigo, per_codigo } = req.body
 
                 const carrera_facultad = await pool.query("SELECT * FROM vi_asignatura_carrera where asig_codigo=$1", [asig_codigo]);
 
@@ -143,8 +143,12 @@ PortafolioCtrl.find = async (req, res, next) => {
 
                     const estudiante = await pool.query("SELECT per_cedula, per_nombre,per_apellido FROM persona where per_codigo=$1", [per_codigo]);
 
-                    const periodo_semestre = await pool.query("SELECT peri.peri_nombre,sem.sem_nombre FROM periodo as peri,semestre as sem where peri.sem_codigo = sem.sem_codigo and peri.peri_codigo =$1", [peri_codigo]);
+                    //const periodo_semestre = await pool.query("SELECT peri.peri_nombre,sem.sem_nombre FROM periodo as peri,semestre as sem where peri.sem_codigo = sem.sem_codigo and peri.peri_codigo =$1", [peri_codigo]);
 
+                    const periodo_semestre = await pool.query("SELECT peri.peri_nombre,sem.sem_nombre"
+                    +" FROM periodo as peri,periodo_semestre as peri_sem, semestre as sem" 
+                    +" where peri.peri_codigo = peri_sem.peri_codigo and peri_sem.sem_codigo = sem.sem_codigo and peri_sem.peri_codigo =$1 and peri_sem.sem_codigo=$2", [peri_codigo,sem_codigo]);
+                    
                     res.status(200).json({ "message": [{ estructura: busqueda.generales, nombre_esquema: nombre_esquema, portafolio_data: portafolio[0], estudiante: estudiante.rows[0], extras:periodo_semestre.rows[0] }] });
 
                 } else {

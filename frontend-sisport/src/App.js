@@ -52,13 +52,13 @@ export default function App() {
 
                 <PortafolioContextProvider>
 
-                    <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
+                    <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:sem_codigo/:per_codigo" />
 
                 </PortafolioContextProvider>
 
                 <MatriculadosContextProvider>
 
-                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo" />
+                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo/:sem_codigo" />
 
                 </MatriculadosContextProvider>
 

@@ -2,7 +2,7 @@ const ENDPOINT = process.env.REACT_APP_SERVER + '/api/portafolio'
 
 export default function Portafolio({ jwt }) {
 
-    const encontrar = async ({ asig_codigo, peri_codigo, per_codigo }) => {
+    const encontrar = async ({ asig_codigo, peri_codigo,sem_codigo, per_codigo }) => {
 
         return fetch(ENDPOINT+"/find", {
             method: 'POST',
@@ -12,7 +12,7 @@ export default function Portafolio({ jwt }) {
                 'Access-Control-Allow-Origin': true,
                 'Authorization': "Bearer " + jwt
             },
-            body: JSON.stringify({ asig_codigo, peri_codigo, per_codigo })
+            body: JSON.stringify({ asig_codigo, peri_codigo,sem_codigo, per_codigo })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
