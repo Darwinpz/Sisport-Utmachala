@@ -63,12 +63,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
         var estructura = {
 
-            per_nombre: portafolio[0].estudiante.per_nombre+" "+portafolio[0].estudiante.per_apellido,
-            asig_nombre : portafolio[0].estructura.nombre_asignatura,
-            sem_nombre : portafolio[0].extras.sem_nombre,
-            docente : portafolio[0].estructura.nombre_docente,
-            peri_nombre : portafolio[0].extras.peri_nombre,
+            per_nombre: portafolio[0].estudiante.per_nombre + " " + portafolio[0].estudiante.per_apellido,
+            asig_nombre: portafolio[0].estructura.nombre_asignatura,
+            sem_nombre: portafolio[0].extras.sem_nombre,
+            docente: portafolio[0].estructura.nombre_docente,
+            peri_nombre: portafolio[0].extras.peri_nombre,
         }
+
         
         
         var data_portafolio = portafolio[0].portafolio_data
@@ -79,31 +80,31 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
             setError("generando informe...")
 
-            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
+            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
 
                 setError("generando diarios...")
 
-                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
+                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
 
                     setError("descargando portafolio ....")
 
                     downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
 
-                        
+
                         setError("Descargando...")
 
                         window.location.href = url
 
                         setError("")
-                        
 
-                    }).catch(()=>{
+
+                    }).catch(() => {
 
                         setError("No se puede descargar el portafolio ....")
 
                     })
 
-                    
+
                 }).catch(() => {
 
                     setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
@@ -203,9 +204,31 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                 <ul>
                                                     <li><Link to="#" >1. Datos Informativos</Link>
                                                         <ul>
-                                                            <li><Link to="#" data-toggle="modal"
-                                                                data-target="#popupconfirmar">Carta de Compromiso</Link></li>
+
+                                                            {
+
+                                                                portafolio.map(({ portafolio_data }) =>
+                                                                    <div key={portafolio_data.datos_informativos.informativos}>
+                                                                        {
+                                                                            portafolio_data.datos_informativos.informativos &&
+                                                                            <li key="informativo"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal" data-target="#archivo" data-tipo="informativos" data-titulo="DATOS INFORMATIVOS" data-nombre={portafolio_data.datos_informativos.informativos}>{portafolio_data.datos_informativos.informativos}</a></li>
+
+                                                                        }
+
+                                                                    </div>
+                                                                )
+
+                                                            }
+                                                            {
+                                                                perfil.per_tipo === "ESTUDIANTE" &&
+                                                                <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
+                                                                    data-target="#subir" data-tipo="informativos" data-titulo="DATOS INFORMATIVOS" data-cant="1" data-size="2" data-type=".pdf, .doc, .docx">Subir</a></li>
+    
+                                                            }
+
                                                         </ul>
+
+
                                                     </li>
 
                                                     <li><Link to="#" >2. Elementos curriculares</Link>

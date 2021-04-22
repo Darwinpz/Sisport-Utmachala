@@ -15,7 +15,8 @@ export default function AsignaturasPage() {
                         <div className="card-header d-flex justify-content-between align-items-center">
 
                             <h4>Administración de Asignaturas:</h4>
-                            <div className="card" style={{backgroundColor:"transparent", border:"none"}}>
+
+                            <div className="card" style={{ backgroundColor: "transparent", border: "none" }}>
 
                                 <button type="button" className="btn btn-primary mb-2">Importar csv</button>
                                 <button type="button" className="btn btn-success">Crear Asignatura</button>
@@ -25,9 +26,10 @@ export default function AsignaturasPage() {
 
                         </div>
 
+
                         <div className="card-body">
 
-                            <VERasignaturas/>
+                            <VERasignaturas />
 
                         </div>
 
