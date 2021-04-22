@@ -617,9 +617,7 @@ PortafolioCtrl.uploadfiles = async (req, res, next) => {
 
                                 portafolio.datos_informativos["informativos"] = nombre_archivo
 
-                            }
-
-                            if (tipo == "asistencia" || tipo == "syllabus") {
+                            }else if (tipo == "asistencia" || tipo == "syllabus") {
 
                                 portafolio.elementos_curriculares[tipo].nombre_archivo = nombre_archivo
 
@@ -702,9 +700,7 @@ PortafolioCtrl.removefiles = async (req, res, next) => {
 
                         portafolio.datos_informativos["informativos"] = ""
 
-                    }
-
-                    if (tipo == "asistencia" || tipo =="syllabus"){
+                    }else if (tipo == "asistencia" || tipo =="syllabus"){
 
                         portafolio.elementos_curriculares[tipo].nombre_archivo = ""
 
