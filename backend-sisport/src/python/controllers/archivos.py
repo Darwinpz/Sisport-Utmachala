@@ -6,6 +6,7 @@ from shutil import rmtree
 from controllers.generardiario import crear_diario
 from controllers.generarexpectativas import crear_expectativas
 from controllers.generarinforme import crear_informe
+from datetime import datetime
 
 
 def generar_diario(request):
@@ -144,11 +145,15 @@ def descargarPortafolio(request):
 		 				'/Portafolios/'+per_cedula)
 		
 		# archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
+		
+		fecha= datetime.now();
 
-		ruta_archivo=ruta+per_cedula+".zip"
+		ruta_archivo=ruta+per_cedula+fecha+".zip"
 
-		if os.path.exists(ruta_archivo):
-			os.remove(ruta_archivo)
+		#if os.path.exists(ruta_archivo):
+		#	os.remove(ruta_archivo)
+
+		os.system('rm -r -i '+ruta+'*.zip')
 
 		# os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
 

@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
+from controllers.controlador import uploadEstudiante, uploadDocente, uploadAsignatura,uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
 uploadAutonomo, uploadRefuerzo, eliminarArchivo, uploadBiografia, uploadInformativos
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
@@ -20,6 +20,14 @@ app.config['EXTENSIONS_INTRA_EXTRA']= [".pdf", ".doc", ".docx", ".xls", ".xlsx",
 @app.route('/upload/estudiante', methods=['POST'])
 def estudiante():
     return uploadEstudiante(request, app.config['EXTENSIONS_PERSONA'])
+
+@app.route('/upload/docente', methods=['POST'])
+def docente():
+    return uploadDocente(request, app.config['EXTENSIONS_PERSONA'])
+
+@app.route('/upload/asignatura', methods=['POST'])
+def asignatura():
+    return uploadAsignatura(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/syllabus', methods=['POST'])
 def syllabus():
