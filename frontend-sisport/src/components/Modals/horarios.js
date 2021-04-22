@@ -107,6 +107,8 @@ export default function Horarios() {
 
                 const {addEstructura, removeEstructura} = estructuraService({jwt})
 
+                setError("")
+
                 horarioService({ arreglo: horas, asig_codigo, peri_codigo, jwt })
                     .then(() => {
 

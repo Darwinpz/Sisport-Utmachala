@@ -237,6 +237,34 @@ def uploadPlanteamiento(request, lista_extensions):
         return jsonify({"message": {"tipo": "planteamientos", "mensaje": "planteamiento guardado"}}), 200
 
 
+def uploadInformativos(request, lista_extensions):
+    try:
+        if request.method == 'POST':
+            archivos=request.files.getlist('file')
+            
+            seperator=''
+            fac_nombre= seperator.join(request.values.getlist('fac_nombre'))
+            car_nombre= seperator.join(request.values.getlist('car_nombre'))
+            asig_identificador= seperator.join(request.values.getlist('asig_identificador'))
+            per_cedula= seperator.join(request.values.getlist('per_cedula'))
+            
+            ruta=('resources/'+fac_nombre+'/'+car_nombre+'/'+asig_identificador+'/Portafolios/'+per_cedula+'/1. Datos informativos/')
+
+            if len(archivos)==1:
+                for f in request.files.getlist('file'):
+                    file_ext = os.path.splitext(f.filename)[1]
+                    if file_ext not in lista_extensions:
+                        return jsonify({"message":"error en el tipo de archivo"}),415
+                    for g in os.listdir(ruta):
+                        os.remove(os.path.join(ruta,g))
+                    f.save(os.path.join(ruta, f.filename))     
+            else:
+                return jsonify({"message":"cantidad de archivos sobrepasado. Maximo 1"}),500
+    except FileNotFoundError:
+        return jsonify({"message":"portafolio no encontrado"}),500
+    else:
+        return jsonify({"message":{"tipo":"informativos","mensaje":"Datos informativos guardados"}}),200
+
 def uploadAsistencia(request, lista_extensions):
     try:
         if request.method == 'POST':
@@ -469,34 +497,27 @@ def eliminarArchivo(request):
         return jsonify({"message": "archivo borrado"}), 200
 
 
-def descargarPortafolio(request):
-
-    try:
-
-        json_req = request.json
-        fac_abreviatura = json_req['fac_abreviatura']
-        car_abreviatura = json_req['car_abreviatura']
-        asig_abreviatura = json_req['asig_abreviatura']
-        per_cedula = json_req['per_cedula']
- 
-        ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/')
-        # archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
-        # ruta_archivo=ruta+per_cedula+".zip"
-        # shutil.move(ruta_archivo, ruta)
-
-        if os.path.exists("C:/Users/Silvia/Desktop/sample.zip"):
-            os.remove("C:/Users/Silvia/Desktop/sample.zip")
-  
-
-        zf = zipfile.ZipFile(per_cedula+".zip", "w")
-        for root, dirs, files in os.walk(ruta):
-            for file in files:
-                zf.write(os.path.join(root, file)) 
-
+# def descargarPortafolio(request):
+	
+#     try:
+        
+#         json_req = request.json
+#         fac_abreviatura = json_req['fac_abreviatura']
+#         car_abreviatura = json_req['car_abreviatura']
+#         asig_abreviatura = json_req['asig_abreviatura']
+#         per_cedula = json_req['per_cedula']
+#         tipo_archivo=json_req['tipo_archivo']
+#         nombre_archivo=json_req['nombre_archivo']
+        
+#         ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/')
+#         archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
+#         ruta_archivo=ruta+per_cedula+".zip"
+#         shutil.move(ruta_archivo, ruta)
     
-    except OSError:
+#     except OSError:
         
-        return jsonify({"message":"error al descargar portafolio"}),500
-    else:
+#         return jsonify({"message":"error al descargar portafolio"}),500
+#     else:
         
-        return jsonify({"message": ruta_archivo}),200
+#         return jsonify({"message": ruta_archivo}),200
+

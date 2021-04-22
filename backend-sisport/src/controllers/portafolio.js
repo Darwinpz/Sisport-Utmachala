@@ -612,7 +612,12 @@ PortafolioCtrl.uploadfiles = async (req, res, next) => {
 
                         if (portafolio.datos_informativos.cod_estudiante == per_codigo) {
 
-                            if (tipo == "asistencia" || tipo == "syllabus") {
+
+                            if(tipo == "informativos"){
+
+                                portafolio.datos_informativos["informativos"] = nombre_archivo
+
+                            }else if (tipo == "asistencia" || tipo == "syllabus") {
 
                                 portafolio.elementos_curriculares[tipo].nombre_archivo = nombre_archivo
 
@@ -691,7 +696,11 @@ PortafolioCtrl.removefiles = async (req, res, next) => {
                     
                     const portafolio = busqueda.portafolios.find(portafolio => portafolio.datos_informativos.cod_estudiante == per_codigo)
                     
-                    if (tipo == "asistencia" || tipo =="syllabus"){
+                    if(tipo == "informativos"){
+
+                        portafolio.datos_informativos["informativos"] = ""
+
+                    }else if (tipo == "asistencia" || tipo =="syllabus"){
 
                         portafolio.elementos_curriculares[tipo].nombre_archivo = ""
 

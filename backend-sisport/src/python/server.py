@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from controllers.controlador import uploadEstudiante, uploadSyllabus, uploadEvaluacion, uploadInvestigacion, uploadActividad, \
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
-uploadAutonomo, uploadRefuerzo, eliminarArchivo, descargarPortafolio, uploadBiografia
+uploadAutonomo, uploadRefuerzo, eliminarArchivo, uploadBiografia, uploadInformativos
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
 from controllers.archivos import generar_diario, eliminarArchivo, descargarPortafolio, descargarArchivo, generar_informe, generar_expectativas
 
@@ -24,6 +24,10 @@ def estudiante():
 @app.route('/upload/syllabus', methods=['POST'])
 def syllabus():
     return uploadSyllabus(request, app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS'])
+
+@app.route('/upload/informativos', methods=['POST'])
+def informativos():
+    return uploadInformativos(request, app.config['EXTENSIONS_SYLLABUS_ASISTENCIAS'])
 
 @app.route('/upload/evaluaciones', methods=['POST'])
 def evaluacion():
