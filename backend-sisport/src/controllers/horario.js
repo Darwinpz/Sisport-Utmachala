@@ -66,6 +66,8 @@ HorarioCtrl.add = async (req, res, next) => {
 
         const { arreglo, asig_codigo, peri_codigo } = req.body
 
+        console.log(req.body)
+
         var dia_temp = 0;
 
         await pool.query("DELETE from horario where asig_codigo=$1 and peri_codigo=$2"

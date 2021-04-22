@@ -148,12 +148,12 @@ def descargarPortafolio(request):
 		
 		fecha= datetime.now();
 
-		ruta_archivo=ruta+per_cedula+fecha+".zip"
+		ruta_archivo=ruta+per_cedula+".zip"
 
-		#if os.path.exists(ruta_archivo):
-		#	os.remove(ruta_archivo)
+		if os.path.exists(ruta_archivo):
+			os.remove(ruta_archivo)
 
-		os.system('rm -r -i '+ruta+'*.zip')
+		#os.system('rm -r -i -f'+ruta+'*.zip')
 
 		# os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
 

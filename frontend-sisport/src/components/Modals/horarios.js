@@ -112,7 +112,7 @@ export default function Horarios() {
                 horarioService({ arreglo: horas, asig_codigo, peri_codigo, jwt })
                     .then(() => {
 
-                        if (perfil.per_tipo === "DOCENTE") {
+                        if (perfil.per_tipo !== "ESTUDIANTE") {
 
                             if (clave.trim() !== "") {
 
