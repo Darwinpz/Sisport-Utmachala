@@ -99,7 +99,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
                 });
               },
               controller: diacontroller,
-              decoration: InputDecoration(hintText: "Ingrese día de clases", helperText: "Ejm:Día 1, Día 2, Día 4..."),
+              decoration: InputDecoration(hintText: "Ingrese día de clases", helperText: "Ejm:Día 1, Día 3, Día 4..."),
             ),TextField(
               obscureText: false,
               onChanged: (value) {

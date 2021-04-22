@@ -9,7 +9,7 @@ from shutil import rmtree
 def uploadEstudiante(request, lista_extensions):
     if request.method == 'POST':
         archivos = request.files.getlist('file')
-        if len(archivos) <= 2:
+        if len(archivos) == 1:
             for f in request.files.getlist('file'):
                 # f.filename=str(uuid.uuid4())+'.'+str(f.filename).split('.')[1]
                 file_ext = os.path.splitext(f.filename)[1]
@@ -20,7 +20,40 @@ def uploadEstudiante(request, lista_extensions):
 
             return jsonify({"message": "excel guardado"}), 200
         else:
-            return jsonify({"message": "cantidad de archivos sobrepasado. Maximo 2"}), 500
+            return jsonify({"message": "cantidad de archivos sobrepasado. Maximo 1"}), 500
+
+def uploadDocente(request, lista_extensions):
+    if request.method == 'POST':
+        archivos = request.files.getlist('file')
+        if len(archivos) == 1:
+            for f in request.files.getlist('file'):
+                # f.filename=str(uuid.uuid4())+'.'+str(f.filename).split('.')[1]
+                file_ext = os.path.splitext(f.filename)[1]
+                if file_ext not in lista_extensions:
+                    return jsonify({"message": "error en el tipo de archivo"}), 415
+                f.save(os.path.join('temp/estudiantes/', f.filename))
+            guardarEstudiantes(os.path.join('temp/estudiantes/', f.filename))
+
+            return jsonify({"message": "excel guardado"}), 200
+        else:
+            return jsonify({"message": "cantidad de archivos sobrepasado. Maximo 1"}), 500
+
+
+def uploadAsignatura(request, lista_extensions):
+    if request.method == 'POST':
+        archivos = request.files.getlist('file')
+        if len(archivos) == 1:
+            for f in request.files.getlist('file'):
+                # f.filename=str(uuid.uuid4())+'.'+str(f.filename).split('.')[1]
+                file_ext = os.path.splitext(f.filename)[1]
+                if file_ext not in lista_extensions:
+                    return jsonify({"message": "error en el tipo de archivo"}), 415
+                f.save(os.path.join('temp/estudiantes/', f.filename))
+            guardarEstudiantes(os.path.join('temp/estudiantes/', f.filename))
+
+            return jsonify({"message": "excel guardado"}), 200
+        else:
+            return jsonify({"message": "cantidad de archivos sobrepasado. Maximo 1"}), 500
 
 
 def uploadSyllabus(request, lista_extensions):
