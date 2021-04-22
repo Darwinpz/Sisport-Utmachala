@@ -26,6 +26,7 @@ export default function Archivos() {
 
         const {removefiles} = portafolioService({jwt})
 
+        setError("")
 
         eliminarArchivo({fac_abreviatura,car_abreviatura,asig_abreviatura:identificador+"-"+peri_codigo,per_cedula,tipo_archivo,nombre_archivo}).then(()=>{
 
@@ -66,6 +67,8 @@ export default function Archivos() {
 
             cedula = est_cedula.innerText
         }
+
+        setError("")
 
         descargarArchivo({fac_abreviatura,car_abreviatura,asig_abreviatura:identificador+"-"+peri_codigo,per_cedula:cedula,tipo_archivo,nombre_archivo}).then((url)=>{
 

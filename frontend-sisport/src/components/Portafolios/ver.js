@@ -70,7 +70,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             peri_nombre: portafolio[0].extras.peri_nombre,
         }
 
-        
+        setError("")
         
         var data_portafolio = portafolio[0].portafolio_data
 
