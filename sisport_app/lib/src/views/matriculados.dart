@@ -10,7 +10,8 @@ class matriculados extends StatefulWidget {
   final String asig_nombre;
   final String asig_codigo;
   final String peri_codigo;
-  const matriculados(this.asig_nombre, this.asig_codigo, this.peri_codigo);
+  final String sem_codigo;
+  const matriculados(this.asig_nombre, this.asig_codigo, this.peri_codigo, this.sem_codigo);
 
   @override
   matriculadosState createState() => matriculadosState();
@@ -28,7 +29,7 @@ class matriculadosState extends State<matriculados> {
       token = preferences.getString('token');
     });
 
-    Map data = {'asig_codigo': widget.asig_codigo, 'peri_codigo': widget.peri_codigo};
+    Map data = {'asig_codigo': widget.asig_codigo, 'peri_codigo': widget.peri_codigo, 'sem_codigo':widget.sem_codigo};
 
 
     http.Response response = await http
@@ -88,7 +89,7 @@ class matriculadosState extends State<matriculados> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, "",_notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido)))},   
+                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, "",_notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido, widget.sem_codigo)))},   
                                   child: Text('Ver portafolio'))
                         ],
                       )

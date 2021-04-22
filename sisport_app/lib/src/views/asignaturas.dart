@@ -177,7 +177,7 @@ class asignaturasState extends State<asignaturas> {
                           _notes[index].estado?_notes[index].matriculado==false ? FlatButton(
                                   onPressed: () => { _textFieldController.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre)},   
                                   child: Text('Matricularse')) : FlatButton(
-                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "")))},   
+                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>tree(_notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "", _notes[index].sem_codigo.toString())))},   
                                   child: Text('Ver portafolio')) :FlatButton(
                                   onPressed: () => { },   
                                   child: Text('Asignatura no activada'))
@@ -205,8 +205,9 @@ class Note {
   String docente;
   bool estado;
   bool matriculado;
+  int sem_codigo;
 
-  Note(this.asig_nombre, this.asig_codigo, this.sem_nombre, this.sem_paralelo, this.peri_codigo, this.docente, this.estado, this.matriculado);
+  Note(this.asig_nombre, this.asig_codigo, this.sem_nombre, this.sem_paralelo, this.peri_codigo, this.docente, this.estado, this.matriculado, this.sem_codigo);
 
   Note.fromJson(Map<String, dynamic> json) {
     asig_nombre = json['asig_nombre'];
@@ -217,5 +218,6 @@ class Note {
     docente = json['docente'];
     estado=json['estado'];
     matriculado = json['matriculado'];
+    sem_codigo=json['sem_codigo'];
   }
 }

@@ -19,7 +19,8 @@ class tree extends StatefulWidget {
   final String per_codigo;
   final String per_nombre;
   final String per_apellido;
-  const tree(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.docente, this.per_codigo, this.per_nombre, this.per_apellido);
+  final String sem_codigo;
+  const tree(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.docente, this.per_codigo, this.per_nombre, this.per_apellido, this.sem_codigo);
 
   @override
   treeState createState() => treeState();
@@ -68,6 +69,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -100,6 +102,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -131,6 +134,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -162,6 +166,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -194,6 +199,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -226,6 +232,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -258,6 +265,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -290,6 +298,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -320,6 +329,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -352,6 +362,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -381,9 +392,10 @@ class treeState extends State<tree> {
       tipo=preferences.getString('tipo');
     });
 
-    Map data = {
+   Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -416,6 +428,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -448,6 +461,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -472,9 +486,10 @@ class treeState extends State<tree> {
       tipo=preferences.getString('tipo');
     });
 
-    Map data = {
+   Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -502,6 +517,7 @@ class treeState extends State<tree> {
     Map data = {
       'asig_codigo': widget.asig_codigo,
       'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
       'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
     };
 
@@ -733,7 +749,7 @@ class treeState extends State<tree> {
                     'a) Syllabus',
                   ),
                   children: <Widget>[
-                    syllabus!=null?
+                    syllabus!=" "?
                    ListTile(
                       title: Text(syllabus),
                        leading: Icon(Icons.menu_book_outlined),
@@ -748,7 +764,7 @@ class treeState extends State<tree> {
                            print("Permiso negado");
                          }
                        },
-                    ):""
+                    ):ListTile(title: Text("Aún no se ha subido archivo")),
                   ],
                 ),
                 ExpansionTile(

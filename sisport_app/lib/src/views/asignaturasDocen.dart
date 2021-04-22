@@ -280,7 +280,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
                         children: <Widget>[
 
                           _notes[index].asig_est_estado?FlatButton(
-                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>matriculados(_notes[index].asig_nombre, (_notes[index].asig_codigo).toString(), (_notes[index].peri_codigo).toString())))},   
+                                  onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>matriculados(_notes[index].asig_nombre, _notes[index].asig_codigo.toString(), _notes[index].peri_codigo.toString(), _notes[index].sem_codigo.toString())))},   
                                   child: Text('Ver portafolios')): FlatButton(
                                   onPressed: () => { clavecontroller.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "")},   
                                   child: Text('Asignar clave'))
@@ -307,9 +307,10 @@ class Note {
   String docente;
   int peri_codigo;
   bool asig_est_estado;
+  int sem_codigo;
 
   Note(this.asig_nombre, this.sem_nombre, this.sem_paralelo, this.asig_codigo,
-      this.docente, this.peri_codigo, this.asig_est_estado);
+      this.docente, this.peri_codigo, this.asig_est_estado, this.sem_codigo);
 
   Note.fromJson(Map<String, dynamic> json) {
     asig_nombre = json['asig_nombre'];
@@ -319,5 +320,6 @@ class Note {
     docente = json['docente'];
     peri_codigo = json['peri_codigo'];
     asig_est_estado=json['asig_est_estado'];
+    sem_codigo=json['sem_codigo'];
   }
 }
