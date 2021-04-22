@@ -67,7 +67,7 @@ def generar_diario(request):
 			reflexion3 = diario["preg3"]
 			reflexion4 = diario["preg4"]
 
-			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
+			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario.__str__()+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
 		
 	except OSError:
 			
@@ -141,21 +141,22 @@ def descargarPortafolio(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'/Portafolios/'+per_cedula+'/')
-		
+						'/Portafolios/'+per_cedula)
 		
 		archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
-		ruta_archivo=ruta+per_cedula+".zip"
-		shutil.move(ruta_archivo, ruta)
-			
-	except OSError:
-			
-		return jsonify({"message":"error al descargar portafolio"}),500
-		
-	else:
-			
-		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 
+		ruta_archivo=ruta+".zip"
+
+		os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
+
+	except OSError as e:
+
+		return jsonify({"message":"error al descargar portafolio"}),500
+	
+	else:
+		
+		return jsonify({"message": "http://190.155.140.58:4555/"+ruta+"/"+per_cedula+".zip"}),200
+		
 
 def descargarArchivo(request):
 	

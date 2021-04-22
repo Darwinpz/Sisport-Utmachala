@@ -72,36 +72,46 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
         
         var data_portafolio = portafolio[0].portafolio_data
 
+        setError("generando expectativas...")
+
         generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
+
+            setError("generando informe...")
 
             generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
 
+                setError("generando diarios...")
+
                 generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula,estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
 
+                    setError("descargando portafolio ....")
+
                     downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
+
+                        url = url;
 
                         var win = window.open(url, '_blank');
                         win.focus();
 
-                    }).catch(() => {
+                    }).catch(()=>{
 
-                        setError("No se puede comprimir el portafolio, contacte con el coordinador o intente de nuevo")
+                        setError("No se puede descargar el portafolio ....")
 
                     })
 
-
+                    
                 }).catch(() => {
 
                     setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
 
                 })
 
-
             }).catch(() => {
 
                 setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
 
             })
+
 
         }).catch(() => {
 
