@@ -141,13 +141,19 @@ def descargarPortafolio(request):
 		per_cedula = json_req['per_cedula']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
-						'/Portafolios/'+per_cedula)
+		 				'/Portafolios/'+per_cedula)
 		
-		archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
+		# archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
 
-		ruta_archivo=ruta+".zip"
+		ruta_archivo=ruta+per_cedula+".zip"
 
-		os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
+		if os.path.exists(ruta_archivo):
+			os.remove(ruta_archivo)
+
+		# os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
+
+		os.system('zip -r '+ruta_archivo+' '+ruta)
+
 
 	except OSError as e:
 
@@ -155,7 +161,7 @@ def descargarPortafolio(request):
 	
 	else:
 		
-		return jsonify({"message": "http://190.155.140.58:4555/"+ruta+"/"+per_cedula+".zip"}),200
+		return jsonify({"message": "http://190.155.140.58:4555/"+ruta_archivo}),200
 		
 
 def descargarArchivo(request):
