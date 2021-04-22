@@ -55,7 +55,7 @@ export default function Asignaturas({ asignaturas }) {
             })
             .catch(() => {
 
-                setError("Clave incorrecta")
+                setError(asig_codigo)
             })
 
     };
@@ -95,7 +95,7 @@ export default function Asignaturas({ asignaturas }) {
                                                         <button className="btn btn-primary" type="button" onClick={() => handleClick()}>Matricularme</button>
 
                                                     </div>
-                                                    {error && <strong>{error}</strong>}
+                                                    {error === asig_codigo && <strong>Clave incorrecta</strong>}
                                                 </>
 
                                             }
