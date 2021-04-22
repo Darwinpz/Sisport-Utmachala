@@ -55,7 +55,12 @@ export default function Asignaturas({ asignaturas }) {
             })
             .catch(() => {
 
+                console.log("clave incorrecta")
+                
                 setError(asig_codigo)
+
+                print(asig_codigo)
+
             })
 
     };
