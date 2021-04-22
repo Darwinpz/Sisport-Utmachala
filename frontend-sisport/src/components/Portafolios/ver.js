@@ -88,10 +88,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
                     downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
 
-                        url = url;
+                        
+                        setError("Descargando...")
 
-                        var win = window.open(url, '_blank');
-                        win.focus();
+                        window.location.href = url
+
+                        setError("")
+                        
 
                     }).catch(()=>{
 
