@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'drawer.dart' as slideBar;
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tree_view/tree_view.dart';
 import 'dart:convert';
 import 'diario.dart';
 
@@ -37,7 +36,10 @@ class treeState extends State<tree> {
   String fac_abreviatura="";
   String asig_identificador="";
   String est_cedula="";
-  String url="";
+  String urlArchivo="";
+  String periodo="";
+  String asig_identificador_completo="";
+  String informativos="";
 
   var syllabus="";
   var asistencia="";
@@ -461,6 +463,33 @@ class treeState extends State<tree> {
     });
   }
 
+  Future buscarInformativos() async {
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+      codigo = preferences.getString('codigo');
+      tipo=preferences.getString('tipo');
+    });
+
+    Map data = {
+      'asig_codigo': widget.asig_codigo,
+      'peri_codigo': widget.peri_codigo,
+      'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
+    };
+
+    http.Response response = await http.post(
+        'http://190.155.140.58:80/api/portafolio/find',
+        body: data,
+        headers: {"Authorization": "bearer " + token});
+
+    setState(() {
+      Map<String, dynamic> datos = json.decode(response.body);
+      informativos=(datos['message'][0]['portafolio_data']
+          ['datos_informativos']['informativos'].toString());
+    });
+  }
+
   Future getEsquema() async{
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -489,6 +518,8 @@ class treeState extends State<tree> {
       car_abreviatura=(abreviaturas.toString().split(".")[1]);
       asig_identificador=(datos['message'][0]['estructura']['identificador'].toString());
       est_cedula=(datos['message'][0]['estudiante']['per_cedula'].toString());
+      periodo=(datos['message'][0]['estructura']['periodo'].toString());
+      asig_identificador_completo=asig_identificador+"-"+periodo;
      });
   }
 
@@ -503,7 +534,7 @@ class treeState extends State<tree> {
     Map<String, dynamic> data = {
       'fac_abreviatura':fac_abreviatura,
       'car_abreviatura':car_abreviatura,
-      'asig_abreviatura':asig_identificador,
+      'asig_abreviatura':asig_identificador_completo,
       'per_cedula':est_cedula,
       'tipo_archivo': tipo_archivo,
       'nombre_archivo':nombre_archivo
@@ -514,13 +545,12 @@ class treeState extends State<tree> {
         body: json.encode(data), headers: { 'Content-type': 'application/json',
       'Accept': 'application/json',"Authorization":"bearer "+token});
 
-    debugPrint("asi se envia: "+data.toString());
-
     var datos = json.decode(response.body);
 
     if(response.statusCode==200){
       setState(() {
-        url=datos['message'].toString();
+        urlArchivo=datos['message'].toString();
+         debugPrint("ruta: "+urlArchivo);
       });
     }else{
       Fluttertoast.showToast(
@@ -533,6 +563,47 @@ class treeState extends State<tree> {
           fontSize: 16.0);
       Navigator.pop(context);
     }
+  }
+
+  Future descargarPortafolio()async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = preferences.getString('token');
+      codigo = preferences.getString('codigo');
+      tipo=preferences.getString('tipo');
+    });
+
+    Map<String, dynamic> data = {
+      'fac_abreviatura':fac_abreviatura,
+      'car_abreviatura':car_abreviatura,
+      'asig_abreviatura':asig_identificador_completo,
+      'per_cedula':est_cedula
+    };
+
+     http.Response response = await http.post(
+        'http://190.155.140.58:4555/download/portafolio',
+        body: json.encode(data), headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json',"Authorization":"bearer "+token});
+    
+    var datos = json.decode(response.body);
+
+    if(response.statusCode==200){
+      setState(() {
+        urlArchivo=datos['message'].toString();
+         debugPrint("ruta: "+urlArchivo);
+      });
+    }else{
+      Fluttertoast.showToast(
+          msg: "Error al descargar archivo",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.pop(context);
+    }
+  
   }
 
   @override
@@ -594,6 +665,7 @@ class treeState extends State<tree> {
       });
     });
     buscarsyllabus();
+    buscarInformativos();
     getEsquema();
     super.initState();
   }
@@ -632,8 +704,18 @@ class treeState extends State<tree> {
               children: <Widget>[
                 ListTile(
                   title: Text(
-                  "", 
-                  ),leading: Icon(Icons.menu_book_outlined),
+                  informativos, 
+                  ),leading: Icon(Icons.menu_book_outlined),onTap: ()async{
+                        await getUrlFile('informativos', informativos);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: informativos, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                 )
               ],
             ),
@@ -651,20 +733,22 @@ class treeState extends State<tree> {
                     'a) Syllabus',
                   ),
                   children: <Widget>[
+                    syllabus!=null?
                    ListTile(
                       title: Text(syllabus),
                        leading: Icon(Icons.menu_book_outlined),
                        onTap: ()async{
-                        getUrlFile('syllabus', syllabus);
+                        await getUrlFile('syllabus', syllabus);
                          final status= await Permission.storage.request();
                          if(status.isGranted){
                            final externalDir = await getExternalStorageDirectory();
-                           final id = await FlutterDownloader.enqueue(url: "https://www.bignerdranch.com/documents/objective-c-prereading-assignment.pdf", fileName: syllabus, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: syllabus, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
                          }else{
                            print("Permiso negado");
                          }
                        },
-                    )
+                    ):""
                   ],
                 ),
                 ExpansionTile(
@@ -704,11 +788,12 @@ class treeState extends State<tree> {
                       title: Text(_notes2[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
                       onTap: ()async{
-                        getUrlFile('evaluaciones', _notes2[index].nombre_archivo);
+                        await getUrlFile('evaluaciones', _notes2[index].nombre_archivo);
                          final status= await Permission.storage.request();
                          if(status.isGranted){
                            final externalDir = await getExternalStorageDirectory();
-                           final id = await FlutterDownloader.enqueue(url: Uri.encodeFull(url), fileName: _notes2[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes2[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
                          }else{
                            print("Permiso negado");
                          }
@@ -727,7 +812,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes3[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('investigaciones', _notes3[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes3[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes3.length,)
 
@@ -742,7 +837,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes4[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('actividades', _notes4[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes4[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes4.length,)
                   ],
@@ -756,7 +861,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes5[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('proyectos', _notes5[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes5[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes5.length,)
                   ],
@@ -770,7 +885,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes6[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('casos_estudio', _notes6[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes6[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes6.length,)
                   ],
@@ -784,7 +909,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes7[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('planteamientos', _notes7[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes7[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes7.length,)
                   ],
@@ -797,6 +932,17 @@ class treeState extends State<tree> {
                     ListTile(
                       title:Text(asistencia),
                       leading: Icon(Icons.menu_book_outlined),
+                      onTap: ()async{
+                        await getUrlFile('asistencia', asistencia);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: asistencia, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     )
                   ],
                 ),
@@ -809,7 +955,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes9[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('observaciones', _notes9[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes9[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes9.length,)
                   ],
@@ -823,7 +979,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes10[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('intraclases', _notes10[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes10[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes10.length,)
                     
@@ -838,7 +1004,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes11[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('autonomos', _notes11[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes11[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes11.length,)
                   ],
@@ -852,7 +1028,17 @@ class treeState extends State<tree> {
                       return ListTile(
                       title: Text(_notes12[index].nombre_archivo),
                       leading: Icon(Icons.menu_book_outlined),
-                      onTap: (){},
+                      onTap: ()async{
+                        await getUrlFile('refuerzos', _notes12[index].nombre_archivo);
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, fileName: _notes12[index].nombre_archivo, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                     );
                     },  itemCount: _notes12.length,)
                   ],
@@ -871,7 +1057,6 @@ class treeState extends State<tree> {
                 ListTile(
                   title: Text(
                     'Informe final',
-                    
                   ),leading: Icon(Icons.menu_book_outlined),
                   onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>informefinal(widget.asig_codigo, widget.peri_codigo, widget.per_codigo, widget.asig_nombre)));},
                 )
@@ -879,7 +1064,17 @@ class treeState extends State<tree> {
             ),
             MaterialButton(
                       color: Colors.green,
-                      onPressed: () {},
+                      onPressed: ()async{
+                        await descargarPortafolio();
+                         final status= await Permission.storage.request();
+                         if(status.isGranted){
+                           final externalDir = await getExternalStorageDirectory();
+                            String ruta = Uri.encodeFull(urlArchivo);
+                            final id = await FlutterDownloader.enqueue(url: ruta, savedDir: externalDir.path, showNotification: true, openFileFromNotification: true,);
+                         }else{
+                           print("Permiso negado");
+                         }
+                       },
                       height: 50,
                       minWidth: 400,
                       shape: RoundedRectangleBorder(

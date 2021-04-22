@@ -8,8 +8,6 @@ import 'Inicio.dart';
 
 
 class asignaturasdocente extends StatefulWidget {
-
-
   @override
   asignaturasdocenteState createState() => asignaturasdocenteState();
 }
@@ -211,7 +209,6 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
                     clavecontroller.clear();
                     asignarClave(horario, asig_codigo, peri_codigo, clavecontroller.text);
                     codeDialog = valueText;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
                     
                   });
                 },
@@ -243,6 +240,8 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Inicio()));
+
     }else{
        Fluttertoast.showToast(
           msg: "Error en asignación de clave",
@@ -252,6 +251,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+      Navigator.pop(context);
     }
 
 
