@@ -1,5 +1,5 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const FacultadCtrl = {};
 
 /*
@@ -9,16 +9,51 @@ FacultadCtrl.all = async (req, res, next) => {
 
     var err = new Error();
 
+
     try {
 
-        const facultades = await pool.query("SELECT *FROM facultad");
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
 
-        res.status(200).json({ "message": facultades.rows });
+            if (err) {
 
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const carrera_persona = await pool.query("SELECT fac.fac_codigo, fac.fac_nombre FROM persona_carrera as per_car, carrera as car, facultad as fac"
+                +" where per_car.car_codigo = car.car_codigo and car.fac_codigo = fac.fac_codigo and per_car.per_codigo =$1 ",[per_codigo]);
+
+                var temp = carrera_persona.rows[0]
+
+                var facultades = [];
+
+                facultades.push(temp)
+    
+                carrera_persona.rows.forEach(carrera => {
+
+                    if(temp.fac_codigo != carrera.fac_codigo){
+
+                        facultades.push(carrera)
+                        
+                        temp = carrera
+
+                    }
+
+                });
+
+                res.status(200).json({ "message": facultades });
+
+                
+            }
+        })
+       
 
     } catch (e) {
 
         err.message = e.message;
+        console.log(err.message)
         err.status = 500;
         next(err);
 

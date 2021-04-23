@@ -63,7 +63,7 @@ export default function VERperiodos() {
                                         <td>{peri_fecha_inicial.split("T")[0]}</td>
                                         <td>{peri_fecha_final.split("T")[0]}</td>
                                         <td>{peri_estado}</td>
-                                        <td><a type="button" href={`/periodos/editar/${peri_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                        <td><button type="button" data-toggle="modal" data-target="#periodo" data-periodo={peri_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
                                         <a type="button" href={`/periodos/eliminar/${peri_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
 
                                     </tr>

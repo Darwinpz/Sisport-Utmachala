@@ -1,5 +1,5 @@
 
-$('#semestre').on('show.bs.modal', function () {
+$('#semestre').on('show.bs.modal', function (event) {
 
     const jwt = localStorage.getItem("jwt")
 
@@ -18,7 +18,7 @@ $('#semestre').on('show.bs.modal', function () {
         success: function (data) {
 
             const facultades = data.message
-            
+
             facultades.forEach(facultad => {
 
                 var option = document.createElement("option");
@@ -41,17 +41,71 @@ $('#semestre').on('show.bs.modal', function () {
     })
 
 
+    var button = $(event.relatedTarget)
+
+    var sem_codigo = button.data('sem_codigo')
+
+    var modal = $(this)
+
+    if (sem_codigo) {
+
+        modal.find('.modal-title').text('EDITAR SEMESTRE')
+
+        $.ajax({
+
+            url: 'http://190.155.140.58/api/semestre/find',
+            headers: {
+                'Authorization': 'Bearer ' + jwt
+            },
+            type: "POST",
+            data: { sem_codigo: sem_codigo },
+            success: function (data) {
+
+                const contenido = data.message
+
+                console.log(contenido)
+                document.getElementById("sem_nombre").value = contenido.sem_nombre
+                document.getElementById("sem_paralelo").value = contenido.sem_paralelo
+                document.getElementById("fac_codigo").value = contenido.fac_codigo
+                document.getElementById("car_codigo").value = contenido.car_codigo
+                //document.getElementById("peri_codigo").value = contenido.peri_codigo
+
+            }
+            ,
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(errorThrown)
+                console.log(jqXHR)
+                console.log(textStatus)
+            }
+
+        })
+
+    } else {
+
+        modal.find('.modal-title').text('CREAR SEMESTRE')
+        document.getElementById("sem_nombre").value = ""
+        document.getElementById("sem_paralelo").value = ""
+        document.getElementById("fac_codigo").value = ""
+        document.getElementById("car_codigo").value = ""
+        //document.getElementById("peri_codigo").value = ""
+
+    }
+
+
     $("#fac_codigo").on("change", (e) => {
 
         if (e.target.value) {
 
+            const fac_codigo = e.target.value
+
             $.ajax({
 
-                url: 'http://190.155.140.58/api/carrera/',
+                url: 'http://190.155.140.58/api/carrera/findfacultad',
                 headers: {
                     'Authorization': 'Bearer ' + jwt
                 },
-                type: "GET",
+                type: "POST",
+                data:{fac_codigo:fac_codigo},
                 success: function (data) {
 
                     const carreras = data.message
@@ -121,6 +175,5 @@ $('#semestre').on('show.bs.modal', function () {
         }
 
     })
-
 
 })

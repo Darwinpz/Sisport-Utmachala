@@ -1,5 +1,5 @@
 const pool = require("../database/postgresql")
-
+const jwt = require("jsonwebtoken")
 const CarreraCtrl = {};
 
 /*
@@ -82,6 +82,49 @@ CarreraCtrl.find = async (req, res, next) => {
         const resultado = carrera.rows[0];
 
         resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
+
+/*
+    * Retorna un solo resultado de los registros de la Carrera por facultad
+*/
+CarreraCtrl.findfacultad = async (req, res, next) => {
+
+    var err = new Error();
+
+    try {
+
+
+        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+
+            if (err) {
+
+                res.status(403).json({ "message": 'Token no válido' });
+
+            } else {
+
+                const per_codigo = data.usuario.per_codigo
+
+                const {fac_codigo} = req.body;
+
+                const carrera = await pool.query("SELECT car.car_codigo, car.car_nombre FROM carrera as car, persona_carrera as per_car, facultad as fac WHERE car.fac_codigo = fac.fac_codigo and per_car.car_codigo = car.car_codigo and fac.fac_codigo=$1 and per_car.per_codigo=$2", [fac_codigo, per_codigo]);
+        
+                const resultado = carrera.rows;
+        
+                resultado ? res.status(200).json({ "message": resultado }) : res.status(200).json({ "message": {} });
+        
+            }
+        })
 
 
     } catch (e) {

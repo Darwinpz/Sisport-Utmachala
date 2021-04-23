@@ -63,7 +63,7 @@ export default function VERsemestres() {
                                         <td>{peri_nombre}</td>
                                         <td>{car_nombre}</td>
                                         <td>{fac_nombre}</td>
-                                        <td ><a type="button" href={`/semestres/editar/${sem_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                        <td ><button type="button" data-toggle="modal" data-target="#semestre" data-sem_codigo={sem_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
                                         <a type="button" href={`/semestres/eliminar/${sem_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
 
                                     </tr>

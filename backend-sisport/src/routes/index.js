@@ -40,6 +40,7 @@ module.exports = (app) => {
     //RUTAS DE LAS CARERRAS
     app.get('/api/carrera', validarToken, carrera.all);
     app.get('/api/carrerasandfacultad', validarToken, carrera.allxfacultad);
+    app.post('/api/carrera/findfacultad', validarToken, carrera.findfacultad);
     app.get('/api/carrera/:id', validarToken, carrera.find);
     app.post('/api/carrera/add', validarToken, carrera.add);
     app.put('/api/carrera/put', validarToken, carrera.put);
@@ -51,11 +52,12 @@ module.exports = (app) => {
     app.post('/api/semestre/addsemestre_periodo', validarToken, semestre.addsemestre_periodo);
     app.put('/api/semestre/put', validarToken, semestre.put);
     app.delete('/api/semestre/delete', validarToken, semestre.delete);
-    app.get('/api/semestre/:id', validarToken, semestre.find);
+    app.post('/api/semestre/find', validarToken, semestre.find);
+    app.post('/api/semestre/findperiodocarrera', validarToken, semestre.findPeriodoCarrera);
 
     //RUTAS DE LOS PERIODOS
     app.get('/api/periodo', validarToken, periodo.all);
-    app.get('/api/periodo/:id', validarToken, periodo.find);
+    app.post('/api/periodo/find', validarToken, periodo.find);
     app.post('/api/periodo/add', validarToken, periodo.add);
     app.put('/api/periodo/put', validarToken, periodo.put);
     app.delete('/api/periodo/delete', validarToken, periodo.delete);
@@ -94,6 +96,7 @@ module.exports = (app) => {
 
     //RUTAS DE LAS ASIGNATURAS
     app.get('/api/asignatura', validarToken, asignatura.all);
+    app.get('/api/asignatura/all', validarToken, asignatura.allcoordinador);
     app.post('/api/asignatura/buscar', validarToken, asignatura.buscar);
     app.post('/api/asignatura/addestado', validarToken, asignatura.addestado);
     app.post('/api/asignatura/add', validarToken, asignatura.add);
