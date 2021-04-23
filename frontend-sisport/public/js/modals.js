@@ -28,10 +28,11 @@ var myDropzone = new Dropzone("#myDropzone", {
             var identificador = document.getElementById("identificador").innerText
             var periodo = document.getElementById("peri_codigo").innerText
             var cedula = document.getElementById("per_cedula").innerText
+            var sem_codigo = document.getElementById("sem_codigo").innerText
 
             formData.append("fac_nombre", esquema.split(".")[0]);
             formData.append("car_nombre", esquema.split(".")[1]);
-            formData.append("asig_identificador", identificador + "-" + periodo);
+            formData.append("asig_identificador", identificador + "-" + periodo + "-" + sem_codigo);
             formData.append("per_cedula", cedula);
 
 
@@ -231,13 +232,13 @@ $('#archivo').on('show.bs.modal', function (event) {
 
     modal.find('.modal-archivo_nombre').text(nombre_archivo)
     modal.find('.modal-tipo_archivo').text(tipo_archivo)
-    
+
 
     if (per_tipo !== "ESTUDIANTE") {
 
         var btn_eliminar = document.getElementById("btn_eliminar_archivo")
 
-        if(btn_eliminar){
+        if (btn_eliminar) {
             btn_eliminar.remove()
         }
 
