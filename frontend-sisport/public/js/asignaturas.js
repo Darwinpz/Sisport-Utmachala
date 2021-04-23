@@ -13,7 +13,7 @@ $('#asignaturas').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://localhost/api/facultad/',
+        url: 'http://190.155.140.58/api/facultad/',
         headers: {
             'Authorization': 'Bearer ' + jwt
         },
