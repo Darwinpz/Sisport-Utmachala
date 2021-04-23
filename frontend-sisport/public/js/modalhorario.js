@@ -8,6 +8,7 @@ $('#horario').on('show.bs.modal', function (event) {
     var asig_identificador = button.data('identificador')
     var carrera = button.data('carrera')
     var facultad = button.data('facultad')
+    var sem_codigo = button.data('sem_codigo')
 
     var modal = $(this)
 
@@ -17,5 +18,6 @@ $('#horario').on('show.bs.modal', function (event) {
     modal.find('.modal-identificador').text(asig_identificador)
     modal.find('.modal-facultad').text(facultad)
     modal.find('.modal-carrera').text(carrera)
+    modal.find('.modal-sem_codigo').text(sem_codigo)
 
 })

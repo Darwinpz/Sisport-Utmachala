@@ -17,7 +17,7 @@ export default function Asignaturas({ asignaturas }) {
 
     const { matricularse, eliminarPortafolio } = portafolioService({ jwt })
 
-    const handleClick = (asig_codigo, peri_codigo, fac_nombre, car_nombre, asig_identificador) => {
+    const handleClick = (asig_codigo, peri_codigo,sem_codigo, fac_nombre, car_nombre, asig_identificador) => {
 
         var clave = document.getElementById("clave_" + asig_codigo).value
 
@@ -26,7 +26,7 @@ export default function Asignaturas({ asignaturas }) {
         matricularse({ asig_codigo, peri_codigo, clave })
             .then(() => {
 
-                crearPortafolio({ fac_nombre, car_nombre, asig_identificador: asig_identificador + "-" + peri_codigo, per_cedula: perfil.per_cedula }).then(() => {
+                crearPortafolio({ fac_nombre, car_nombre, asig_identificador: asig_identificador + "-" + peri_codigo+"-"+sem_codigo, per_cedula: perfil.per_cedula }).then(() => {
 
                     window.location.reload()
 
@@ -82,7 +82,7 @@ export default function Asignaturas({ asignaturas }) {
                                                     <div className="d-flex justify-content-between align-items-center">
 
                                                         <input type="text" className="form-control mr-2" id={`clave_${asig_codigo}`} placeholder="Clave" required />
-                                                        <button className="btn btn-primary" type="button" onClick={() => handleClick(asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador)}>Matricularme</button>
+                                                        <button className="btn btn-primary" type="button" onClick={() => handleClick(asig_codigo, peri_codigo,sem_codigo, fac_abreviatura, car_abreviatura, asig_identificador)}>Matricularme</button>
 
                                                     </div>
                                                     {error === asig_codigo && <strong>Clave incorrecta</strong>}

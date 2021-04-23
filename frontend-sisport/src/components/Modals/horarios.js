@@ -102,6 +102,7 @@ export default function Horarios() {
                 var identificador = document.getElementById("asig_identificador").innerText
                 var fac_nombre = document.getElementById("fac_abreviatura").innerText
                 var car_nombre = document.getElementById("car_abreviatura").innerText
+                var sem_codigo = document.getElementById("sem_codigo").innerText
 
                 const jwt = window.localStorage.getItem("jwt")
 
@@ -119,7 +120,7 @@ export default function Horarios() {
                                 addEstructura({ asig_codigo, peri_codigo, clave, jwt })
                                     .then(() => {
 
-                                        asignaturaPythonService({fac_nombre:fac_nombre,car_nombre:car_nombre,asig_identificador:identificador+"-"+peri_codigo}).then(()=>{
+                                        asignaturaPythonService({fac_nombre:fac_nombre,car_nombre:car_nombre,asig_identificador:identificador+"-"+peri_codigo+"-"+sem_codigo}).then(()=>{
 
                                             window.location.reload()
 
@@ -261,6 +262,7 @@ export default function Horarios() {
                         <p style={{ display: "none" }} id="asig_identificador" className="modal-identificador"></p>
                         <p style={{ display: "none" }} id="fac_abreviatura" className="modal-facultad"></p>
                         <p style={{ display: "none" }} id="car_abreviatura" className="modal-carrera"></p>
+                        <p style={{ display: "none" }} id="sem_codigo" className="modal-sem_codigo"></p>
 
                     </div>
                 </div>

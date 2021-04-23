@@ -17,13 +17,13 @@ import portafolioPythonServices from "services/python/portafolio"
 
 import './index.css'
 
-export default function VerPortafolio({ asig_codigo, peri_codigo,sem_codigo, per_codigo }) {
+export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, per_codigo }) {
 
     const { isLogged } = useUser()
 
     const { perfil } = usePerfil()
 
-    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo,sem_codigo, per_codigo })
+    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo, sem_codigo, per_codigo })
 
     const [, navigate] = useLocation()
 
@@ -71,24 +71,24 @@ export default function VerPortafolio({ asig_codigo, peri_codigo,sem_codigo, per
         }
 
         setError("")
-        
+
         var data_portafolio = portafolio[0].portafolio_data
 
         setError("generando expectativas...")
 
-        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
+        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
 
             setError("generando informe...")
 
-            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
+            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
 
                 setError("generando diarios...")
 
-                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
+                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
 
                     setError("descargando portafolio ....")
 
-                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
+                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula }).then((url) => {
 
 
                         setError("Descargando...")
@@ -155,6 +155,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo,sem_codigo, per
 
 
                         }
+                        <p style={{ display: "none" }} id="sem_codigo">{sem_codigo}</p>
                     </div>
 
                     <div className="card-body">
@@ -223,7 +224,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo,sem_codigo, per
                                                                 perfil.per_tipo === "ESTUDIANTE" &&
                                                                 <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
                                                                     data-target="#subir" data-tipo="informativos" data-titulo="DATOS INFORMATIVOS" data-cant="1" data-size="2" data-type=".pdf, .doc, .docx">Subir</a></li>
-    
+
                                                             }
 
                                                         </ul>
