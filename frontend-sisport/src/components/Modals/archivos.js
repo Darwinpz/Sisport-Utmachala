@@ -60,7 +60,7 @@ export default function Archivos() {
         var tipo_archivo = document.getElementById("tipo_archivo").innerText
         var nombre_archivo = document.getElementById("archivo_nombre").innerText
         var est_cedula = document.getElementById("est_cedula")
-        var sem_codigo = document.getElementById("sem_codigo")
+        var sem_codigo = document.getElementById("sem_codigo").innerText
 
 
         var cedula = per_cedula
