@@ -77,7 +77,7 @@ SemestreCtrl.findPeriodoCarrera = async (req, res, next) => {
 
         const { peri_codigo, car_codigo } = req.body;
 
-        const semestre = await pool.query("SELECT *FROM semestre as sem, carrera as car,periodo_semestre as peri_sem, periodo as peri, facultad as fac WHERE"
+        const semestre = await pool.query("SELECT sem.sem_nombre, sem.sem_paralelo, sem.sem_codigo FROM semestre as sem, carrera as car,periodo_semestre as peri_sem, periodo as peri, facultad as fac WHERE"
         +" sem.car_codigo = car.car_codigo and car.fac_codigo = fac.fac_codigo and peri_sem.sem_codigo = sem.sem_codigo and peri_sem.peri_codigo = peri.peri_codigo and peri.peri_codigo=$1 and car.car_codigo=$2", [peri_codigo, car_codigo]);
 
         const resultado = semestre.rows;
