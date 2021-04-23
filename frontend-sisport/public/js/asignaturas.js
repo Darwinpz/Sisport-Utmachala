@@ -13,7 +13,7 @@ $('#asignaturas').on('show.bs.modal', function () {
 
     $.ajax({
 
-        url: 'http://190.155.140.58/api/facultad/',
+        url: 'http://localhost/api/facultad/',
         headers: {
             'Authorization': 'Bearer ' + jwt
         },
@@ -48,13 +48,16 @@ $('#asignaturas').on('show.bs.modal', function () {
 
         if (e.target.value) {
 
+            const fac_codigo = e.target.value
+
             $.ajax({
 
-                url: 'http://190.155.140.58/api/carrera/',
+                url: 'http://190.155.140.58/api/carrera/findfacultad',
                 headers: {
                     'Authorization': 'Bearer ' + jwt
                 },
-                type: "GET",
+                type: "POST",
+                data:{fac_codigo:fac_codigo},
                 success: function (data) {
 
                     const carreras = data.message
@@ -131,13 +134,18 @@ $('#asignaturas').on('show.bs.modal', function () {
 
         if (e.target.value) {
 
+            const peri_codigo = e.target.value
+
+            const car_codigo = document.getElementById("car_codigo").value
+
             $.ajax({
 
-                url: 'http://190.155.140.58/api/semestre/',
+                url: 'http://190.155.140.58/api/semestre/findperiodocarrera',
                 headers: {
                     'Authorization': 'Bearer ' + jwt
                 },
-                type: "GET",
+                type: "POST",
+                data:{peri_codigo: peri_codigo, car_codigo:car_codigo},
                 success: function (data) {
 
                     const semestres = data.message
@@ -148,7 +156,6 @@ $('#asignaturas').on('show.bs.modal', function () {
 
                     semestres.forEach(semestre => {
 
-                        console.log(semestre)
                         var option = document.createElement("option");
                         option.text = semestre.sem_nombre +" " +semestre.sem_paralelo
                         option.value = semestre.sem_codigo;

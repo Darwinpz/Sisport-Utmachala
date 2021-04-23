@@ -26,7 +26,7 @@ export default function Asignaturas({ jwt }) {
 
     const all = async () => {
 
-        return fetch(ENDPOINT, {
+        return fetch(ENDPOINT+"/all", {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

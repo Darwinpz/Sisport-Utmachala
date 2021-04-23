@@ -35,7 +35,7 @@ PeriodoCtrl.find = async (req, res, next) => {
 
     try {
 
-        const peri_codigo = req.params.id;
+        const {peri_codigo} = req.body;
 
         const periodo = await pool.query("SELECT *FROM periodo WHERE peri_codigo=$1", [peri_codigo]);
 

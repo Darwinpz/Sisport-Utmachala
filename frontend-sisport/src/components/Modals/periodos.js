@@ -45,7 +45,7 @@ export default function ModalPeriodo() {
             <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">ASIGNAR PERIODO</h5>
+                        <h5 className="modal-title">CREAR PERIODO</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -86,7 +86,7 @@ export default function ModalPeriodo() {
 
                     <div className="modal-footer" id="footer-periodo">
                         {error && <strong>{error}</strong>}
-                        <button type="button" className="btn btn-success" onClick={() => AddSubmit()}>Guardar Periodo</button>
+                        <button type="button" className="btn btn-success" onClick={() => AddSubmit()}>Guardar</button>
 
                     </div>
 

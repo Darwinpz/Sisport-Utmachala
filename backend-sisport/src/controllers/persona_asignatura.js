@@ -39,11 +39,16 @@ PerAsigCtrl.all = async (req, res, next) => {
 
                     obj = { "periodo": periodo.peri_nombre, "asignaturas": null }
 
-                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.peri_codigo == periodo.peri_codigo)
+                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.peri_codigo == periodo.peri_codigo && periodo.peri_estado == "ACTIVO")
 
-                    obj.asignaturas = asignaturas
+                    if(asignaturas.length > 0){
 
-                    arreglo.push(obj)
+                        obj.asignaturas = asignaturas
+
+                        arreglo.push(obj)
+
+                    }
+
 
                 });
 
