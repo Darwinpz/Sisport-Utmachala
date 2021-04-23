@@ -60,7 +60,7 @@ export default function VERasignaturas() {
                                         <td>{sem_nombre} {sem_paralelo}</td>
                                         <td>{car_nombre}</td>
                                         <td>{peri_nombre}</td>
-                                        <td><a type="button" href={`/asignaturas/editar/${asig_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                        <td><button type="button" data-toggle="modal" data-target="#asignaturas" data-asig_codigo={asig_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
                                         <a type="button" href={`/asignaturas/eliminar/${asig_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
 
                                     </tr>
