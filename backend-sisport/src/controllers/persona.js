@@ -45,8 +45,18 @@ PersonaCtrl.all_rol = async (req, res, next) => {
 
                 const { rol } = req.body;
 
-                const personas = await pool.query("SELECT per_codigo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1", [rol]);
+                var personas = []
+                
+                if(rol == "DOCENTE"){
 
+                    personas = await pool.query("SELECT per_codigo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1  or per_tipo='COORDINADOR'", [rol]);
+
+                }else{
+
+                    personas = await pool.query("SELECT per_codigo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1", [rol]);
+
+                }
+                
                 res.status(200).json({ "message": personas.rows });
 
             }

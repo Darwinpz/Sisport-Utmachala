@@ -7,9 +7,18 @@ $('#periodo').on('show.bs.modal', function (event) {
 
     var modal = $(this)
 
+    var err = document.getElementsByTagName("strong")[0]
+
+    if(err){
+        err.innerText = ""
+    }
+
     if (periodo) {
 
         modal.find('.modal-title').text('EDITAR PERIODO')
+
+        document.getElementById("btn_editar_periodo").hidden = false
+        document.getElementById("btn_guardar_periodo").hidden = true
 
         const jwt = localStorage.getItem("jwt")
 
@@ -29,6 +38,7 @@ $('#periodo').on('show.bs.modal', function (event) {
                 document.getElementById("fecha_inicio").value = contenido.peri_fecha_inicial.split("T")[0]
                 document.getElementById("fecha_fin").value = contenido.peri_fecha_final.split("T")[0]
                 document.getElementById("peri_estado").value = contenido.peri_estado
+                document.getElementById("peri_codigo").innerText = periodo
 
             }
             ,
@@ -47,7 +57,13 @@ $('#periodo').on('show.bs.modal', function (event) {
         document.getElementById("fecha_inicio").value = ""
         document.getElementById("fecha_fin").value = ""
         document.getElementById("peri_estado").value = ""
+        document.getElementById("peri_codigo").value = ""
+        document.getElementById("btn_editar_periodo").hidden = true
+        document.getElementById("btn_guardar_periodo").hidden = false
     }
 
 
 })
+
+
+

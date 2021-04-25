@@ -154,16 +154,17 @@ PerAsigCtrl.add = async (req, res, next) => {
 
 
                 const { per_codigo, asig_codigo, peri_codigo } = req.body;
-
+                await pool.query("BEGIN")
                 await pool.query("INSERT INTO public.persona_asignatura (per_codigo, asig_codigo, peri_codigo) values($1,$2,$3)", [per_codigo, asig_codigo, peri_codigo]);
 
                 res.status(200).json({ "message": "Persona_Asignatura Agregada" });
+                await pool.query("COMMIT")
 
             }
         })
 
     } catch (e) {
-
+        await pool.query("ROLLBACK")
         err.message = e.message;
         err.status = 500;
         next(err);

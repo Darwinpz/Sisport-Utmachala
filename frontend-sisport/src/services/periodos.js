@@ -45,10 +45,58 @@ export default function Periodos({ jwt }) {
 
     }
 
+
+    const update = async ({peri_codigo, peri_nombre, peri_fecha_inicial, peri_fecha_final, sem_codigo, peri_estado}) => {
+
+        return fetch(ENDPOINT+"/put", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer " + jwt
+            },
+            body: JSON.stringify({peri_codigo, peri_nombre, peri_fecha_inicial, peri_fecha_final, sem_codigo, peri_estado})
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+
+            return message
+        })
+
+    }
+
+
+    const remove = async ({peri_codigo}) => {
+
+        return fetch(ENDPOINT+"/delete", {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer " + jwt
+            },
+            body: JSON.stringify({peri_codigo})
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+
+            return message
+        })
+
+    }
+
     return{
 
         all,
-        add
+        add,
+        update,
+        remove
 
     }
 
