@@ -76,9 +76,11 @@ AsignaturaCtrl.find = async (req, res, next) => {
 
     try {
 
-        const asig_codigo = req.params;
+        const { asig_codigo } = req.body;
 
-        const asignatura = await pool.query("SELECT *FROM asignatura WHERE asig_codigo=$1", [asig_codigo]);
+        const asignatura = await pool.query("SELECT fac.fac_codigo, sem.sem_codigo, peri.peri_codigo, car.car_codigo, asig.asig_nombre, asig.asig_identificador, per.per_codigo as docente"
+            + " FROM asignatura as asig, semestre as sem, carrera as car, facultad as fac, periodo_semestre as peri_sem, periodo as peri, vi_docente_asignaturas as vi, persona as per"
+            + " where asig.sem_codigo = sem.sem_codigo and vi.asig_codigo = asig.asig_codigo and vi.peri_codigo = peri.peri_codigo and per.per_codigo = vi.per_codigo and sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo and sem.sem_codigo = peri_sem.sem_codigo and peri.peri_codigo = peri_sem.peri_codigo and asig.asig_codigo=$1", [asig_codigo]);
 
         const resultado = asignatura.rows[0];
 
@@ -171,20 +173,20 @@ AsignaturaCtrl.add = async (req, res, next) => {
 
         const { asig_nombre, sem_codigo, asig_identificador } = req.body;
 
-
+        await pool.query("BEGIN")
         await pool.query("INSERT INTO public.asignatura (asig_nombre, sem_codigo, asig_identificador) values($1,$2,$3)", [asig_nombre, sem_codigo, asig_identificador]);
 
         var max = await pool.query("SELECT MAX(asig_codigo) FROM public.asignatura");
 
+        await pool.query("COMMIT")
 
         res.status(200).json({ "message": max.rows[0].max });
 
 
     } catch (e) {
-
+        await pool.query("ROLLBACK")
         err.message = e.message;
 
-        console.log(err.message)
         err.status = 500;
         next(err);
 
@@ -207,13 +209,14 @@ AsignaturaCtrl.addestado = async (req, res, next) => {
 
         const { asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado } = req.body;
 
+        await pool.query("BEGIN")
         await pool.query("INSERT INTO asignatura_estado (asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado) values($1,$2,$3)", [asig_est_asig_codigo, asig_est_peri_codigo, asig_est_estado]);
-
+        await pool.query("COMMIT")
         res.status(200).json({ "message": "Estado de asignatura Agregada" });
 
 
     } catch (e) {
-
+        await pool.query("ROLLBACK")
         err.message = e.message;
         err.status = 500;
         next(err);
@@ -233,16 +236,44 @@ AsignaturaCtrl.put = async (req, res, next) => {
 
     try {
 
-        const { asig_codigo, asig_nombre, sem_codigo } = req.body;
+        const { asig_codigo, peri_codigo, asig_identificador, asig_nombre, sem_codigo, cod_docente } = req.body;
 
-        await pool.query("UPDATE asignatura SET asig_nombre=$2, sem_codigo=$3 WHERE asig_codigo=$1", [asig_codigo, asig_nombre, sem_codigo]);
+        const data = await pool.query("SELECT vi.per_codigo FROM persona_asignatura as per_asig,vi_docente_asignaturas as vi where per_asig.per_codigo = vi.per_codigo and per_asig.asig_codigo=$1 ", [asig_codigo]);
 
-        res.status(200).json({ "message": "Asignatura Editada" });
+        var docente_anterior = data.rows[0].per_codigo
+
+        const estado = await pool.query("SELECT asig_est_estado FROM asignatura_estado where asig_est_asig_codigo=$1 and asig_est_peri_codigo=$2", [asig_codigo, peri_codigo])
+
+        if (estado.rows[0].asig_est_estado) {
+
+            res.status(400).json({ "message": "La asignatura está activada y no puede ser modificada" });
+
+        } else {
+
+            await pool.query("BEGIN")
+
+            if (docente_anterior != cod_docente) {
+
+                await pool.query("UPDATE persona_asignatura SET per_codigo=$2 WHERE asig_codigo=$1 and per_codigo=$3", [asig_codigo, cod_docente, docente_anterior]);
+
+            }
+
+            await pool.query("UPDATE asignatura SET asig_nombre=$2, asig_identificador=$3, sem_codigo=$4 WHERE asig_codigo=$1", [asig_codigo, asig_nombre, asig_identificador, sem_codigo]);
+
+
+            await pool.query("COMMIT")
+
+
+            res.status(200).json({ "message": "Asignatura Editada" });
+
+        }
 
 
     } catch (e) {
 
+        await pool.query("ROLLBACK")
         err.message = e.message;
+        console.log(err)
         err.status = 500;
         next(err);
 
@@ -262,12 +293,29 @@ AsignaturaCtrl.delete = async (req, res, next) => {
 
         const { asig_codigo } = req.body;
 
-        await pool.query("DELETE FROM asignatura WHERE asig_codigo=$1", [asig_codigo]);
 
-        res.status(200).json({ "message": "Asignatura Eliminada" });
+        const personas = await pool.query("SELECT FROM persona_asignatura WHERE asig_codigo=$1", [asig_codigo]);
+
+        if (personas.rowCount > 1) {
+
+            res.status(400).json({ "message": "Las asignatura tiene estudiantes" });
+
+        } else {
+
+            await pool.query("BEGIN")
+            await pool.query("DELETE FROM persona_asignatura WHERE asig_codigo=$1", [asig_codigo]);
+            await pool.query("DELETE FROM horario WHERE asig_codigo=$1", [asig_codigo]);
+            await pool.query("DELETE FROM asignatura_estado WHERE asig_est_asig_codigo=$1", [asig_codigo]);
+            await pool.query("DELETE FROM asignatura WHERE asig_codigo=$1", [asig_codigo]);
+            await pool.query("COMMIT")
+            res.status(200).json({ "message": "Asignatura Eliminada" });
+
+        }
 
 
     } catch (e) {
+        console.log(e.message)
+        await pool.query("ROLLBACK")
 
         err.message = e.message;
         err.status = 500;

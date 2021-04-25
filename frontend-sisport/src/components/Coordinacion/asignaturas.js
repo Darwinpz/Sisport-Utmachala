@@ -9,7 +9,7 @@ export default function VERasignaturas() {
 
     const jwt = localStorage.getItem("jwt")
 
-    const { all } = asignaturaService({ jwt })
+    const { all, remove } = asignaturaService({ jwt })
 
     useEffect(() => {
 
@@ -32,6 +32,22 @@ export default function VERasignaturas() {
 
     }, [jwt, setAsignaturas])
 
+
+    const deleteItem = (asig_codigo) => {
+
+        remove({ asig_codigo }).then(() => {
+
+            window.location.reload()
+
+        })
+            .catch(() => {
+
+                alert("No se puede eliminar esta asignatura, tiene estudiantes asignados")
+
+            })
+
+    }
+
     return (
 
         <>
@@ -52,7 +68,7 @@ export default function VERasignaturas() {
                         </tfoot>
                         <tbody>
                             {
-                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre, sem_nombre,sem_paralelo, peri_nombre, car_nombre }) =>
+                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre, sem_nombre, sem_paralelo, peri_nombre, car_nombre }) =>
 
                                     <tr key={asig_codigo}>
                                         <td>{asig_identificador}</td>
@@ -60,8 +76,8 @@ export default function VERasignaturas() {
                                         <td>{sem_nombre} {sem_paralelo}</td>
                                         <td>{car_nombre}</td>
                                         <td>{peri_nombre}</td>
-                                        <td><button type="button" data-toggle="modal" data-target="#asignaturas" data-asig_codigo={asig_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
-                                        <a type="button" href={`/asignaturas/eliminar/${asig_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
+                                        <td><button type="button" data-toggle="modal" data-target="#asignaturas" data-asig_codigo={asig_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-edit"></i></button>
+                                            <button type="button" className="btn btn-danger mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar esta asignatura?')) deleteItem(asig_codigo) }}><i className="fas fa-trash"></i></button></td>
 
                                     </tr>
 

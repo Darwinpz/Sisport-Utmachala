@@ -16,7 +16,7 @@ export default function ModalAsignaturas() {
 
     const jwt = localStorage.getItem("jwt")
 
-    const { add, add_estado } = asignaturaService({ jwt })
+    const { add, add_estado, update } = asignaturaService({ jwt })
 
     const { add_perasig } = perasigService({ jwt })
 
@@ -65,6 +65,44 @@ export default function ModalAsignaturas() {
 
 
     };
+
+
+    const UpdateSubmit = () => {
+
+        const asig_nombre = document.getElementById("asig_nombre").value
+        const sem_codigo = document.getElementById("sem_codigo").value
+        const asig_identificador = document.getElementById("asig_identificador").value
+        const cod_docente = document.getElementById("docente_codigo").value
+        const peri_codigo = document.getElementById("peri_codigo").value
+        const asig_codigo = document.getElementById("asig_codigo").innerText
+
+        setError("")
+        
+        update({asig_codigo, peri_codigo, asig_identificador, asig_nombre, sem_codigo, cod_docente}).then(()=>{
+
+            window.location.reload()
+
+        }).catch((err)=>{
+
+            console.log(err)
+            
+            if(err.message == "400"){
+
+                setError("La asignatura ya está activada, no se puede editar")
+
+            }else{
+
+
+                setError("Error al actualizar la asignatura")
+
+            }
+
+            
+
+        })
+
+    }
+
 
     return (
 
@@ -151,8 +189,9 @@ export default function ModalAsignaturas() {
 
                     <div className="modal-footer" id="footer-asignaturas">
                         {error && <strong>{error}</strong>}
-                        <button type="button" className="btn btn-success" onClick={() => handleSubmit()}>Guardar Asignatura</button>
-
+                        <button type="button" className="btn btn-success" id="btn_guardar_asignatura" onClick={() => handleSubmit()}>Guardar Asignatura</button>
+                        <p style={{ display: "none" }} id="asig_codigo" className="modal-asig_codigo"></p>
+                        <button type="button" className="btn btn-success" id="btn_editar_asignatura" onClick={() => UpdateSubmit()}>Guardar Cambios</button>
                     </div>
 
                 </div>

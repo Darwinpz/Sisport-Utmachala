@@ -12,7 +12,7 @@ export default function VERperiodos() {
     const jwt = localStorage.getItem("jwt")
 
     
-    const { all } = periodoService({ jwt })
+    const { all, remove } = periodoService({ jwt })
 
 
     useEffect(() => {
@@ -36,6 +36,21 @@ export default function VERperiodos() {
 
 
     }, [jwt, setData])
+
+    const deleteItem = (peri_codigo) =>{
+
+        remove({peri_codigo}).then(()=>{
+
+            window.location.reload()
+
+        }).catch(()=>{
+
+
+            alert("No se puede eliminar este Periodo, tiene semestres y asignaturas asignadas")
+
+        })
+
+    }
 
     return (
 
@@ -63,8 +78,8 @@ export default function VERperiodos() {
                                         <td>{peri_fecha_inicial.split("T")[0]}</td>
                                         <td>{peri_fecha_final.split("T")[0]}</td>
                                         <td>{peri_estado}</td>
-                                        <td><button type="button" data-toggle="modal" data-target="#periodo" data-periodo={peri_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
-                                        <a type="button" href={`/periodos/eliminar/${peri_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
+                                        <td><button type="button" data-toggle="modal" data-target="#periodo" data-periodo={peri_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-edit"></i></button>
+                                        <button className="btn btn-danger mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar este periodo?')) deleteItem(peri_codigo) }}><i className="fas fa-trash"></i></button></td>
 
                                     </tr>
 

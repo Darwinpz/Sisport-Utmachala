@@ -1,7 +1,13 @@
 
-$('#semestre').on('show.bs.modal', function (event) {
+$('#semestre').on('show.bs.modal', function () {
 
     const jwt = localStorage.getItem("jwt")
+
+    var err = document.getElementsByTagName("strong")[0]
+
+    if (err) {
+        err.innerText = ""
+    }
 
     document.getElementById("fac_codigo").innerHTML = "<option selected disabled value=''>Selecciona la Facultad...</option>"
     document.getElementById("car_codigo").innerHTML = "<option selected disabled value=''>Selecciona la Carrera...</option>"
@@ -41,58 +47,7 @@ $('#semestre').on('show.bs.modal', function (event) {
     })
 
 
-    var button = $(event.relatedTarget)
-
-    var sem_codigo = button.data('sem_codigo')
-
-    var modal = $(this)
-
-    if (sem_codigo) {
-
-        modal.find('.modal-title').text('EDITAR SEMESTRE')
-
-        $.ajax({
-
-            url: 'http://190.155.140.58/api/semestre/find',
-            headers: {
-                'Authorization': 'Bearer ' + jwt
-            },
-            type: "POST",
-            data: { sem_codigo: sem_codigo },
-            success: function (data) {
-
-                const contenido = data.message
-
-                console.log(contenido)
-                document.getElementById("sem_nombre").value = contenido.sem_nombre
-                document.getElementById("sem_paralelo").value = contenido.sem_paralelo
-                document.getElementById("fac_codigo").value = contenido.fac_codigo
-                document.getElementById("car_codigo").value = contenido.car_codigo
-                //document.getElementById("peri_codigo").value = contenido.peri_codigo
-
-            }
-            ,
-            error: (jqXHR, textStatus, errorThrown) => {
-                console.log(errorThrown)
-                console.log(jqXHR)
-                console.log(textStatus)
-            }
-
-        })
-
-    } else {
-
-        modal.find('.modal-title').text('CREAR SEMESTRE')
-        document.getElementById("sem_nombre").value = ""
-        document.getElementById("sem_paralelo").value = ""
-        document.getElementById("fac_codigo").value = ""
-        document.getElementById("car_codigo").value = ""
-        //document.getElementById("peri_codigo").value = ""
-
-    }
-
-
-    $("#fac_codigo").on("change", (e) => {
+    $("#fac_codigo").on("change  ", (e) => {
 
         if (e.target.value) {
 
@@ -105,7 +60,7 @@ $('#semestre').on('show.bs.modal', function (event) {
                     'Authorization': 'Bearer ' + jwt
                 },
                 type: "POST",
-                data:{fac_codigo:fac_codigo},
+                data: { fac_codigo: fac_codigo },
                 success: function (data) {
 
                     const carreras = data.message
@@ -175,5 +130,67 @@ $('#semestre').on('show.bs.modal', function (event) {
         }
 
     })
+
+
+    $("#fac_codigo, #car_codigo, #sem_nombre, #peri_codigo").on("change", (e) => {
+
+        if (e.target.value) {
+
+            const sem_nombre = document.getElementById("sem_nombre").value
+
+            if (sem_nombre != "") {
+
+                const car_codigo = document.getElementById("car_codigo").value
+                const peri_codigo = document.getElementById("peri_codigo").value
+
+                document.getElementById("sem_paralelo").innerHTML =
+                    ("<option value=''>Selecciona un Paralelo...</option>" +
+                        "<option value='A'>PARALELO A</option>" +
+                        "<option value='B'>PARALELO B</option>" +
+                        "<option value='C'>PARALELO C</option>" +
+                        "<option value='D'>PARALELO D</option>"
+                    )
+
+                $.ajax({
+
+                    url: 'http://190.155.140.58/api/semestre/findparalelos',
+                    headers: {
+                        'Authorization': 'Bearer ' + jwt
+                    },
+                    type: "POST",
+                    data: { sem_nombre, car_codigo, peri_codigo },
+                    success: function (data) {
+
+                        const semestres = data.message
+
+                        console.log(semestres)
+
+                        semestres.forEach(semestre => {
+
+                            $("#sem_paralelo option[value='" + semestre.sem_paralelo + "']").remove();
+
+                        })
+
+
+                    }
+                    ,
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        console.log(errorThrown)
+                        console.log(jqXHR)
+                        console.log(textStatus)
+                    }
+
+                })
+
+
+            }
+
+
+        }
+
+
+    })
+
+
 
 })

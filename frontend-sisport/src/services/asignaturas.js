@@ -89,14 +89,57 @@ export default function Asignaturas({ jwt }) {
     }
 
 
-    
+    const remove = async ({ asig_codigo}) => {
+
+        return fetch(ENDPOINT + "/delete", {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer " + jwt
+            },
+            body: JSON.stringify({ asig_codigo })
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+            return message
+        })
+
+    }
+
+
+    const update = async ({ asig_codigo, peri_codigo, asig_identificador, asig_nombre, sem_codigo, cod_docente}) => {
+
+        return fetch(ENDPOINT + "/put", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': true,
+                'Authorization': "Bearer " + jwt
+            },
+            body: JSON.stringify({ asig_codigo, peri_codigo, asig_identificador, asig_nombre, sem_codigo, cod_docente })
+        }).then(res => {
+            if (!res.ok) throw new Error(res.status)
+            return res.json()
+        }).then(res => {
+            const { message } = res
+            return message
+        })
+
+    }
 
 
     return {
         buscar,
         all,
         add,
-        add_estado
+        add_estado,
+        remove,
+        update
 
     }
 

@@ -55,36 +55,6 @@ export default function ModalSemestre() {
                     </div>
                     <div className="modal-body" id="modal-body">
 
-                        <h5>Nombre: </h5>
-                        <div className="form-group modal-nombre">
-
-
-                            <select className="form-control border-primary" name="sem_nombre" id="sem_nombre" defaultValue="" required>
-                                <option selected disabled value="">Selecciona nombre del Semestre...</option>
-                                <option selected value="PRIMER SEMESTRE">PRIMER SEMESTRE</option>
-                                <option selected value="SEGUNDO SEMESTRE">SEGUNDO SEMESTRE</option>
-                                <option selected value="TERCER SEMESTRE">TERCER SEMESTRE</option>
-                                <option selected value="CUARTO SEMESTRE">CUARTO SEMESTRE</option>
-                                <option selected value="QUINTO SEMESTRE">QUINTO SEMESTRE</option>
-                                <option selected value="SEXTO SEMESTRE">SEXTO SEMESTRE</option>
-                                <option selected value="SÉPTIMO SEMESTRE">SÉPTIMO SEMESTRE</option>
-                                <option selected value="OCTAVO SEMESTRE">OCTAVO SEMESTRE</option>
-                                <option selected value="NOVENO SEMESTRE">NOVENO SEMESTRE</option>
-                                <option selected value="DECIMO SEMESTRE">DECIMO SEMESTRE</option>
-                            </select>
-
-                        </div>
-
-                        <h5>Paralelo: </h5>
-                        <div className="form-group modal-paralelo">
-                            <input
-                                placeholder="Paralelo"
-                                className="form-control border-primary"
-                                name="sem_paralelo"
-                                id="sem_paralelo"
-                            />
-                        </div>
-
                         <h5>Facultad: </h5>
                         <div className="form-group modal-facultad">
 
@@ -108,6 +78,36 @@ export default function ModalSemestre() {
 
                             <select className="form-control  border-primary" name="peri_codigo" id="peri_codigo" defaultValue="" required>
                                 <option selected disabled value="">Selecciona un Periodo...</option>
+                            </select>
+
+                        </div>
+
+                        <h5>Semestres: </h5>
+                        <div className="form-group modal-nombre">
+
+
+                            <select className="form-control border-primary" name="sem_nombre" id="sem_nombre" defaultValue="" required>
+                                <option selected disabled value="">Selecciona un Semestre...</option>
+                                <option selected value="PRIMER SEMESTRE">PRIMER SEMESTRE</option>
+                                <option selected value="SEGUNDO SEMESTRE">SEGUNDO SEMESTRE</option>
+                                <option selected value="TERCER SEMESTRE">TERCER SEMESTRE</option>
+                                <option selected value="CUARTO SEMESTRE">CUARTO SEMESTRE</option>
+                                <option selected value="QUINTO SEMESTRE">QUINTO SEMESTRE</option>
+                                <option selected value="SEXTO SEMESTRE">SEXTO SEMESTRE</option>
+                                <option selected value="SÉPTIMO SEMESTRE">SÉPTIMO SEMESTRE</option>
+                                <option selected value="OCTAVO SEMESTRE">OCTAVO SEMESTRE</option>
+                                <option selected value="NOVENO SEMESTRE">NOVENO SEMESTRE</option>
+                                <option selected value="DECIMO SEMESTRE">DECIMO SEMESTRE</option>
+                            </select>
+
+                        </div>
+
+                        <h5>Paralelos disponibles: </h5>
+                        <div className="form-group modal-paralelo">
+
+                            <select className="form-control border-primary" name="sem_paralelo" id="sem_paralelo" defaultValue="" required>
+                                <option value="">Selecciona un Paralelo...</option>
+                                
                             </select>
 
                         </div>

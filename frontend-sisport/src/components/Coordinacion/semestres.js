@@ -10,7 +10,7 @@ export default function VERsemestres() {
 
     const jwt = localStorage.getItem("jwt")
 
-    const { all } = semestreService({ jwt })
+    const { all, remove } = semestreService({ jwt })
 
 
     useEffect(() => {
@@ -35,6 +35,22 @@ export default function VERsemestres() {
 
     }, [jwt, setData])
 
+    const deleteItem = (sem_codigo, peri_codigo) => {
+
+        remove({ sem_codigo, peri_codigo }).then(() => {
+
+            window.location.reload()
+
+        }).catch(() => {
+
+
+            alert("No se puede eliminar este semestre, tiene asignaturas asignadas")
+
+        })
+
+
+    }
+
     return (
 
         <>
@@ -55,7 +71,7 @@ export default function VERsemestres() {
                         </tfoot>
                         <tbody>
                             {
-                                data.map(({ sem_codigo, sem_nombre, sem_paralelo,peri_nombre, car_nombre, fac_nombre }) =>
+                                data.map(({ sem_codigo, sem_nombre, sem_paralelo, peri_codigo, peri_nombre, car_nombre, fac_nombre }) =>
 
                                     <tr key={sem_codigo}>
                                         <td>{sem_nombre}</td>
@@ -63,8 +79,7 @@ export default function VERsemestres() {
                                         <td>{peri_nombre}</td>
                                         <td>{car_nombre}</td>
                                         <td>{fac_nombre}</td>
-                                        <td ><button type="button" data-toggle="modal" data-target="#semestre" data-sem_codigo={sem_codigo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
-                                        <a type="button" href={`/semestres/eliminar/${sem_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a></td>
+                                        <td className="text-center"><button type="button" className="btn btn-danger mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar este semestre?')) deleteItem(sem_codigo, peri_codigo) }}><i className="fas fa-trash"></i></button></td>
 
                                     </tr>
 
