@@ -145,8 +145,11 @@ def eliminarEstructura(request):
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura)
 
-		shutil.rmtree(ruta)
-			
+		if(os.path.exists(ruta)):
+			shutil.rmtree(ruta)
+		else:
+			return jsonify({"message":"la carpeta no existe"}),400	
+
 	except OSError:
 			
 		return jsonify({"message":"error al borrar la estructura"}),500
