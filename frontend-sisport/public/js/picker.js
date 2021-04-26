@@ -11,3 +11,13 @@ $('#fecha_fin').datepicker({
     format: 'yyyy-mm-dd'
 
 });
+
+
+
+$('#fecha_nacimiento').datepicker({
+
+    uiLibrary: 'bootstrap4',
+    format: 'yyyy-mm-dd'
+
+});
+

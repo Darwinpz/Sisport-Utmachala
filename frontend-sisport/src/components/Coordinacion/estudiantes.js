@@ -9,7 +9,7 @@ export default function VERestudiantes() {
 
     const jwt = localStorage.getItem("jwt")
 
-    const {usuarios} = usuariosService({jwt})
+    const {usuarios,remove} = usuariosService({jwt})
 
     useEffect(() => {
 
@@ -32,6 +32,22 @@ export default function VERestudiantes() {
 
     }, [jwt, setData])
 
+
+    const deleteUser = (per_codigo) =>{
+
+        remove({per_codigo}).then(()=>{
+
+            window.location.reload()
+
+        }).catch(()=>{
+
+            alert("No se puede eliminar este estudiante, tiene dependencias")
+
+        })
+
+    }
+
+
     return (
 
         <>
@@ -51,15 +67,15 @@ export default function VERestudiantes() {
                         </tfoot>
                         <tbody>
                             {
-                               data.map(({ per_codigo, per_cedula, per_nombre, per_apellido, per_correo }) =>
+                               data.map(({ per_codigo, per_tipo, per_cedula, per_nombre, per_apellido, per_correo }) =>
 
                                     <tr key={per_codigo}>
                                         <th>{per_cedula}</th>
                                         <td>{per_nombre}</td>
                                         <td>{per_apellido}</td>
                                         <td>{per_correo}</td>
-                                        <td><a type="button" href={`/estudiantes/editar/${per_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
-                                        <a type="button" href={`/estudiantes/eliminar/${per_codigo}`} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></a>
+                                        <td><button type="button" data-toggle="modal" data-target="#usuarios" data-per_codigo={per_codigo} data-per_tipo={per_tipo} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></button>
+                                        <button type="button" onClick={() => { if (window.confirm('¿Estás seguro de eliminar el estudiante?')) deleteUser(per_codigo) }} className="btn btn-danger mb-2"><i className="fas fa-trash"></i></button>
                                         </td>
 
                                     </tr>
