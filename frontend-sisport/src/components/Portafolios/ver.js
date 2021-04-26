@@ -30,8 +30,6 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
     const [error, setError] = useState("");
 
-    const [port, setPort] = useState([]);
-
     useEffect(() => {
         if (!isLogged) {
             navigate("/login")
