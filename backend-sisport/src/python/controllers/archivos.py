@@ -131,6 +131,31 @@ def eliminarArchivo(request):
 		return jsonify({"message":"archivo borrado"}),200
 
 
+
+
+
+def eliminarPortafolio(request):
+
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_abreviatura']
+
+		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura)
+
+		os.rmdir(ruta_archivo)
+			
+	except OSError:
+			
+		return jsonify({"message":"error al borrar diario"}),500
+		
+	else:
+			
+		return jsonify({"message":"archivo borrado"}),200
+
+
 def descargarPortafolio(request):
 	
 	try:
