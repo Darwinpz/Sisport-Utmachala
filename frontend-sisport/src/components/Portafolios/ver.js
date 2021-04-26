@@ -49,6 +49,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
         var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
+        var per_cedula = document.getElementById("per_cedula").innerText
         var est_cedula = document.getElementById("est_cedula")
 
         var cedula = per_cedula
@@ -130,6 +131,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
         var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
+        var per_cedula = document.getElementById("per_cedula").innerText
         var est_cedula = document.getElementById("est_cedula")
 
         var cedula = per_cedula
@@ -141,7 +143,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
         removePortafolio({fac_abreviatura,car_abreviatura,asig_identificador:identificador + "-" + peri_codigo + "-" + sem_codigo,per_cedula:cedula}).then(()=>{
 
-            window.location.href = "/portafolios/estudiantes/"+asig_codigo, peri_codigo, sem_codigo
+            window.location.href = "/portafolios/estudiantes/"+asig_codigo+"/"+peri_codigo+"/" +sem_codigo
 
         }).catch(()=>{
 
