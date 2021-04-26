@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 
 import asignaturaService from 'services/asignaturas'
-import per_asigService from 'services/perasig'
 import estructuraService from 'services/estructura'
 import portafolioPythonService from 'services/python/portafolio'
 
@@ -16,9 +15,8 @@ export default function VERasignaturas() {
 
     const { removeEstructura } = estructuraService({ jwt })
 
-    const { remove_perasig } = per_asigService({ jwt })
 
-    const { removePortafolio } = portafolioPythonService()
+    const { removeEstructuraall } = portafolioPythonService()
 
     useEffect(() => {
 
@@ -61,7 +59,7 @@ export default function VERasignaturas() {
     const deleteItem = (asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador) => {
 
 
-        removePortafolio({ fac_abreviatura, car_abreviatura, asig_identificador }).then(() => {
+        removeEstructuraall({ fac_abreviatura, car_abreviatura, asig_identificador }).then(() => {
 
             removeEstructura({ asig_codigo, peri_codigo }).then(() => {
 
