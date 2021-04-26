@@ -57,9 +57,18 @@ export default function ModalAsignaturas() {
             })
 
 
-        }).catch(() => {
+        }).catch((err) => {
 
-            setError("Error al guardar la asignatura")
+            if(err.message == "400"){
+                
+                setError("Error al guardar, asignatura ya existente en el semestre, paralelo y periodo escogido")
+
+            }else{
+
+                setError("Error al guardar la asignatura")
+            }
+
+           
         })
 
 

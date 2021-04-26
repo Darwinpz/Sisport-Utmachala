@@ -47,8 +47,26 @@ AsignaturaCtrl.allcoordinador = async (req, res, next) => {
 
                 const per_codigo = data.usuario.per_codigo
 
-                const asignaturas = await pool.query("SELECT *FROM asignatura as asig, semestre as sem, carrera as car, persona_carrera as per_car, facultad as fac, periodo_semestre as peri_sem, periodo as peri"
+                const activados = await pool.query("SELECT *from asignatura_estado")
+
+                const asignaturas = await pool.query("SELECT asig.asig_codigo, asig.asig_identificador, asig.asig_nombre,fac.fac_abreviatura, sem.sem_nombre, sem.sem_codigo, sem.sem_paralelo, peri.peri_codigo, peri.peri_nombre, car.car_abreviatura, car.car_nombre FROM asignatura as asig, semestre as sem, carrera as car, persona_carrera as per_car, facultad as fac, periodo_semestre as peri_sem, periodo as peri"
                     + " where asig.sem_codigo = sem.sem_codigo and sem.car_codigo = car.car_codigo and fac.fac_codigo = car.fac_codigo and sem.sem_codigo = peri_sem.sem_codigo and peri.peri_codigo = peri_sem.peri_codigo and per_car.car_codigo=car.car_codigo and per_car.per_codigo=$1", [per_codigo]);
+
+                asignaturas.rows.forEach(asignatura => {
+
+                    const temp = activados.rows.filter(activado => activado.asig_est_asig_codigo == asignatura.asig_codigo && activado.asig_est_peri_codigo == asignatura.peri_codigo && activado.asig_est_estado == true)
+
+                    if (temp.length > 0) {
+
+                        asignatura["estado"] = true;
+
+                    } else {
+
+                        asignatura["estado"] = false;
+
+                    }
+
+                });
 
                 res.status(200).json({ "message": asignaturas.rows });
 
@@ -173,14 +191,27 @@ AsignaturaCtrl.add = async (req, res, next) => {
 
         const { asig_nombre, sem_codigo, asig_identificador } = req.body;
 
-        await pool.query("BEGIN")
-        await pool.query("INSERT INTO public.asignatura (asig_nombre, sem_codigo, asig_identificador) values($1,$2,$3)", [asig_nombre, sem_codigo, asig_identificador]);
 
-        var max = await pool.query("SELECT MAX(asig_codigo) FROM public.asignatura");
+        const existe = await pool.query("SELECT *FROM asignatura as asig, semestre as sem, periodo_semestre as peri_sem where asig.sem_codigo = sem.sem_codigo and sem.sem_codigo = peri_sem.sem_codigo and asig.asig_nombre=$1 and asig.asig_identificador=$2 and sem.sem_codigo=$3", [asig_nombre, asig_identificador, sem_codigo])
 
-        await pool.query("COMMIT")
+        if (existe.rowCount > 0) {
 
-        res.status(200).json({ "message": max.rows[0].max });
+            res.status(400).json({ "message": "No se puede volver a agregar la misma asignatura en el mismo semestre y paralelo" });
+
+        } else {
+
+            await pool.query("BEGIN")
+            await pool.query("INSERT INTO public.asignatura (asig_nombre, sem_codigo, asig_identificador) values($1,$2,$3)", [asig_nombre, sem_codigo, asig_identificador]);
+
+            var max = await pool.query("SELECT MAX(asig_codigo) FROM public.asignatura");
+
+            await pool.query("COMMIT")
+
+            res.status(200).json({ "message": max.rows[0].max });
+
+
+        }
+
 
 
     } catch (e) {
