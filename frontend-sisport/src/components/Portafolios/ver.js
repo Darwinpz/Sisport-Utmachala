@@ -14,6 +14,7 @@ import Expectativas from "components/Modals/expectativas"
 import Informe from "components/Modals/informe"
 import generarPythonServices from "services/python/generar"
 import portafolioPythonServices from "services/python/portafolio"
+import portafolioService from 'services/portafolio'
 
 import './index.css'
 
@@ -43,6 +44,11 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
     const { generarInforme, generarDiario, generarExpectativas } = generarPythonServices()
 
     const { downloadPortafolio, removePortafolio } = portafolioPythonServices()
+
+    const jwt = window.localStorage.getItem("jwt")
+    
+    const {  eliminarPortafolio } = portafolioService({ jwt })
+
 
     const descargarSubmit = () => {
 
@@ -143,7 +149,16 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
         removePortafolio({fac_abreviatura,car_abreviatura,asig_identificador:identificador + "-" + peri_codigo + "-" + sem_codigo,per_cedula:cedula}).then(()=>{
 
-            window.location.href = "/portafolios/estudiantes/"+asig_codigo+"/"+peri_codigo+"/" +sem_codigo
+            eliminarPortafolio({ asig_codigo, peri_codigo, per_codigo: perfil.per_codigo }).then(() => {
+
+                window.location.href = "/portafolios/estudiantes/"+asig_codigo+"/"+peri_codigo+"/" +sem_codigo
+
+            }).catch(() => {
+
+                setError("No se eliminar portafolio,  contacte con el coordinador o intente de nuevo")
+
+            })
+
 
         }).catch(()=>{
 
