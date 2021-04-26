@@ -134,7 +134,7 @@ def eliminarArchivo(request):
 
 
 
-def eliminarPortafolio(request):
+def eliminarEstructura(request):
 
 	try:
 		
@@ -149,11 +149,34 @@ def eliminarPortafolio(request):
 			
 	except OSError:
 			
+		return jsonify({"message":"error al borrar la estructura"}),500
+		
+	else:
+			
+		return jsonify({"message":"estructura eliminada"}),200
+
+
+def eliminarPortafolio(request):
+
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_identificador']		
+		per_cedula = json_req['per_cedula']
+
+		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura+'/Portafolios/'+per_cedula)
+
+		shutil.rmtree(ruta)
+			
+	except OSError:
+			
 		return jsonify({"message":"error al borrar el portafolio"}),500
 		
 	else:
 			
-		return jsonify({"message":"archivo borrado"}),200
+		return jsonify({"message":"portafolio eliminado"}),200
 
 
 def descargarPortafolio(request):

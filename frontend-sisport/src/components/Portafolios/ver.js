@@ -42,16 +42,13 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
     const { generarInforme, generarDiario, generarExpectativas } = generarPythonServices()
 
-    const { downloadPortafolio } = portafolioPythonServices()
+    const { downloadPortafolio, removePortafolio } = portafolioPythonServices()
 
     const descargarSubmit = () => {
 
-
-        var peri_codigo = document.getElementById("peri_codigo").innerText
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
         var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
-        var per_cedula = document.getElementById("per_cedula").innerText
         var est_cedula = document.getElementById("est_cedula")
 
         var cedula = per_cedula
@@ -121,6 +118,34 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
         }).catch(() => {
 
             setError("No se puede generar el informe, contacte con el coordinador o intente de nuevo")
+
+        })
+
+
+    }
+
+
+    const eliminarSubmit = () => {
+
+        var identificador = document.getElementById("identificador").innerText
+        var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
+        var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
+        var est_cedula = document.getElementById("est_cedula")
+
+        var cedula = per_cedula
+
+        if (est_cedula) {
+
+            cedula = est_cedula.innerText
+        }
+
+        removePortafolio({fac_abreviatura,car_abreviatura,asig_identificador:identificador + "-" + peri_codigo + "-" + sem_codigo,per_cedula:cedula}).then(()=>{
+
+            window.location.href = "/portafolios/estudiantes/"+asig_codigo, peri_codigo, sem_codigo
+
+        }).catch(()=>{
+
+            alert("Error al eliminar el portafolio")
 
         })
 
@@ -650,7 +675,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
                                             <button type="button" className="btn btn-success m-2" onClick={() => descargarSubmit()} >DESCARGAR PORTAFOLIO</button>
                                             {
                                                 perfil.per_tipo === "COORDINADOR" &&
-                                                <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+                                                <button type="button" className="btn btn-danger m-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar este portafolio?')) eliminarSubmit()}}>ELIMINAR PORTAFOLIO</button>
 
                                             }
 
