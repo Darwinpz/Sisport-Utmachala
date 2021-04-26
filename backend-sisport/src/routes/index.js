@@ -79,6 +79,7 @@ module.exports = (app) => {
     app.put('/api/persona/put', validarToken, persona.put);
     app.delete('/api/persona/delete', validarToken, persona.delete);
     app.get('/api/persona/:id', validarToken, persona.find);
+    app.post('/api/persona/updatepassword', validarToken, persona.updatePassword);
 
     //RUTAS DE LOS FAMILIARES
     app.get('/api/familiar', validarToken, familiar.all);

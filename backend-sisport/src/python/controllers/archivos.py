@@ -141,13 +141,15 @@ def descargarPortafolio(request):
 		asig_abreviatura = json_req['asig_abreviatura']
 		per_cedula = json_req['per_cedula']
 
-		path='/home/server/GitHub/Sisport-Utmachala/backend-sisport/src/python/'
+		#path='/home/server/GitHub/Sisport-Utmachala/backend-sisport/src/python/'
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 		 				'/Portafolios/'+per_cedula)
 		
 		# archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
 		
 		#fecha= datetime.now()
+
+		
 
 		ruta_archivo=ruta+".zip"
 

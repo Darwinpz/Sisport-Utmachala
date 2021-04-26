@@ -272,4 +272,27 @@ PersonaCtrl.delete = async (req, res, next) => {
 
 }
 
+PersonaCtrl.updatePassword=async(req, res, next)=>{
+
+    var err = new Error();
+
+    try {
+
+        const { per_clave, per_codigo } = req.body;
+
+        await pool.query("UPDATE persona SET per_clave=$1 WHERE per_codigo=$2", [per_clave, per_codigo]);
+
+        res.status(200).json({ "message": "Contraseña editada" });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
+
+}
+
 module.exports = PersonaCtrl;
