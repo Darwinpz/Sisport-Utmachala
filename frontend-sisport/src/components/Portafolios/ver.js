@@ -46,7 +46,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
     const { downloadPortafolio, removePortafolio } = portafolioPythonServices()
 
     const jwt = window.localStorage.getItem("jwt")
-    
+
     const {  eliminarPortafolio } = portafolioService({ jwt })
 
 
@@ -149,7 +149,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
         removePortafolio({fac_abreviatura,car_abreviatura,asig_identificador:identificador + "-" + peri_codigo + "-" + sem_codigo,per_cedula:cedula}).then(()=>{
 
-            eliminarPortafolio({ asig_codigo, peri_codigo, per_codigo: perfil.per_codigo }).then(() => {
+            eliminarPortafolio({ asig_codigo, peri_codigo, per_codigo }).then(() => {
 
                 window.location.href = "/portafolios/estudiantes/"+asig_codigo+"/"+peri_codigo+"/" +sem_codigo
 
