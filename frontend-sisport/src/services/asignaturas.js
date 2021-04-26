@@ -89,7 +89,7 @@ export default function Asignaturas({ jwt }) {
     }
 
 
-    const remove = async ({ asig_codigo}) => {
+    const remove = async ({ asig_codigo, estado}) => {
 
         return fetch(ENDPOINT + "/delete", {
             method: 'DELETE',
@@ -99,7 +99,7 @@ export default function Asignaturas({ jwt }) {
                 'Access-Control-Allow-Origin': true,
                 'Authorization': "Bearer " + jwt
             },
-            body: JSON.stringify({ asig_codigo })
+            body: JSON.stringify({ asig_codigo, estado })
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()
