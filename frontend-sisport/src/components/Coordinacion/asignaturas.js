@@ -121,7 +121,7 @@ export default function VERasignaturas() {
                                         <td>{car_nombre}</td>
                                         <td>{peri_nombre}</td>
                                         <td><button type="button" data-toggle="modal" data-target="#asignaturas" data-asig_codigo={asig_codigo} className="btn btn-success mr-2 mb-2"><i className="fas fa-edit"></i></button>
-                                            <button type="button" className="btn btn-warning mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de borrar esta asignatura?')) removeItem(asig_codigo) }}><i className="fas fa-eraser"></i></button>
+
                                             {estado &&
 
                                                 <>
@@ -130,6 +130,10 @@ export default function VERasignaturas() {
 
                                                 </>
 
+                                            }
+                                            {
+                                                !estado &&
+                                                <button type="button" className="btn btn-warning mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de borrar esta asignatura?')) removeItem(asig_codigo) }}><i className="fas fa-eraser"></i></button>
                                             }
 
                                         </td>
