@@ -55,7 +55,7 @@ export default function Perfil() {
                                     <div className="col">
 
                                         <p className="text-left"><strong>Celular:</strong></p>
-                                        <p className="text-left">{perfil.per_telf_celular || 'Ninguno'}</p>
+                                        <p className="text-left">{perfil.per_telef_celular || 'Ninguno'}</p>
                                         <p className="text-left"><strong>Sexo</strong></p>
                                         <p className="text-left">{perfil.per_sexo}</p>
 
