@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import asignaturaService from 'services/asignaturas'
+import per_asigService from 'services/perasig'
 import estructuraService from 'services/estructura'
 import portafolioPythonService from 'services/python/portafolio'
 
@@ -13,9 +14,11 @@ export default function VERasignaturas() {
 
     const { all, remove } = asignaturaService({ jwt })
 
-    const {removeEstructura} = estructuraService({jwt})
+    const { removeEstructura } = estructuraService({ jwt })
 
-    const {removePortafolio} = portafolioPythonService()
+    const { remove_perasig } = per_asigService({ jwt })
+
+    const { removePortafolio } = portafolioPythonService()
 
     useEffect(() => {
 
@@ -41,7 +44,7 @@ export default function VERasignaturas() {
 
     const removeItem = (asig_codigo) => {
 
-        remove({ asig_codigo }).then(() => {
+        remove({ asig_codigo, estado: false }).then(() => {
 
             window.location.reload()
 
@@ -55,25 +58,35 @@ export default function VERasignaturas() {
     }
 
 
-    const deleteItem = (asig_codigo, peri_codigo,fac_nombre,car_nombre,asig_identificador) => {
-
-        
-        removeEstructura({asig_codigo,peri_codigo}).then(()=>{
+    const deleteItem = (asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador) => {
 
 
-            removePortafolio({fac_nombre,car_nombre,asig_identificador}).then(()=>{
+        removePortafolio({ fac_abreviatura, car_abreviatura, asig_identificador }).then(() => {
 
-                window.location.reload()
+            removeEstructura({ asig_codigo, peri_codigo }).then(() => {
 
-            }).catch(()=>{
+                remove({ asig_codigo, estado: true }).then(() => {
 
-                alert("No se puede eliminar las carpetas, contacte con el coordinador o intente de nuevo")
+                    window.location.reload()
+
+                })
+                    .catch(() => {
+
+                        alert("Error al borrar la asignatura")
+
+                    })
+
+
+            }).catch(() => {
+
+                alert("No se puede eliminar la estructura, contacte con el coordinador o intente de nuevo")
 
             })
 
-        }).catch(()=>{
 
-            alert("No se puede eliminar la estructura, contacte con el coordinador o intente de nuevo")
+        }).catch(() => {
+
+            alert("No se puede eliminar las carpetas, contacte con el coordinador o intente de nuevo")
 
         })
 
@@ -115,7 +128,7 @@ export default function VERasignaturas() {
 
                                                 <>
                                                     <a type="button" target="_blank" href={`/portafolios/estudiantes/${asig_codigo}/${peri_codigo}/${sem_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
-                                                    <button type="button" data-asig_codigo={asig_codigo} className="btn btn-danger mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar esta asignatura?, esta acción borrará todos sus portafolios')) deleteItem(asig_codigo, peri_codigo,fac_abreviatura,car_abreviatura,asig_identificador+"-"+peri_codigo+"-"+sem_codigo) }} ><i className="fas fa-trash"></i></button>
+                                                    <button type="button" data-asig_codigo={asig_codigo} className="btn btn-danger mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar esta asignatura?, esta acción borrará todos sus portafolios')) deleteItem(asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador + "-" + peri_codigo + "-" + sem_codigo) }} ><i className="fas fa-trash"></i></button>
 
                                                 </>
 

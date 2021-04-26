@@ -44,7 +44,7 @@ export default function Portafolio() {
     }
 
 
-    const removePortafolio = async ({ fac_nombre, car_nombre, asig_identificador }) => {
+    const removePortafolio = async ({  fac_abreviatura, car_abreviatura, asig_identificador}) => {
 
         return fetch(ENDPOINT + "/delete/portafolio", {
             method: 'POST',
@@ -53,7 +53,7 @@ export default function Portafolio() {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': true
             },
-            body: JSON.stringify({ fac_nombre, car_nombre, asig_identificador})
+            body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_identificador})
         }).then(res => {
             if (!res.ok) throw new Error(res.status)
             return res.json()

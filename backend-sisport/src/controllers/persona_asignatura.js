@@ -211,9 +211,9 @@ PerAsigCtrl.delete = async (req, res, next) => {
 
     try {
 
-        const { perasig_codigo } = req.body;
+        const { asig_codigo } = req.body;
 
-        await pool.query("DELETE FROM persona_asignatura WHERE perasig_codigo=$1", [perasig_codigo]);
+        await pool.query("DELETE FROM persona_asignatura WHERE asig_codig=$1", [asig_codigo]);
 
         res.status(200).json({ "message": "Persona_Asignatura Eliminada" });
 

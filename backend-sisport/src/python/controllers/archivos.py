@@ -141,7 +141,7 @@ def eliminarPortafolio(request):
 		json_req = request.json
 		fac_abreviatura = json_req['fac_abreviatura']
 		car_abreviatura = json_req['car_abreviatura']
-		asig_abreviatura = json_req['asig_abreviatura']
+		asig_abreviatura = json_req['asig_identificador']
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura)
 

@@ -322,12 +322,12 @@ AsignaturaCtrl.delete = async (req, res, next) => {
 
     try {
 
-        const { asig_codigo } = req.body;
+        const { asig_codigo, estado } = req.body;
 
 
         const personas = await pool.query("SELECT FROM persona_asignatura WHERE asig_codigo=$1", [asig_codigo]);
 
-        if (personas.rowCount > 1) {
+        if (personas.rowCount > 1 && estado == false) {
 
             res.status(400).json({ "message": "Las asignatura tiene estudiantes" });
 
