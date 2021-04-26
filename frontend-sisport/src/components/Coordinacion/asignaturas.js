@@ -55,13 +55,13 @@ export default function VERasignaturas() {
     }
 
 
-    const deleteItem = (asig_codigo, peri_codigo,fac_nombre,car_nombre,asig_identificador) => {
+    const deleteItem = (asig_codigo, peri_codigo,fac_abreviatura, car_abreviatura, asig_identificador) => {
 
         
         removeEstructura({asig_codigo,peri_codigo}).then(()=>{
 
 
-            removePortafolio({fac_nombre,car_nombre,asig_identificador}).then(()=>{
+            removePortafolio({ fac_abreviatura, car_abreviatura, asig_identificador}).then(()=>{
 
                 window.location.reload()
 
