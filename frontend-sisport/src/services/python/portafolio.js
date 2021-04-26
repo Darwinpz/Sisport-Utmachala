@@ -30,7 +30,10 @@ export default function Portafolio() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': true
+                'Access-Control-Allow-Origin': true,
+                'Cache-Control': 'no-store, must-revalidate',
+                'Pragma':'no-cache',
+                'Expires':'0'
             },
             body: JSON.stringify({ fac_abreviatura, car_abreviatura, asig_abreviatura, per_cedula })
         }).then(res => {

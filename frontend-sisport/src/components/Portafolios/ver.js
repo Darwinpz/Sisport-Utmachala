@@ -52,6 +52,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
     const descargarSubmit = () => {
 
+        
+
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
         var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]

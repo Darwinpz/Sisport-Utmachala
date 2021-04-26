@@ -30,11 +30,6 @@ def generar_diario(request):
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
 
-		lista_estrategias = []
-		lista_contenidos = []
-		lista_actividades = []
-
-
 		for diario in diarios:
 			
 			num_diario = diario["num_diario"]
@@ -45,6 +40,10 @@ def generar_diario(request):
 			resumen = diario["resumen"]
 			
 			estrategias = diario["estrategias"]
+			
+			lista_estrategias = []
+			lista_contenidos = []
+			lista_actividades = []
 			
 			for i in range(len(estrategias.split("\n"))):
 
@@ -69,7 +68,7 @@ def generar_diario(request):
 			reflexion4 = diario["preg4"]
 
 			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario.__str__()+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
-		
+
 	except OSError:
 			
 		return jsonify({"message":"error al generar los diarios"}),500
