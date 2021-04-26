@@ -145,11 +145,11 @@ def eliminarPortafolio(request):
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura)
 
-		os.rmdir(ruta_archivo)
+		shutil.rmtree(ruta)
 			
 	except OSError:
 			
-		return jsonify({"message":"error al borrar diario"}),500
+		return jsonify({"message":"error al borrar el portafolio"}),500
 		
 	else:
 			
