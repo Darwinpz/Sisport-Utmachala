@@ -30,6 +30,8 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
     const [error, setError] = useState("");
 
+    const [port, setPort] = useState([]);
+
     useEffect(() => {
         if (!isLogged) {
             navigate("/login")
@@ -47,10 +49,18 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
     const jwt = window.localStorage.getItem("jwt")
 
-    const {  eliminarPortafolio } = portafolioService({ jwt })
+    const {  eliminarPortafolio,encontrar } = portafolioService({ jwt })
 
 
     const descargarSubmit = () => {
+
+        encontrar({asig_codigo, peri_codigo, sem_codigo,per_codigo}).then((port)=>{
+
+            setPort(port)
+
+        }).catch(()=>{
+
+        })
 
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
@@ -67,16 +77,16 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, pe
 
         var estructura = {
 
-            per_nombre: portafolio[0].estudiante.per_nombre + " " + portafolio[0].estudiante.per_apellido,
-            asig_nombre: portafolio[0].estructura.nombre_asignatura,
-            sem_nombre: portafolio[0].extras.sem_nombre,
-            docente: portafolio[0].estructura.nombre_docente,
-            peri_nombre: portafolio[0].extras.peri_nombre,
+            per_nombre: port[0].estudiante.per_nombre + " " + port[0].estudiante.per_apellido,
+            asig_nombre: port[0].estructura.nombre_asignatura,
+            sem_nombre: port[0].extras.sem_nombre,
+            docente: port[0].estructura.nombre_docente,
+            peri_nombre: port[0].extras.peri_nombre,
         }
 
         setError("")
 
-        var data_portafolio = portafolio[0].portafolio_data
+        var data_portafolio = port[0].portafolio_data
 
         setError("generando expectativas...")
 
