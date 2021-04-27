@@ -25,8 +25,7 @@ var myDropzone = new Dropzone("#myDropzone", {
 
         this.on("success", function (file, response) {
 
-            console.log(response)
-
+            window.location.reload()
 
         })
 
