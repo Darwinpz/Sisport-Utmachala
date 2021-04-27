@@ -2,6 +2,9 @@ import React from 'react'
 
 import VERestudiantes from "components/Coordinacion/estudiantes"
 
+
+import ModalUsuarios from "components/Modals/users"
+
 export default function EstudiantesPage() {
     return (
         <>
@@ -18,8 +21,8 @@ export default function EstudiantesPage() {
                             <div className="card" style={{backgroundColor:"transparent", border:"none"}}>
 
                                 <button type="button" className="btn btn-primary mb-2">Importar csv</button>
-                                <button type="button" className="btn btn-success">Crear Estudiante</button>
-
+                                <button type="button" className="btn btn-success" data-toggle="modal" data-per_tipo="ESTUDIANTE" data-target="#usuarios">Crear Estudiante</button>
+                                
                             </div>
 
 
@@ -37,6 +40,7 @@ export default function EstudiantesPage() {
 
             </div>
 
+            <ModalUsuarios/>
 
         </>
     )

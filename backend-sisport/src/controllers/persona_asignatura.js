@@ -39,11 +39,16 @@ PerAsigCtrl.all = async (req, res, next) => {
 
                     obj = { "periodo": periodo.peri_nombre, "asignaturas": null }
 
-                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.peri_codigo == periodo.peri_codigo)
+                    asignaturas = personas_asignaturas.rows.filter(asignatura => asignatura.peri_codigo == periodo.peri_codigo && periodo.peri_estado == "ACTIVO")
 
-                    obj.asignaturas = asignaturas
+                    if(asignaturas.length > 0){
 
-                    arreglo.push(obj)
+                        obj.asignaturas = asignaturas
+
+                        arreglo.push(obj)
+
+                    }
+
 
                 });
 
@@ -81,10 +86,10 @@ PerAsigCtrl.matriculadosxasignaturas = async (req, res, next) => {
 
             } else {
 
-                const { asig_codigo, peri_codigo } = req.body;
+                const { asig_codigo, peri_codigo,sem_codigo } = req.body;
 
-                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per WHERE "
-                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE' and per_asig.asig_codigo=$1 and per_asig.peri_codigo=$2  ", [asig_codigo, peri_codigo]);
+                const persona_asignaturas = await pool.query("SELECT per.per_codigo, per.per_nombre, per.per_apellido FROM persona_asignatura as per_asig, persona as per, periodo_semestre as per_sem WHERE "
+                    + " per.per_codigo = per_asig.per_codigo and per.per_tipo = 'ESTUDIANTE' and per_sem.peri_codigo = per_asig.peri_codigo and per_asig.asig_codigo=$1 and per_asig.peri_codigo=$2 and per_sem.sem_codigo=$3 ", [asig_codigo, peri_codigo, sem_codigo]);
 
                 const resultado = persona_asignaturas.rows;
 
@@ -139,7 +144,7 @@ PerAsigCtrl.add = async (req, res, next) => {
 
     try {
 
-        jwt.verify(req.token, process.env.jwtcode, async (err, data) => {
+        jwt.verify(req.token, process.env.jwtcode, async (err) => {
 
             if (err) {
 
@@ -147,19 +152,19 @@ PerAsigCtrl.add = async (req, res, next) => {
 
             } else {
 
-                const per_codigo = data.usuario.per_codigo
 
-                const { asig_codigo, peri_codigo } = req.body;
-
+                const { per_codigo, asig_codigo, peri_codigo } = req.body;
+                await pool.query("BEGIN")
                 await pool.query("INSERT INTO public.persona_asignatura (per_codigo, asig_codigo, peri_codigo) values($1,$2,$3)", [per_codigo, asig_codigo, peri_codigo]);
 
                 res.status(200).json({ "message": "Persona_Asignatura Agregada" });
+                await pool.query("COMMIT")
 
             }
         })
 
     } catch (e) {
-
+        await pool.query("ROLLBACK")
         err.message = e.message;
         err.status = 500;
         next(err);
@@ -206,9 +211,9 @@ PerAsigCtrl.delete = async (req, res, next) => {
 
     try {
 
-        const { perasig_codigo } = req.body;
+        const { asig_codigo } = req.body;
 
-        await pool.query("DELETE FROM persona_asignatura WHERE perasig_codigo=$1", [perasig_codigo]);
+        await pool.query("DELETE FROM persona_asignatura WHERE asig_codig=$1", [asig_codigo]);
 
         res.status(200).json({ "message": "Persona_Asignatura Eliminada" });
 

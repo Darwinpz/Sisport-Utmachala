@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 
 import asignaturaService from 'services/asignaturas'
+import estructuraService from 'services/estructura'
+import portafolioPythonService from 'services/python/portafolio'
 
 export default function VERasignaturas() {
 
@@ -9,7 +11,12 @@ export default function VERasignaturas() {
 
     const jwt = localStorage.getItem("jwt")
 
-    const { all } = asignaturaService({ jwt })
+    const { all, remove } = asignaturaService({ jwt })
+
+    const { removeEstructura } = estructuraService({ jwt })
+
+
+    const { removeEstructuraall } = portafolioPythonService()
 
     useEffect(() => {
 
@@ -32,6 +39,59 @@ export default function VERasignaturas() {
 
     }, [jwt, setAsignaturas])
 
+
+    const removeItem = (asig_codigo) => {
+
+        remove({ asig_codigo, estado: false }).then(() => {
+
+            window.location.reload()
+
+        })
+            .catch(() => {
+
+                alert("No se puede borrar esta asignatura, tiene estudiantes asignados")
+
+            })
+
+    }
+
+
+    const deleteItem = (asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador) => {
+
+
+        removeEstructuraall({ fac_abreviatura, car_abreviatura, asig_identificador }).then(() => {
+
+            removeEstructura({ asig_codigo, peri_codigo }).then(() => {
+
+                remove({ asig_codigo, estado: true }).then(() => {
+
+                    window.location.reload()
+
+                })
+                    .catch(() => {
+
+                        alert("Error al borrar la asignatura")
+
+                    })
+
+
+            }).catch(() => {
+
+                alert("No se puede eliminar la estructura, contacte con el coordinador o intente de nuevo")
+
+            })
+
+
+        }).catch(() => {
+
+            alert("No se puede eliminar las carpetas, contacte con el coordinador o intente de nuevo")
+
+        })
+
+
+    }
+
+
     return (
 
         <>
@@ -41,7 +101,10 @@ export default function VERasignaturas() {
                         <thead>
                             <tr>
                                 <th scope="col">Identificador</th>
-                                <th scope="col">Nombre</th>
+                                <th scope="col">Asignatura</th>
+                                <th scope="col">Semestre</th>
+                                <th scope="col">Carrera</th>
+                                <th scope="col">Periodo</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>
@@ -49,12 +112,31 @@ export default function VERasignaturas() {
                         </tfoot>
                         <tbody>
                             {
-                                asignaturas.map(({ asig_codigo, asig_identificador, asig_nombre }) =>
+                                asignaturas.map(({ asig_codigo, asig_identificador, fac_abreviatura, car_abreviatura, asig_nombre, sem_nombre, sem_codigo, sem_paralelo, peri_codigo, peri_nombre, car_nombre, estado }) =>
 
                                     <tr key={asig_codigo}>
-                                        <th>{asig_identificador}</th>
+                                        <td>{asig_identificador}</td>
                                         <td>{asig_nombre}</td>
-                                        <td><a type="button" href={`/asignaturas/editar/${asig_codigo}`} className="btn btn-primary"><i className="fas fa-eye"></i></a></td>
+                                        <td>{sem_nombre} {sem_paralelo}</td>
+                                        <td>{car_nombre}</td>
+                                        <td>{peri_nombre}</td>
+                                        <td><button type="button" data-toggle="modal" data-target="#asignaturas" data-asig_codigo={asig_codigo} className="btn btn-success mr-2 mb-2"><i className="fas fa-edit"></i></button>
+
+                                            {estado &&
+
+                                                <>
+                                                    <a type="button" target="_blank" href={`/portafolios/estudiantes/${asig_codigo}/${peri_codigo}/${sem_codigo}`} className="btn btn-primary mr-2 mb-2"><i className="fas fa-eye"></i></a>
+                                                    <button type="button" data-asig_codigo={asig_codigo} className="btn btn-danger mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar esta asignatura?, esta acción borrará todos sus portafolios')) deleteItem(asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador + "-" + peri_codigo + "-" + sem_codigo) }} ><i className="fas fa-trash"></i></button>
+
+                                                </>
+
+                                            }
+                                            {
+                                                !estado &&
+                                                <button type="button" className="btn btn-warning mr-2 mb-2" onClick={() => { if (window.confirm('¿Estás seguro de borrar esta asignatura?')) removeItem(asig_codigo) }}><i className="fas fa-eraser"></i></button>
+                                            }
+
+                                        </td>
 
                                     </tr>
 

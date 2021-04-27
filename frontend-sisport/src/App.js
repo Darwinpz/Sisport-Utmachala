@@ -9,6 +9,8 @@ import Perfil from "pages/Users/perfil";
 import Estudiantes from "pages/Estudiantes/index"
 import Asignaturas from "pages/Asignaturas/index"
 import Docentes from "pages/Docentes/index"
+import Semestres from "pages/Semestres/index"
+import Periodos from "pages/Periodos/index"
 
 import { Route, Switch } from "wouter";
 import Navbar from 'components/Navbar'
@@ -50,13 +52,13 @@ export default function App() {
 
                 <PortafolioContextProvider>
 
-                    <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:per_codigo" />
+                    <Route component={VerPortafolio} path="/portafolios/ver/:asig_codigo/:peri_codigo/:sem_codigo/:per_codigo" />
 
                 </PortafolioContextProvider>
 
                 <MatriculadosContextProvider>
 
-                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo" />
+                  <Route component={PortafoliosEstudiantes} path="/portafolios/estudiantes/:asig_codigo/:peri_codigo/:sem_codigo" />
 
                 </MatriculadosContextProvider>
 
@@ -71,6 +73,10 @@ export default function App() {
                   <Route component={Docentes} path="/docentes" />
 
                   <Route component={Asignaturas} path="/asignaturas" />
+
+                  <Route component={Semestres} path="/semestres" />
+                  
+                  <Route component={Periodos} path="/periodos" />
 
               </PortafoliosContextProvider>
 

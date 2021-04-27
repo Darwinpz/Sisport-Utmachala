@@ -5,7 +5,7 @@ from controllers.controlador import uploadEstudiante, uploadDocente, uploadAsign
 uploadProyecto, uploadCasoEstudio, uploadPlanteamiento, uploadAsistencia, uploadObservacion, uploadIntraclase, \
 uploadAutonomo, uploadRefuerzo, eliminarArchivo, uploadBiografia, uploadInformativos
 from controllers.esquema import crearFacultad, crearCarrera, crearAsignatura, crearPortafolio
-from controllers.archivos import generar_diario, eliminarArchivo, descargarPortafolio, descargarArchivo, generar_informe, generar_expectativas
+from controllers.archivos import generar_diario, eliminarArchivo,eliminarEstructura,eliminarPortafolio, descargarPortafolio, descargarArchivo, generar_informe, generar_expectativas
 
 app = Flask(__name__,static_folder='./resources')
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -26,7 +26,7 @@ def docente():
     return uploadDocente(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/asignatura', methods=['POST'])
-def asignatura():
+def uploadasignatura():
     return uploadAsignatura(request, app.config['EXTENSIONS_PERSONA'])
 
 @app.route('/upload/syllabus', methods=['POST'])
@@ -116,6 +116,15 @@ def expectativas():
 @app.route('/delete/archivo', methods=['POST'])
 def archivo():
     return eliminarArchivo(request)
+
+@app.route('/delete/estructura', methods=['POST'])
+def delestructura():
+    return eliminarEstructura(request)
+
+
+@app.route('/delete/portafolio', methods=['POST'])
+def delportafolio():
+    return eliminarPortafolio(request)
 
 @app.route('/download/portafolio', methods=['POST'])
 def downloadportafolio():

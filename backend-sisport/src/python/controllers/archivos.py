@@ -30,11 +30,6 @@ def generar_diario(request):
 		if not os.path.isdir(ruta_carpeta):
 			os.makedirs(ruta_carpeta)
 
-		lista_estrategias = []
-		lista_contenidos = []
-		lista_actividades = []
-
-
 		for diario in diarios:
 			
 			num_diario = diario["num_diario"]
@@ -45,6 +40,10 @@ def generar_diario(request):
 			resumen = diario["resumen"]
 			
 			estrategias = diario["estrategias"]
+			
+			lista_estrategias = []
+			lista_contenidos = []
+			lista_actividades = []
 			
 			for i in range(len(estrategias.split("\n"))):
 
@@ -69,7 +68,7 @@ def generar_diario(request):
 			reflexion4 = diario["preg4"]
 
 			crear_diario(ruta_carpeta+'DIARIO METACOGNITIVO '+num_diario.__str__()+'.docx', num_diario.__str__(), periodo, tiempo, fecha, docente, tema, lista_contenidos, objetivo,lista_actividades,lista_estrategias,resumen,reflexion1,reflexion2,reflexion3,reflexion4)
-		
+
 	except OSError:
 			
 		return jsonify({"message":"error al generar los diarios"}),500
@@ -131,6 +130,57 @@ def eliminarArchivo(request):
 		return jsonify({"message":"archivo borrado"}),200
 
 
+
+
+
+def eliminarEstructura(request):
+
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_identificador']
+
+		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura)
+
+		if(os.path.exists(ruta)):
+			shutil.rmtree(ruta)
+		else:
+			return jsonify({"message":"la carpeta no existe"}),400	
+
+	except OSError:
+			
+		return jsonify({"message":"error al borrar la estructura"}),500
+		
+	else:
+			
+		return jsonify({"message":"estructura eliminada"}),200
+
+
+def eliminarPortafolio(request):
+
+	try:
+		
+		json_req = request.json
+		fac_abreviatura = json_req['fac_abreviatura']
+		car_abreviatura = json_req['car_abreviatura']
+		asig_abreviatura = json_req['asig_identificador']		
+		per_cedula = json_req['per_cedula']
+
+		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura+'/Portafolios/'+per_cedula)
+
+		shutil.rmtree(ruta)
+			
+	except OSError:
+			
+		return jsonify({"message":"error al borrar el portafolio"}),500
+		
+	else:
+			
+		return jsonify({"message":"portafolio eliminado"}),200
+
+
 def descargarPortafolio(request):
 	
 	try:
@@ -143,19 +193,17 @@ def descargarPortafolio(request):
 
 		ruta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
 		 				'/Portafolios/'+per_cedula)
+
+		os.system('rm -f '+('./resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +
+		 				'/Portafolios/')+'*.zip')
+
+		print(os.path)
+
+		now = datetime.now()
 		
-		# archivo_zip = shutil.make_archive(ruta,"zip",base_dir=ruta)
-		
-		fecha= datetime.now();
 
-		ruta_archivo=ruta+per_cedula+fecha+".zip"
+		ruta_archivo=ruta+"-"+now.strftime("%d-%m-%Y-%H:%M:%S")+".zip"
 
-		#if os.path.exists(ruta_archivo):
-		#	os.remove(ruta_archivo)
-
-		os.system('rm -r -i '+ruta+'*.zip')
-
-		# os.rename(ruta_archivo, ruta+"/"+per_cedula+".zip")
 
 		os.system('zip -r '+ruta_archivo+' '+ruta)
 

@@ -14,16 +14,17 @@ import Expectativas from "components/Modals/expectativas"
 import Informe from "components/Modals/informe"
 import generarPythonServices from "services/python/generar"
 import portafolioPythonServices from "services/python/portafolio"
+import portafolioService from 'services/portafolio'
 
 import './index.css'
 
-export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) {
+export default function VerPortafolio({ asig_codigo, peri_codigo, sem_codigo, per_codigo }) {
 
     const { isLogged } = useUser()
 
     const { perfil } = usePerfil()
 
-    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo, per_codigo })
+    const { portafolio } = usePortafolio({ asig_codigo, peri_codigo, sem_codigo, per_codigo })
 
     const [, navigate] = useLocation()
 
@@ -42,12 +43,15 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
     const { generarInforme, generarDiario, generarExpectativas } = generarPythonServices()
 
-    const { downloadPortafolio } = portafolioPythonServices()
+    const { downloadPortafolio, removePortafolio } = portafolioPythonServices()
+
+    const jwt = window.localStorage.getItem("jwt")
+
+    const { eliminarPortafolio, encontrar } = portafolioService({ jwt })
+
 
     const descargarSubmit = () => {
 
-
-        var peri_codigo = document.getElementById("peri_codigo").innerText
         var identificador = document.getElementById("identificador").innerText
         var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
         var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
@@ -61,66 +65,112 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
             cedula = est_cedula.innerText
         }
 
-        var estructura = {
 
-            per_nombre: portafolio[0].estudiante.per_nombre + " " + portafolio[0].estudiante.per_apellido,
-            asig_nombre: portafolio[0].estructura.nombre_asignatura,
-            sem_nombre: portafolio[0].extras.sem_nombre,
-            docente: portafolio[0].estructura.nombre_docente,
-            peri_nombre: portafolio[0].extras.peri_nombre,
-        }
+        encontrar({ asig_codigo, peri_codigo, sem_codigo, per_codigo }).then((port) => {
 
-        setError("")
-        
-        var data_portafolio = portafolio[0].portafolio_data
+            var estructura = {
 
-        setError("generando expectativas...")
+                per_nombre: port[0].estudiante.per_nombre + " " + port[0].estudiante.per_apellido,
+                asig_nombre: port[0].estructura.nombre_asignatura,
+                sem_nombre: port[0].extras.sem_nombre,
+                docente: port[0].estructura.nombre_docente,
+                peri_nombre: port[0].extras.peri_nombre,
+            }
 
-        generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
+            setError("")
 
-            setError("generando informe...")
+            var data_portafolio = port[0].portafolio_data
 
-            generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
+            setError("generando expectativas...")
 
-                setError("generando diarios...")
+            generarExpectativas({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.elementos_curriculares.expectativas.contenido }).then(() => {
 
-                generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula, estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
+                setError("generando informe...")
 
-                    setError("descargando portafolio ....")
+                generarInforme({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, contenido: data_portafolio.informe_final.contenido }).then(() => {
 
-                    downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo, per_cedula: cedula }).then((url) => {
+                    setError("generando diarios...")
+
+                    generarDiario({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula, estructura, diarios: data_portafolio.elementos_curriculares.apuntes }).then(() => {
+
+                        setError("descargando portafolio ....")
+
+                        downloadPortafolio({ fac_abreviatura, car_abreviatura, asig_abreviatura: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula }).then((url) => {
 
 
-                        setError("Descargando...")
+                            setError("Descargando...")
 
-                        window.location.href = url
+                            window.location.href = url
 
-                        setError("")
+                            setError("")
+
+
+                        }).catch(() => {
+
+                            setError("No se puede descargar el portafolio ....")
+
+                        })
 
 
                     }).catch(() => {
 
-                        setError("No se puede descargar el portafolio ....")
+                        setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
 
                     })
 
-
                 }).catch(() => {
 
-                    setError("No se puede generar los diarios, contacte con el coordinador o intente de nuevo")
+                    setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
 
                 })
 
+
             }).catch(() => {
 
-                setError("No se puede generar las expectativas, contacte con el coordinador o intente de nuevo")
+                setError("No se puede generar el informe, contacte con el coordinador o intente de nuevo")
 
             })
 
 
         }).catch(() => {
 
-            setError("No se puede generar el informe, contacte con el coordinador o intente de nuevo")
+        })
+
+
+    }
+
+
+    const eliminarSubmit = () => {
+
+        var identificador = document.getElementById("identificador").innerText
+        var fac_abreviatura = document.getElementById("esquema").innerText.split(".")[0]
+        var car_abreviatura = document.getElementById("esquema").innerText.split(".")[1]
+        var per_cedula = document.getElementById("per_cedula").innerText
+        var est_cedula = document.getElementById("est_cedula")
+
+        var cedula = per_cedula
+
+        if (est_cedula) {
+
+            cedula = est_cedula.innerText
+        }
+
+        removePortafolio({ fac_abreviatura, car_abreviatura, asig_identificador: identificador + "-" + peri_codigo + "-" + sem_codigo, per_cedula: cedula }).then(() => {
+
+            eliminarPortafolio({ asig_codigo, peri_codigo, per_codigo }).then(() => {
+
+                window.location.href = "/portafolios/estudiantes/" + asig_codigo + "/" + peri_codigo + "/" + sem_codigo
+
+            }).catch(() => {
+
+                setError("No se eliminar portafolio,  contacte con el coordinador o intente de nuevo")
+
+            })
+
+
+        }).catch(() => {
+
+            alert("Error al eliminar el portafolio")
 
         })
 
@@ -155,6 +205,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
 
 
                         }
+                        <p style={{ display: "none" }} id="sem_codigo">{sem_codigo}</p>
                     </div>
 
                     <div className="card-body">
@@ -223,7 +274,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                                                 perfil.per_tipo === "ESTUDIANTE" &&
                                                                 <li className="subida"><a style={{ cursor: "pointer" }} href="/" data-toggle="modal"
                                                                     data-target="#subir" data-tipo="informativos" data-titulo="DATOS INFORMATIVOS" data-cant="1" data-size="2" data-type=".pdf, .doc, .docx">Subir</a></li>
-    
+
                                                             }
 
                                                         </ul>
@@ -649,7 +700,7 @@ export default function VerPortafolio({ asig_codigo, peri_codigo, per_codigo }) 
                                             <button type="button" className="btn btn-success m-2" onClick={() => descargarSubmit()} >DESCARGAR PORTAFOLIO</button>
                                             {
                                                 perfil.per_tipo === "COORDINADOR" &&
-                                                <button type="button" className="btn btn-danger m-2">ELIMINAR PORTAFOLIO</button>
+                                                <button type="button" className="btn btn-danger m-2" onClick={() => { if (window.confirm('¿Estás seguro de eliminar este portafolio?')) eliminarSubmit() }}>ELIMINAR PORTAFOLIO</button>
 
                                             }
 

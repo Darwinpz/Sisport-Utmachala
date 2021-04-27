@@ -2,7 +2,7 @@ import {  useState, useEffect, useContext } from 'react'
 import portafolioService from 'services/portafolio'
 import Context from 'context/PortafolioContext'
 
-export default function usePortafolio({asig_codigo,peri_codigo, per_codigo}) {
+export default function usePortafolio({asig_codigo,peri_codigo,sem_codigo ,per_codigo}) {
     
     const {portafolio, setPORTAFOLIO} = useContext(Context)
     const [loading, setLoading] = useState(false)
@@ -13,7 +13,7 @@ export default function usePortafolio({asig_codigo,peri_codigo, per_codigo}) {
 
     useEffect(function () {
         setLoading(true)
-        encontrar({asig_codigo,peri_codigo,per_codigo})
+        encontrar({asig_codigo,peri_codigo,sem_codigo,per_codigo})
             .then(data => {
                 setPORTAFOLIO(data)
                 setLoading(false)
@@ -30,7 +30,7 @@ export default function usePortafolio({asig_codigo,peri_codigo, per_codigo}) {
                 console.log(err)
 
             })
-    }, [asig_codigo,peri_codigo,per_codigo,jwt,setPORTAFOLIO])
+    }, [asig_codigo,peri_codigo,sem_codigo,per_codigo,jwt,setPORTAFOLIO])
 
 
     return {

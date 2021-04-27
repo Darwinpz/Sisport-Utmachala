@@ -38,7 +38,7 @@ export default function Portafolios() {
 
                         <div className="row" >
                             {
-                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador,peri_codigo, docente, asig_est_estado, fac_abreviatura, car_abreviatura }) =>
+                                asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre,sem_codigo, sem_paralelo, asig_identificador,peri_codigo, docente, asig_est_estado, fac_abreviatura, car_abreviatura }) =>
 
                                     <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
@@ -54,7 +54,7 @@ export default function Portafolios() {
                                                     perfil.per_tipo === "ESTUDIANTE" &&
                                                     <>
                                                         <p className="card-text mb-3">{docente}</p>
-                                                        <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`}>Ver Portafolio</a>
+                                                        <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${sem_codigo}/${perfil.per_codigo}`}>Ver Portafolio</a>
                                                     
 
                                                     </>
@@ -67,7 +67,7 @@ export default function Portafolios() {
                                                         {
                                                             asig_est_estado &&
                                                             <>
-                                                                <a className="btn btn-primary float-right " href={`/portafolios/estudiantes/${asig_codigo}/${peri_codigo}`}>Ver Portafolios</a>
+                                                                <a className="btn btn-primary float-right " href={`/portafolios/estudiantes/${asig_codigo}/${peri_codigo}/${sem_codigo}`}>Ver Portafolios</a>
                                                             </>
 
                                                         }
@@ -77,7 +77,7 @@ export default function Portafolios() {
                                                             <>
                                                             <div className="d-flex justify-content-between align-items-center">
                                                                 <input type="text" className="form-control mr-2" id={`clave_${asig_codigo}_${peri_codigo}`} value={clave} onChange={(e) => setCLAVE(e.target.value)} placeholder="Ingrese una clave de activación" required />
-                                                                <button className="btn btn-success" type="button" data-toggle="modal" data-target="#horario" data-facultad={fac_abreviatura} data-carrera={car_abreviatura} data-identificador={asig_identificador} data-asig_codigo={asig_codigo} data-peri_codigo={peri_codigo} data-asignatura={asig_nombre} >Activar</button>
+                                                                <button className="btn btn-success" type="button" data-toggle="modal" data-target="#horario" data-facultad={fac_abreviatura} data-carrera={car_abreviatura} data-identificador={asig_identificador} data-asig_codigo={asig_codigo} data-peri_codigo={peri_codigo} data-asignatura={asig_nombre} data-sem_codigo={sem_codigo} >Activar</button>
                                                                 
                                                             
                                                             </div>

@@ -17,7 +17,7 @@ export default function Asignaturas({ asignaturas }) {
 
     const { matricularse, eliminarPortafolio } = portafolioService({ jwt })
 
-    const handleClick = (asig_codigo, peri_codigo, fac_nombre, car_nombre, asig_identificador) => {
+    const handleClick = (asig_codigo, peri_codigo,sem_codigo, fac_nombre, car_nombre, asig_identificador) => {
 
         var clave = document.getElementById("clave_" + asig_codigo).value
 
@@ -26,7 +26,7 @@ export default function Asignaturas({ asignaturas }) {
         matricularse({ asig_codigo, peri_codigo, clave })
             .then(() => {
 
-                crearPortafolio({ fac_nombre, car_nombre, asig_identificador: asig_identificador + "-" + peri_codigo, per_cedula: perfil.per_cedula }).then(() => {
+                crearPortafolio({ fac_nombre, car_nombre, asig_identificador: asig_identificador + "-" + peri_codigo+"-"+sem_codigo, per_cedula: perfil.per_cedula }).then(() => {
 
                     window.location.reload()
 
@@ -61,7 +61,7 @@ export default function Asignaturas({ asignaturas }) {
 
             <div className="row align-items-center">
                 {
-                    asignaturas.map(({ asig_codigo, asig_nombre, sem_nombre, sem_paralelo, asig_identificador, peri_nombre, peri_codigo, docente, matriculado, estado, fac_abreviatura, car_abreviatura }) =>
+                    asignaturas.map(({ asig_codigo, asig_nombre,sem_codigo, sem_nombre, sem_paralelo, asig_identificador, peri_nombre, peri_codigo, docente, matriculado, estado, fac_abreviatura, car_abreviatura }) =>
                         <div className="col-md-6 col-lg-4 mb-3" key={asig_codigo}>
 
                             <div className="card border-primary">
@@ -82,7 +82,7 @@ export default function Asignaturas({ asignaturas }) {
                                                     <div className="d-flex justify-content-between align-items-center">
 
                                                         <input type="text" className="form-control mr-2" id={`clave_${asig_codigo}`} placeholder="Clave" required />
-                                                        <button className="btn btn-primary" type="button" onClick={() => handleClick(asig_codigo, peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador)}>Matricularme</button>
+                                                        <button className="btn btn-primary" type="button" onClick={() => handleClick(asig_codigo, peri_codigo,sem_codigo, fac_abreviatura, car_abreviatura, asig_identificador)}>Matricularme</button>
 
                                                     </div>
                                                     {error === asig_codigo && <strong>Clave incorrecta</strong>}
@@ -101,7 +101,7 @@ export default function Asignaturas({ asignaturas }) {
                                     {
                                         matriculado &&
                                         <>
-                                            <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
+                                            <a className="btn btn-success float-right" href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${sem_codigo}/${perfil.per_codigo}`} type="button">Ver Portafolio</a>
 
                                         </>
                                     }

@@ -45,8 +45,18 @@ PersonaCtrl.all_rol = async (req, res, next) => {
 
                 const { rol } = req.body;
 
-                const personas = await pool.query("SELECT per_codigo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1", [rol]);
+                var personas = []
+                
+                if(rol == "DOCENTE"){
 
+                    personas = await pool.query("SELECT per_codigo,per_tipo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1  or per_tipo='COORDINADOR'", [rol]);
+
+                }else{
+
+                    personas = await pool.query("SELECT per_codigo,per_tipo, per_cedula, per_titulo, per_nombre, per_apellido, per_correo FROM persona where per_tipo=$1", [rol]);
+
+                }
+                
                 res.status(200).json({ "message": personas.rows });
 
             }
@@ -109,7 +119,7 @@ PersonaCtrl.find = async (req, res, next) => {
 
     try {
 
-        const per_codigo = req.params.id;
+        const {per_codigo} = req.body;
 
         const persona = await pool.query("SELECT *FROM persona WHERE per_codigo=$1", [per_codigo]);
 
@@ -178,14 +188,16 @@ PersonaCtrl.add = async (req, res, next) => {
 
         const { per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento,
             per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad,
-            per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave } = req.body;
+            per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular } = req.body;
+
+            console.log(req.body)
 
         await pool.query("INSERT INTO persona (per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento,"
             + " per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil,"
             + " per_telef_fijo, per_telef_celular, per_clave)"
             + " values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18)", [per_cedula, per_nombre,
             per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais,
-            per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave]);
+            per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_cedula]);
 
         res.status(200).json({ "message": "Persona Agregada" });
 
@@ -210,16 +222,16 @@ PersonaCtrl.put = async (req, res, next) => {
 
     try {
 
-        const { per_codigo, per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo,
+        const { per_codigo, per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_correo,
             per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo,
-            per_telef_celular, per_clave } = req.body;
+            per_telef_celular } = req.body;
 
         await pool.query("UPDATE persona SET per_cedula=$2, per_nombre=$3, per_apellido=$4, per_tipo=$5, per_titulo=$6,"
-            + " per_fecha_nacimiento=$7, per_edad=$8, per_correo=$9, per_facebook=$10, per_direccion=$11, per_pais=$12,"
-            + " per_provincia=$13, per_ciudad=$14, per_sexo=$15, per_estado_civil=$16, per_telef_fijo=$17, per_telef_celular=$18, per_clave=$19"
-            + " WHERE fam_codigo=$1", [per_codigo, per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento,
-            per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil,
-            per_telef_fijo, per_telef_celular, per_clave]);
+            + " per_fecha_nacimiento=$7, per_correo=$8, per_facebook=$9, per_direccion=$10, per_pais=$11,"
+            + " per_provincia=$12, per_ciudad=$13, per_sexo=$14, per_estado_civil=$15, per_telef_fijo=$16, per_telef_celular=$17"
+            + " WHERE per_codigo=$1", [per_codigo, per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento,
+            per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil,
+            per_telef_fijo, per_telef_celular]);
 
         res.status(200).json({ "message": "Persona Editada" });
 
@@ -259,6 +271,29 @@ PersonaCtrl.delete = async (req, res, next) => {
 
     }
 
+
+}
+
+PersonaCtrl.updatePassword=async(req, res, next)=>{
+
+    var err = new Error();
+
+    try {
+
+        const { per_clave, per_codigo } = req.body;
+
+        await pool.query("UPDATE persona SET per_clave=$1 WHERE per_codigo=$2", [per_clave, per_codigo]);
+
+        res.status(200).json({ "message": "Contraseña editada" });
+
+
+    } catch (e) {
+
+        err.message = e.message;
+        err.status = 500;
+        next(err);
+
+    }
 
 }
 

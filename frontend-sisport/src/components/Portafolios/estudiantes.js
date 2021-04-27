@@ -1,11 +1,32 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import useMatriculados from 'hooks/useMatriculados'
+import asignaturaServices from 'services/asignaturas'
 
-export default function Portafolios({asig_codigo,peri_codigo}) {
+export default function Portafolios({asig_codigo,peri_codigo,sem_codigo}) {
     
-    const { matriculados } = useMatriculados({asig_codigo,peri_codigo})
+    const { matriculados } = useMatriculados({asig_codigo,peri_codigo,sem_codigo})
+
+    const jwt = localStorage.getItem("jwt")
+
+    const {find} = asignaturaServices({jwt})
+
+
+    const [asignatura, setAsignatura] = useState("")
+
+    useEffect(()=>{
+
+
+        find({asig_codigo}).then((asig)=>{
+
+            setAsignatura(asig.asig_nombre)
+
+        })
+
+
+    },[setAsignatura])
+
 
     return (
 
@@ -15,7 +36,7 @@ export default function Portafolios({asig_codigo,peri_codigo}) {
 
                 <div className="col text-center m-2">
 
-                    <h3>* ASIGNATURA *</h3>
+                    <h3>* {asignatura} *</h3>
 
                 </div>
 
@@ -34,7 +55,7 @@ export default function Portafolios({asig_codigo,peri_codigo}) {
                                 </div>
                                 <div className="card-body" >
 
-                                    <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${per_codigo}`} >Ver Portafolio</a>
+                                    <a className="btn btn-success float-right " href={`/portafolios/ver/${asig_codigo}/${peri_codigo}/${sem_codigo}/${per_codigo}`} >Ver Portafolio</a>
 
 
                                 </div>
