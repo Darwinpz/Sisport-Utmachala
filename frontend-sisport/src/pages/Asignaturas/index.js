@@ -29,7 +29,6 @@ export default function AsignaturasPage() {
 
                             <div className="card" style={{ backgroundColor: "transparent", border: "none" }}>
 
-                                <button type="button" className="btn btn-primary mb-2">Importar csv</button>
                                 <button type="button" className="btn btn-success" data-toggle="modal" data-target="#asignaturas">Crear Asignatura</button>
 
                             </div>
@@ -50,7 +49,7 @@ export default function AsignaturasPage() {
 
             </div>
 
-            <Modalasignaturas/>
+            <Modalasignaturas />
 
         </>
     )

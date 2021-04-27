@@ -23,11 +23,12 @@ def guardarEstudiantes(file):
             # datos.writerow(['cedula','nombre','apellido','tipo','titulo','fecha_nac','edad','email_inst',
             # 'facebook', 'direccion','pais','provincia','ciudad','sexo','estado_civil','telefono_fijo','celular','clave'])
             for row in csv_reader:
-                datos.writerow([row[6],row[7],row[8],'ESTUDIANTE','null',row[10],row[11],row[13],'null',row[27],row[15],row[16],row[17],row[9],'null',row[21],row[22],row[6]])
-    
-    with open(csv_file_name, 'r') as f:
-	    postgresql.cur.copy_from(f, "persona (per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave)", sep=';')
-    postgresql.conn.commit()
+                postgresql.cur.execute("INSERT INTO persona (per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave)"
+                +" values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (per_cedula) DO UPDATE SET (per_nombre,per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave) = "
+                +" ROW(EXCLUDED.per_nombre, EXCLUDED.per_apellido, EXCLUDED.per_tipo, EXCLUDED.per_titulo, EXCLUDED.per_fecha_nacimiento, EXCLUDED.per_edad, EXCLUDED.per_correo, EXCLUDED.per_facebook, EXCLUDED.per_direccion, EXCLUDED.per_pais, EXCLUDED.per_provincia, EXCLUDED.per_ciudad, EXCLUDED.per_sexo, EXCLUDED.per_estado_civil, EXCLUDED.per_telef_fijo, EXCLUDED.per_telef_celular, EXCLUDED.per_clave)",
+                [row[6],row[7],row[8],'ESTUDIANTE','null',row[10],row[11],row[13],'null',row[27],row[15],row[16],row[17],row[9],'null',row[21],row[22],row[6]])
+                
+        postgresql.conn.commit()
 
     os.remove(filecsv)
     os.remove(csv_file_name)
@@ -53,17 +54,18 @@ def guardarDocentes(file):
             # datos.writerow(['cedula','nombre','apellido','tipo','titulo','fecha_nac','edad','email_inst',
             # 'facebook', 'direccion','pais','provincia','ciudad','sexo','estado_civil','telefono_fijo','celular','clave'])
             for row in csv_reader:
-                datos.writerow([row[1],row[2],row[3],ro[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[14],row[14],row[15],row[16],row[17],row[18]])
-    
-    with open(csv_file_name, 'r') as f:
-	    postgresql.cur.copy_from(f, "persona (per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave)", sep=';')
-    postgresql.conn.commit()
+                postgresql.cur.execute("INSERT INTO persona (per_cedula, per_nombre, per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave)"
+                +" values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (per_cedula) DO UPDATE SET (per_nombre,per_apellido, per_tipo, per_titulo, per_fecha_nacimiento, per_edad, per_correo, per_facebook, per_direccion, per_pais, per_provincia, per_ciudad, per_sexo, per_estado_civil, per_telef_fijo, per_telef_celular, per_clave) = "
+                +" ROW(EXCLUDED.per_nombre, EXCLUDED.per_apellido, EXCLUDED.per_tipo, EXCLUDED.per_titulo, EXCLUDED.per_fecha_nacimiento, EXCLUDED.per_edad, EXCLUDED.per_correo, EXCLUDED.per_facebook, EXCLUDED.per_direccion, EXCLUDED.per_pais, EXCLUDED.per_provincia, EXCLUDED.per_ciudad, EXCLUDED.per_sexo, EXCLUDED.per_estado_civil, EXCLUDED.per_telef_fijo, EXCLUDED.per_telef_celular, EXCLUDED.per_clave)",
+                [row[6],row[7],row[8],'DOCENTE','null',row[10],row[11],row[13],'null',row[27],row[15],row[16],row[17],row[9],'null',row[21],row[22],row[6]])
+                
+        postgresql.conn.commit()
 
     os.remove(filecsv)
     os.remove(csv_file_name)
     os.remove(file)
 
-    return jsonify({"message":"docentes guardados"}),200
+    return jsonify({"message":"estudiantes guardados"}),200
 
 def guardarAsignaturas(file):
     filecsv="temp/file.csv"
