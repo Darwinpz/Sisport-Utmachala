@@ -878,7 +878,7 @@ function total_semanas(fecha_inicio, fecha_fin) {
     var fin = new Date(fecha_fin);
     var cant_dias = fin.getTime() - inicio.getTime();
 
-    return Math.round(cant_dias / (1000 * 60 * 60 * 24 * 7)) - 1;
+    return Math.round(cant_dias / (1000 * 60 * 60 * 24 * 7));
 }
 
 
