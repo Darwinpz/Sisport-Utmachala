@@ -59,7 +59,7 @@ export default function ModalAsignaturas() {
 
         }).catch((err) => {
 
-            if(err.message == "400"){
+            if(err.message === "400"){
                 
                 setError("Error al guardar, asignatura ya existente en el semestre, paralelo y periodo escogido")
 
@@ -95,7 +95,7 @@ export default function ModalAsignaturas() {
 
             console.log(err)
             
-            if(err.message == "400"){
+            if(err.message === "400"){
 
                 setError("La asignatura ya está activada, no se puede editar")
 

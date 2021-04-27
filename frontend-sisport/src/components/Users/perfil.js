@@ -3,6 +3,7 @@ import React from "react";
 
 
 import usePerfil from 'hooks/usePerfil'
+import ModalClave from "components/Modals/clave"
 
 
 export default function Perfil() {
@@ -27,10 +28,13 @@ export default function Perfil() {
 
                         <div className="card border-danger">
 
-                            <div className="card-header text-white bg-danger">
+                            <div className="card-header text-white bg-danger ">
 
-                                <div className="card-title">
+                                <div className="d-flex justify-content-between align-items-center">
+
                                     <h4>Mi Perfil</h4>
+                                    <button type="button" className="btn btn-success" data-toggle="modal" data-per_codigo={perfil.per_codigo} data-target="#clave">Cambiar clave</button>
+
                                 </div>
 
                             </div>
@@ -83,6 +87,8 @@ export default function Perfil() {
 
 
             }
+
+            <ModalClave />
 
         </>
 
