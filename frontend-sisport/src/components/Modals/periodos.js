@@ -28,7 +28,7 @@ export default function ModalPeriodo() {
 
         setError("")
 
-        if (peri_nombre != "" && peri_fecha_final != "" && peri_fecha_inicial != "" && peri_estado != "") {
+        if (peri_nombre !== "" && peri_fecha_final !== "" && peri_fecha_inicial !== "" && peri_estado !== "") {
 
             if (peri_fecha_inicial < peri_fecha_final) {
 
@@ -68,7 +68,7 @@ export default function ModalPeriodo() {
 
         setError("")
 
-        if (peri_nombre != "" && peri_fecha_final != "" && peri_fecha_inicial != "" && peri_estado != "") {
+        if (peri_nombre !== "" && peri_fecha_final !== "" && peri_fecha_inicial !== "" && peri_estado !== "") {
 
             if (peri_fecha_inicial < peri_fecha_final) {
 
@@ -80,7 +80,7 @@ export default function ModalPeriodo() {
 
                 }).catch((err) => {
 
-                    if(err.message == "400"){
+                    if(err.message === "400"){
 
                         setError("El periodo tiene dependencias y no puede cambiarse")
 

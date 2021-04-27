@@ -25,6 +25,8 @@ def generar_diario(request):
 
 		docente = estructura["docente"]
 
+		
+
 		ruta_carpeta = ('resources/'+fac_abreviatura+'/'+car_abreviatura+'/'+asig_abreviatura +'/Portafolios/'+per_cedula+'/2. Elementos curriculares/c. Apuntes de clase/')
 
 		if not os.path.isdir(ruta_carpeta):
