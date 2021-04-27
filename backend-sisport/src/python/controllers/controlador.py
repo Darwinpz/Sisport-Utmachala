@@ -1,6 +1,6 @@
 from flask import jsonify
 import os
-from controllers.persona import guardarEstudiantes
+from controllers.persona import guardarEstudiantes, guardarDocentes
 import shutil
 import zipfile
 from shutil import rmtree
@@ -9,6 +9,7 @@ from shutil import rmtree
 def uploadEstudiante(request, lista_extensions):
     if request.method == 'POST':
         archivos = request.files.getlist('file')
+        print(archivos)
         if len(archivos) == 1:
             for f in request.files.getlist('file'):
                 # f.filename=str(uuid.uuid4())+'.'+str(f.filename).split('.')[1]
@@ -31,8 +32,8 @@ def uploadDocente(request, lista_extensions):
                 file_ext = os.path.splitext(f.filename)[1]
                 if file_ext not in lista_extensions:
                     return jsonify({"message": "error en el tipo de archivo"}), 415
-                f.save(os.path.join('temp/estudiantes/', f.filename))
-            guardarEstudiantes(os.path.join('temp/estudiantes/', f.filename))
+                f.save(os.path.join('temp/docentes/', f.filename))
+            guardarDocentes(os.path.join('temp/docentes/', f.filename))
 
             return jsonify({"message": "excel guardado"}), 200
         else:

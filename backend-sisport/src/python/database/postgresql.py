@@ -1,10 +1,10 @@
 import psycopg2
 import os
 
-conn = psycopg2.connect(host='190.155.140.58',
-                       dbname='sisport_utmach',
-                       user='server',
-                       password='Server2021',
+conn = psycopg2.connect(host='localhost',
+                       dbname='Sisport',
+                       user='postgres',
+                       password='123',
                        port='5432'
 )
 
