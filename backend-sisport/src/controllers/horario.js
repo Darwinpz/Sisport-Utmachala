@@ -70,34 +70,42 @@ HorarioCtrl.add = async (req, res, next) => {
 
         var dia_temp = 0;
 
-        await pool.query("DELETE from horario where asig_codigo=$1 and peri_codigo=$2"
-                        , [asig_codigo, peri_codigo]); 
-        
+        await pool.query("DELETE from horario where asig_codigo=$1 and peri_codigo=$2", [asig_codigo, peri_codigo]);
+
         if (arreglo.length > 0) {
 
             for (var i = 0; i < arreglo.length; i++) {
 
                 var dia = arreglo[i]
 
-                if (dia.num_dia == dia_temp) {
-
-                    await pool.query("UPDATE horario set hor_hora_final=$1, hor_cant_horas=(hor_cant_horas+1) where asig_codigo=$2 and peri_codigo=$3 and hor_num_dia=$4"
-                        , [dia.fin, asig_codigo, peri_codigo,dia.num_dia]); 
-                } else {
+                if (dia.cant_horas) {
 
                     await pool.query("INSERT INTO horario (hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia)"
-                        + " values($1,$2,$3,$4,$5,$6,$7)", [obtener_dia(dia.num_dia), dia.inicio, dia.fin, 1, asig_codigo, peri_codigo, dia.num_dia]);
-                        
+                        + " values($1,$2,$3,$4,$5,$6,$7)", [obtener_dia(dia.num_dia), dia.inicio, dia.fin, dia.cant_horas, asig_codigo, peri_codigo, dia.num_dia]);
+
+                } else {
+
+                    if (dia.num_dia == dia_temp) {
+
+                        await pool.query("UPDATE horario set hor_hora_final=$1, hor_cant_horas=(hor_cant_horas+1) where asig_codigo=$2 and peri_codigo=$3 and hor_num_dia=$4"
+                            , [dia.fin, asig_codigo, peri_codigo, dia.num_dia]);
+                    } else {
+
+                        await pool.query("INSERT INTO horario (hor_dia, hor_hora_inicial, hor_hora_final, hor_cant_horas, asig_codigo, peri_codigo, hor_num_dia)"
+                            + " values($1,$2,$3,$4,$5,$6,$7)", [obtener_dia(dia.num_dia), dia.inicio, dia.fin, 1, asig_codigo, peri_codigo, dia.num_dia]);
+
+                    }
+
+                    dia_temp = dia.num_dia;
                 }
-                
-                dia_temp = dia.num_dia;
+
 
             }
 
 
             res.status(200).json({ "message": "Horario Agregado" });
-        }
 
+        }
 
     } catch (e) {
 
