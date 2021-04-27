@@ -11,8 +11,12 @@ class informefinal extends StatefulWidget {
   final String peri_codigo;
   final String per_codigo;
   final String asig_nombre;
+  final String fac_abreviatura;
+  final String car_abreviatura;
+  final String asig_identificador_completo;
+  final String peri_nombre;
 
-  const informefinal(this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre);
+  const informefinal(this.asig_codigo, this.peri_codigo, this.per_codigo, this.asig_nombre, this.fac_abreviatura, this.car_abreviatura, this.asig_identificador_completo, this.peri_nombre);
 
   @override
   _informefinalState createState() => _informefinalState();
@@ -84,13 +88,36 @@ class _informefinalState extends State<informefinal> {
         headers: {"Authorization": "bearer " + token});
 
     Map<String, dynamic> datos = json.decode(response.body);
-    //debugPrint(widget.asig_codigo+" "+widget.peri_codigo+" "+widget.per_codigo);
-    //debugPrint("tema: "+datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
     
     setState(() {
        contenido =(datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
              
     });
+
+  }
+
+  Future generateInforme(String contenido) async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      tipo = preferences.getString('tipo');
+      token=preferences.getString('token');
+      codigo=preferences.getString('codigo');
+    });
+
+    Map<String, dynamic> data = {
+      'fac_abreviatura':widget.fac_abreviatura,
+      'car_abreviatura':widget.car_abreviatura,
+      'asig_abreviatura':widget.asig_identificador_completo,
+      //'per_cedula': est_cedula,
+      'contenido': contenido,
+      //'estructura':[{'docente': docente, 'peri_nombre':}]
+    };
+
+
+    http.Response response = await http.post(
+        'http://190.155.140.58:4555/generate/informe',
+        body:  json.encode(data), headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json',"Authorization":"bearer "+token});
 
 
   }

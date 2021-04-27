@@ -15,9 +15,14 @@ class Diario extends StatefulWidget {
   final String asig_codigo;
   final String asig_nombre;
   final String peri_codigo;
+  final String fac_abreviatura;
+  final String car_abreviatura;
+  final String asig_identificador_completo;
+  final String est_cedula;
 
 
-  const Diario(this.diario_name, this.num_clase, this.tiempo, this.fecha, this.per_codigo, this.asig_codigo, this.asig_nombre, this.peri_codigo);
+  const Diario(this.diario_name, this.num_clase, this.tiempo, this.fecha, this.per_codigo, this.asig_codigo, this.asig_nombre, this.peri_codigo, this.fac_abreviatura,
+  this.car_abreviatura, this.asig_identificador_completo, this.est_cedula);
 
   @override
   _DiarioState createState() => _DiarioState();
@@ -28,7 +33,7 @@ class _DiarioState extends State<Diario> {
   String tipo="";
   String token="";
   String codigo="";
-  var docente="";
+  String docente="";
   String temaD="";
   String contenidosD="";
   String objetivosD="";
@@ -68,7 +73,6 @@ class _DiarioState extends State<Diario> {
         headers: {"Authorization": "bearer " + token});
 
     Map<String, dynamic> datos = json.decode(response.body);
-    //debugPrint("resultado: "+datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'].toString());
     
     setState(() {
        docente =(datos['message'][0]['estructura']['nombre_docente']);
@@ -88,8 +92,6 @@ class _DiarioState extends State<Diario> {
        preg4D=datos['message'][0]['portafolio_data']['elementos_curriculares']['apuntes'][(int.parse(widget.num_clase)-1)]['preg4'];
              
     });
-
-
   }
 
   Future guardarDiario(String tema, contenidos, objetivos, actividades, estrategias, resumen, preg1, preg2, preg3, preg4)async {
@@ -146,6 +148,7 @@ class _DiarioState extends State<Diario> {
 
 
   }
+
 
   @override
   void initState(){
