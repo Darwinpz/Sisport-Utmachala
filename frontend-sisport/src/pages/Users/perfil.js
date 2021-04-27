@@ -10,7 +10,7 @@ export default function PerfilPage() {
 
                 <div className="col">
 
-                    <Perfil/>
+                    <Perfil />
 
                 </div>
 
