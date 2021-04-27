@@ -79,7 +79,14 @@ class _InicioState extends State<Inicio> {
     return Scaffold(
         appBar: AppBar(title: Text("Mis portafolios")),
         drawer: slideBar.MyDrawer(),
-        body: _notes.length!=0?
+        body: RefreshIndicator(onRefresh: (){return Future.delayed(Duration(seconds: 1),(){
+         _notes.clear();
+          getDatosPer().then((value) {
+      setState(() {
+        _notes.addAll(value);
+      });
+    });
+        });},child: _notes.length!=0?
         
         ListView.builder(
           itemBuilder: (context, index) { 
@@ -112,9 +119,9 @@ class _InicioState extends State<Inicio> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "", _notes[index].sem_codigo.toString())))
+                                                  _notes[index].asig_codigo.toString(), _notes[index].asig_nombre, _notes[index].peri_codigo.toString(), _notes[index].docente, "", "", "", _notes[index].sem_codigo.toString(), "")))
                                     },
-                                child: Text('Ver portafolio'))
+                                child: Text('Ver portafolio', style: TextStyle(color: Colors.blueAccent),))
                             : FlatButton(
                                 onPressed: ()async => {
                                   await messaging.subscribeToTopic('sendmeNotification'),
@@ -128,7 +135,7 @@ class _InicioState extends State<Inicio> {
                                                   (_notes[index].peri_codigo)
                                                       .toString(), _notes[index].sem_codigo.toString())))
                                     },
-                                child: Text('Ver portafolios'))
+                                child: Text('Ver portafolios', style: TextStyle(color: Colors.blueAccent),))
                         // FlatButton(
                         //     onPressed: () => {}, child: Text('Cancelar'))
                       ],
@@ -147,7 +154,9 @@ class _InicioState extends State<Inicio> {
           },
           itemCount: _notes.length,
           
-        ): Center(child: Text("No tienes portafolios aún. Ve al menú Matriculación.", style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic), textAlign: TextAlign.center,)));
+        ): Center(child: Text("No tienes portafolios aún. Ve al menú Matriculación.", style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic), textAlign: TextAlign.center,)), 
+        ));
+        
   }
 
   void initMessaging() {

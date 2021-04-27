@@ -89,7 +89,7 @@ class matriculadosState extends State<matriculados> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => tree(
-                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, "",_notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido, widget.sem_codigo)))},   
+                                                  widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, "",_notes[index].per_codigo.toString(), _notes[index].per_nombre, _notes[index].per_apellido, widget.sem_codigo, "")))},   
                                   child: Text('Ver portafolio'))
                         ],
                       )

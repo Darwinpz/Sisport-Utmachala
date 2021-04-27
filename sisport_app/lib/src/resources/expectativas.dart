@@ -89,8 +89,6 @@ class _expectativasState extends State<expectativas> {
         headers: {"Authorization": "bearer " + token});
 
     Map<String, dynamic> datos = json.decode(response.body);
-    //debugPrint(widget.asig_codigo+" "+widget.peri_codigo+" "+widget.per_codigo);
-    //debugPrint("tema: "+datos['message'][0]['portafolio_data']['informe_final']['contenido'].toString());
 
     setState(() {
       contenido = (datos['message'][0]['portafolio_data']

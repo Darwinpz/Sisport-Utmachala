@@ -16,6 +16,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
 
    String token="";
    String tipo="";
+   String per_cedula="";
 
   List<Note> _notes = List<Note>();
 
@@ -25,6 +26,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
     setState(() {
       token = preferences.getString('token');
       tipo=preferences.getString('tipo');
+      per_cedula=preferences.getString('per_cedula');
     });
 
     
@@ -72,7 +74,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
       TextEditingController hora3controller = TextEditingController();
    String codeDialog;
   String valueText;
-  Future<void> _displayTextInputDialog(BuildContext context, index, int asig_codigo, int peri_codigo, String asig_nombre, String clave) async {
+  Future<void> _displayTextInputDialog(BuildContext context, index, int asig_codigo, int peri_codigo, String asig_nombre, String clave, String fac_abreviatura, String car_abreviatura, String asig_identificador) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -205,9 +207,9 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
                       DateTime cantHoras= fecha2.subtract(new Duration(hours: fecha1.hour, minutes: fecha1.minute));
                       horario.add({"num_dia":diasdesemana.indexOf(dia3controller.text)+1,"inicio":horaInicio,"fin":horaFin, "cant_horas":cantHoras.hour});
                     }
-                    
+                    asignarClave(horario, asig_codigo, peri_codigo, clavecontroller.text, fac_abreviatura, car_abreviatura, asig_identificador);
+
                     clavecontroller.clear();
-                    asignarClave(horario, asig_codigo, peri_codigo, clavecontroller.text);
                     codeDialog = valueText;
                     
                   });
@@ -218,7 +220,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
         });
   }
 
-  Future asignarClave(var horario, int asig_codigo, int peri_codigo, String clave)async{
+  Future asignarClave(var horario, int asig_codigo, int peri_codigo, String clave, String fac_abreviatura, String car_abreviatura, String asig_identificador)async{
 
     Map<String, dynamic> data = {'arreglo': horario, 'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString()};
 
@@ -227,11 +229,17 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
       'Accept': 'application/json',"Authorization":"bearer "+token});
 
     Map data2 = {'asig_codigo': asig_codigo.toString(), 'peri_codigo': peri_codigo.toString(), 'clave':clave};
-    
+
     http.Response response2 = await http.post('http://190.155.140.58:80/api/estructura/add',body:data2,headers: {"Authorization":"bearer "+token});
 
+    Map<String, dynamic> data3 ={'fac_nombre':fac_abreviatura, 'car_nombre':car_abreviatura, 'asig_identificador': asig_identificador};
 
-    if(response.statusCode==200 && response2.statusCode==200){
+     http.Response response3 = await http
+        .post('http://190.155.140.58:4555/create/asignatura', body: json.encode(data3), headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json',"Authorization":"bearer "+token});
+
+
+    if(response.statusCode==200 && response2.statusCode==200 && response3.statusCode==200){
       Fluttertoast.showToast(
           msg: "Asignación de clave exitosa",
           toastLength: Toast.LENGTH_SHORT,
@@ -260,7 +268,14 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  ListView.builder(
+      body: RefreshIndicator(onRefresh: (){return Future.delayed(Duration(seconds: 1),(){
+        _notes.clear();
+        fecthNotes().then((value) {
+      setState(() {
+        _notes.addAll(value);
+      });
+    });
+      });}, child: ListView.builder(
         itemBuilder: (context, index) {
           return Card(
             shape:
@@ -281,9 +296,9 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
 
                           _notes[index].asig_est_estado?FlatButton(
                                   onPressed: () => { Navigator.push(context, MaterialPageRoute(builder: (context)=>matriculados(_notes[index].asig_nombre, _notes[index].asig_codigo.toString(), _notes[index].peri_codigo.toString(), _notes[index].sem_codigo.toString())))},   
-                                  child: Text('Ver portafolios')): FlatButton(
-                                  onPressed: () => { clavecontroller.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "")},   
-                                  child: Text('Asignar clave'))
+                                  child: Text('Ver portafolios', style: TextStyle(color: Colors.blueAccent),)): FlatButton(
+                                  onPressed: () => { clavecontroller.clear(), _displayTextInputDialog(context, index, _notes[index].asig_codigo, _notes[index].peri_codigo, _notes[index].asig_nombre, "", _notes[index].fac_abreviatura, _notes[index].car_abreviatura, _notes[index].asig_identificador+"-"+_notes[index].peri_codigo.toString()+"-"+_notes[index].sem_codigo.toString())},   
+                                  child: Text('Asignar clave', style: TextStyle(color: Colors.green),))
 
                         ],
                       )
@@ -294,7 +309,7 @@ class asignaturasdocenteState extends State<asignaturasdocente> {
           );
         },
         itemCount: _notes.length,
-      ),
+      ),) 
     );
   }
 }
@@ -308,9 +323,12 @@ class Note {
   int peri_codigo;
   bool asig_est_estado;
   int sem_codigo;
+  String fac_abreviatura;
+  String car_abreviatura;
+  String asig_identificador;
 
   Note(this.asig_nombre, this.sem_nombre, this.sem_paralelo, this.asig_codigo,
-      this.docente, this.peri_codigo, this.asig_est_estado, this.sem_codigo);
+      this.docente, this.peri_codigo, this.asig_est_estado, this.sem_codigo, this.fac_abreviatura, this.car_abreviatura, this.asig_identificador);
 
   Note.fromJson(Map<String, dynamic> json) {
     asig_nombre = json['asig_nombre'];
@@ -321,5 +339,8 @@ class Note {
     peri_codigo = json['peri_codigo'];
     asig_est_estado=json['asig_est_estado'];
     sem_codigo=json['sem_codigo'];
+    fac_abreviatura=json['fac_abreviatura'];
+    car_abreviatura=json['car_abreviatura'];
+    asig_identificador=json['asig_identificador'];
   }
 }

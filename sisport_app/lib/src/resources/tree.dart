@@ -20,7 +20,8 @@ class tree extends StatefulWidget {
   final String per_nombre;
   final String per_apellido;
   final String sem_codigo;
-  const tree(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.docente, this.per_codigo, this.per_nombre, this.per_apellido, this.sem_codigo);
+  final String car_nombre;
+  const tree(this.asig_codigo, this.asig_nombre, this.peri_codigo, this.docente, this.per_codigo, this.per_nombre, this.per_apellido, this.sem_codigo, this.car_nombre);
 
   @override
   treeState createState() => treeState();
@@ -41,9 +42,13 @@ class treeState extends State<tree> {
   String periodo="";
   String asig_identificador_completo="";
   String informativos="";
+  String sem_nombre="";
+  String peri_nombre="";
+
 
   var syllabus="";
   var asistencia="";
+  var diarios=[];
 
   List<Note> _notes = List<Note>();
   List<Note2> _notes2 = List<Note2>();
@@ -90,6 +95,7 @@ class treeState extends State<tree> {
 
     return notes;
   }
+
 
   Future<List<Note2>> buscarevaluaciones() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -535,8 +541,127 @@ class treeState extends State<tree> {
       asig_identificador=(datos['message'][0]['estructura']['identificador'].toString());
       est_cedula=(datos['message'][0]['estudiante']['per_cedula'].toString());
       periodo=(datos['message'][0]['estructura']['periodo'].toString());
-      asig_identificador_completo=asig_identificador+"-"+periodo;
+      asig_identificador_completo=asig_identificador+"-"+periodo+"-"+widget.sem_codigo;
      });
+  }
+
+  Future generateDocs() async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      tipo = preferences.getString('tipo');
+      token=preferences.getString('token');
+      codigo=preferences.getString('codigo');
+    });
+
+    Map data = {
+      'asig_codigo': widget.asig_codigo,
+      'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
+      'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
+    };
+
+    http.Response response = await http.post(
+        'http://190.155.140.58:80/api/portafolio/find',
+        body: data,
+        headers: {"Authorization": "bearer " + token});
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> datos = json.decode(response.body);
+      setState(() {
+         diarios= datos['message'][0]['portafolio_data']
+          ['elementos_curriculares']['apuntes'];
+      });
+     
+    }
+
+    Map data2 = {
+      'asig_codigo': widget.asig_codigo,
+      'peri_codigo': widget.peri_codigo,
+      'sem_codigo': widget.sem_codigo,
+      'per_codigo': tipo=="ESTUDIANTE"? codigo : widget.per_codigo 
+    };
+
+    http.Response response2 = await http.post(
+        'http://190.155.140.58:80/api/portafolio/find',
+        body: data2,
+        headers: {"Authorization": "bearer " + token});
+
+    var datos = json.decode(response.body);
+     setState(() {
+      esquema_abreviatura=(datos['message'][0]['nombre_esquema'].toString());
+      abreviaturas= esquema_abreviatura;
+      fac_abreviatura=abreviaturas.toString().split(".")[0];
+      car_abreviatura=(abreviaturas.toString().split(".")[1]);
+      asig_identificador=(datos['message'][0]['estructura']['identificador'].toString());
+      est_cedula=(datos['message'][0]['estudiante']['per_cedula'].toString());
+      periodo=(datos['message'][0]['estructura']['periodo'].toString());
+      asig_identificador_completo=asig_identificador+"-"+periodo+"-"+widget.sem_codigo;
+      sem_nombre=(datos['message'][0]['extras']['sem_nombre'].toString());
+      peri_nombre=(datos['message'][0]['extras']['peri_nombre'].toString());
+     });
+
+     Map data3 = {'car_nombre': widget.car_nombre};
+    
+    var url = 'http://190.155.140.58:80/api/asignatura/buscar';
+    var response3 = await http.post(url, body: data3, headers: {"Authorization":"bearer "+token});
+    Map<String, dynamic> notesJson = json.decode(response.body);
+
+    var estructura={'per_nombre':notesJson["message"][0]["estudiante"]['per_nombre'].toString()+" "+notesJson["message"][0]["estudiante"]['per_apellido'].toString(), 'asig_nombre':widget.asig_nombre, 'sem_nombre': sem_nombre, 
+    'docente':notesJson["message"][0]["estructura"]['nombre_docente'].toString(), 'peri_nombre':peri_nombre};
+
+    Map data4={
+      'fac_abreviatura':fac_abreviatura,
+      'car_abreviatura':car_abreviatura,
+      'asig_abreviatura':asig_identificador_completo,
+      'per_cedula': est_cedula,
+      'diarios': (diarios),
+      'estructura':  (estructura)
+    };
+
+    var data4Json= json.encode(data4);
+
+    http.Response response4 = await http.post(
+        'http://190.155.140.58:4555/generate/diario',
+        body:  data4Json, headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json'});
+
+
+    Map data5={
+      'fac_abreviatura':fac_abreviatura,
+      'car_abreviatura':car_abreviatura,
+      'asig_abreviatura':asig_identificador_completo,
+      'per_cedula': est_cedula,
+      'contenido': datos['message'][0]['portafolio_data']
+          ['informe_final']['contenido'],
+      'estructura':  (estructura)
+    };
+
+    var data5Json= json.encode(data5);
+
+    http.Response response5 = await http.post(
+        'http://190.155.140.58:4555/generate/informe',
+        body:  data5Json, headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json'});
+
+
+    Map data6={
+      'fac_abreviatura':fac_abreviatura,
+      'car_abreviatura':car_abreviatura,
+      'asig_abreviatura':asig_identificador_completo,
+      'per_cedula': est_cedula,
+      'contenido': datos['message'][0]['portafolio_data']
+          ['elementos_curriculares']['expectativas']['contenido'],
+      'estructura':  (estructura)
+    };
+
+    var data6Json= json.encode(data6);
+
+    http.Response response6 = await http.post(
+        'http://190.155.140.58:4555/generate/expectativas',
+        body:  data6Json, headers: { 'Content-type': 'application/json',
+      'Accept': 'application/json'});
+
+
   }
 
   Future getUrlFile(String tipo_archivo, nombre_archivo) async{
@@ -566,7 +691,6 @@ class treeState extends State<tree> {
     if(response.statusCode==200){
       setState(() {
         urlArchivo=datos['message'].toString();
-         debugPrint("ruta: "+urlArchivo);
       });
     }else{
       Fluttertoast.showToast(
@@ -599,14 +723,13 @@ class treeState extends State<tree> {
      http.Response response = await http.post(
         'http://190.155.140.58:4555/download/portafolio',
         body: json.encode(data), headers: { 'Content-type': 'application/json',
-      'Accept': 'application/json',"Authorization":"bearer "+token});
+      'Accept': 'application/json',"Authorization":"bearer "+token, "Cache-Control": "no-cache"});
     
     var datos = json.decode(response.body);
 
     if(response.statusCode==200){
       setState(() {
         urlArchivo=datos['message'].toString();
-         debugPrint("ruta: "+urlArchivo);
       });
     }else{
       Fluttertoast.showToast(
@@ -683,6 +806,7 @@ class treeState extends State<tree> {
     buscarsyllabus();
     buscarInformativos();
     getEsquema();
+    generateDocs();
     super.initState();
   }
 
@@ -702,7 +826,7 @@ class treeState extends State<tree> {
         )
       ])),
         drawer: slideBar.MyDrawer(),
-        body: SingleChildScrollView(
+        body:  SingleChildScrollView(
           child: Stack(children: <Widget>[
                     Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -784,12 +908,11 @@ class treeState extends State<tree> {
                     'c) Apuntes de clase',
                   ),
                   children: <Widget>[
-                    
                       ListView.builder(physics: NeverScrollableScrollPhysics(), scrollDirection: Axis.vertical, shrinkWrap: true,itemBuilder: (context, index){
                       return ListTile(
                       title: Text('DIARIO METACOGNITIVO '+_notes[index].num_diario.toString()),
                       leading: Icon(Icons.book),
-                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Diario("DIARIO METACOGNITIVO "+_notes[index].num_diario.toString(), _notes[index].num_diario.toString(), _notes[index].tiempo.toString(), _notes[index].fecha, tipo=="ESTUDIANTE"? codigo: widget.per_codigo, widget.asig_codigo, widget.asig_nombre, widget.peri_codigo)));},
+                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Diario("DIARIO METACOGNITIVO "+_notes[index].num_diario.toString(), _notes[index].num_diario.toString(), _notes[index].tiempo.toString(), _notes[index].fecha, tipo=="ESTUDIANTE"? codigo: widget.per_codigo, widget.asig_codigo, widget.asig_nombre, widget.peri_codigo, fac_abreviatura, car_abreviatura, asig_identificador_completo, est_cedula)));},
                     );
                     },  itemCount: _notes.length,)                 
                   ],
@@ -1074,15 +1197,76 @@ class treeState extends State<tree> {
                   title: Text(
                     'Informe final',
                   ),leading: Icon(Icons.menu_book_outlined),
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>informefinal(widget.asig_codigo, widget.peri_codigo, widget.per_codigo, widget.asig_nombre)));},
+                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>informefinal(widget.asig_codigo, widget.peri_codigo, widget.per_codigo, widget.asig_nombre, fac_abreviatura, car_abreviatura, asig_identificador_completo, est_cedula)));},
                 )
               ],
             ),
             MaterialButton(
                       color: Colors.green,
                       onPressed: ()async{
+                        await buscarPortafolio();
+                        buscarPortafolio().then((value) {
+                          setState(() {
+                            _notes.addAll(value);
+                          });
+                        });
+                        await buscarevaluaciones().then((value) {
+                          setState(() {
+                            _notes2.addAll(value);
+                          });
+                        });
+                        await buscarinvestigaciones().then((value) {
+                          setState(() {
+                            _notes3.addAll(value);
+                          });
+                        });
+                        await buscaractividades().then((value) {
+                          setState(() {
+                            _notes4.addAll(value);
+                          });
+                        });
+                        await buscarproyectos().then((value) {
+                          setState(() {
+                            _notes5.addAll(value);
+                          });
+                        });
+                        await buscarestudios().then((value) {
+                          setState(() {
+                            _notes6.addAll(value);
+                          });
+                        });
+                        await buscarplanteamientos().then((value) {
+                          setState(() {
+                            _notes7.addAll(value);
+                          });
+                        });
+                        await buscarasistencia();
+                        await buscarobservaciones().then((value) {
+                          setState(() {
+                            _notes9.addAll(value);
+                          });
+                        });
+                        await buscarintraclases().then((value) {
+                          setState(() {
+                            _notes10.addAll(value);
+                          });
+                        });
+                        await buscarautonomas().then((value) {
+                          setState(() {
+                            _notes11.addAll(value);
+                          });
+                        });
+                        await buscarrefuerzo().then((value) {
+                          setState(() {
+                            _notes12.addAll(value);
+                          });
+                        });
+                        await buscarsyllabus();
+                        await buscarInformativos();
+                        await getEsquema();
+                        await generateDocs();
                         await descargarPortafolio();
-                         final status= await Permission.storage.request();
+                        final status= await Permission.storage.request();
                          if(status.isGranted){
                            final externalDir = await getExternalStorageDirectory();
                             String ruta = Uri.encodeFull(urlArchivo);

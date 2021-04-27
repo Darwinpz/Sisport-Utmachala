@@ -65,7 +65,14 @@ class _CarrerasState extends State<Carreras> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
+      body: RefreshIndicator(onRefresh: (){return Future.delayed(Duration(seconds: 1),(){
+        _notes.clear();
+        fecthNotes().then((value) {
+      setState(() {
+        _notes.addAll(value);
+      });
+    });
+      });}, child: ListView.builder(
         itemBuilder: (context, index) {
           return Card(
             shape:
@@ -92,7 +99,7 @@ class _CarrerasState extends State<Carreras> {
           );
         },
         itemCount: _notes.length,
-      ),
+      ), ) 
     );
   }
 }
