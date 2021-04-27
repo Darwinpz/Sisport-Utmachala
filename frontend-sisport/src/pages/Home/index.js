@@ -74,10 +74,10 @@ export default function LoginPage() {
                                         <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="1" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="2" />
+                                        <img className="d-block w-100" height="350" src="/img/banner2.jpg" alt="2" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img className="d-block w-100" height="350" src="/img/banner1.jpg" alt="3" />
+                                        <img className="d-block w-100" height="350" src="/img/banner3.jpg" alt="3" />
                                     </div>
                                 </div>
 
